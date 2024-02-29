@@ -202,7 +202,7 @@ __NOTE:__ These files are zipped when you download them. You will need to unzip 
 
 ### Installing the Data Model 
 
-- [<img src="images/TemplateFile-48.png" width="16px"> Altus Status Report Data Model](files/Altus_Status_Report_Data_Model.pbit) <p>
+- [<img src="../images/TemplateFile-48.png" width="16px"> Altus Status Report Data Model](files/Altus_Status_Report_Data_Model.pbit) <p>
 
 - Download the Altus Status Report Data Model file and open it within Power BI
 - Log into Power BI using the current environment's credentials 

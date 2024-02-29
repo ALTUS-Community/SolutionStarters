@@ -1,7 +1,7 @@
 # Hygiene Report
 A Hygiene Report has been created that can help PMO officers and Administrators identify Projects/Programs/Portfolios, Resources, and Register items that need to be cleaned up or Projects that are nearing their forecast finish.
 
- - [<img src="images/TemplateFile-48.png" width="16px">Hygiene Report.pbit](files/Hygiene Report.pbit)  
+ - [<img src="../images/TemplateFile-48.png" width="16px">Hygiene Report.pbit](files/Hygiene Report.pbit)  
 
 This report has been built using the dimension tables from the shared data model with additional values and calculations added to it using SQL direct queries. These queries can be added to if clients would like additional items added to this report.
 
