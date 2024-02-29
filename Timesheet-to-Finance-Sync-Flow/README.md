@@ -1,3 +1,5 @@
+[Download Timesheet to Finance Sync Flow solution](TimesheettoFinanceSyncFlow_1_0_0_3.zip)
+
 ## Flow steps:
 
 - Get a list of all projects (your team can add a filter as needed)
