@@ -1,19 +1,19 @@
-# Paginated Reports
+# Paginated Reports Solution Starters
 
-These reports have been created so that SSRS like reports can still be provided to clients.
-These reports use a Power Bi data model rather than Fetch XML.
+These reports have been created to provide a fast starting point for providing customers with meaningful SSRS reports to compliment their Altus installation.
+These reports use a Power BI data model rather than Fetch XML.
 
-This Power Bi data model has been created using a mixture of Dimensions and Direct Query, so that most of the data within the report is generated live and not subject to the normal Power Bi refresh rates.
-This Power Bi Data model can be used for multiple reports in the client environment and can be added to by consultants.
+This Power BI data model has been created using a mixture of Dimensions and Direct Query, so that most of the data within the report is generated live and not subject to the normal Power BI refresh rates.
+This Power BI Data model can be used for multiple reports in the client environment and can be added to by consultants.
 
 This data model and paginated reports can be used to replace most historic SSRS reports.
 
-Note: the biggest difference between using the new data model and Power Bi Paginated Reports and creating an SSRS report from the Reporting Hub is the amount of flexibility you can build into the report directly. For example, the count cards on the Project Status Reports have all been created as measures in the Data model rather than directly into the report.
+Note: the biggest difference between using the new data model and Power BI Paginated Reports and creating an SSRS report from the Reporting Hub is the amount of flexibility you can build into the report directly. For example, the count cards on the Project Status Reports have all been created as measures in the Data model rather than directly into the report.
 
-## Power Bi Data Model
+## Power BI Data Model
 The Data Model has been created so that it can be reused for Project, Program and Portfolio Status Reports.
 
-It is made up of a number of connections to the Power Bi dimension tables (same as the Power BI BETA reports), direct SQL queries to data and measures built directly in the data model. 
+It is made up of a number of connections to the Power BI dimension tables (same as the Power BI BETA reports), direct SQL queries to data and measures built directly in the data model. 
 
 The measures contain the following items:
 
@@ -162,7 +162,7 @@ If you would like to set up the fields in your reports so that they use Rich Tex
 
 ### Installing the JSON Files
 
-These JSON files are the same as used in the Power Bi report, so if they have already been installed in the environment you can skip this step.
+These JSON files are the same as used in the Power BI report, so if they have already been installed in the environment you can skip this step.
 
 - Navigate to the clients Power BI workspace
 
