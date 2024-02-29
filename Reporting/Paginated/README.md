@@ -170,9 +170,9 @@ These JSON files are the same as used in the Power BI report, so if they have al
 
 - Select __Import model__. Import each of the following json files:
 
- - [<img src="images/JSON.png" width="16px"> DIM_ChartofAccounts.json](files/Dim_ChartofAccounts.zip) 
- - [<img src="images/JSON.png" width="16px"> Dim_Date_Flexible_FY.json](files/Dim_Date.zip) - This works for any client that has any Financial Year of 12 months, set by the __Fiscal Year Start Month Number__ configuration setting.
- - [<img src="images/JSON.png" width="16px"> Dim_Projects.json](files/DIM_Projects.zip) 
+ - [<img src="../images/JSON.png" width="16px"> DIM_ChartofAccounts.json](files/Dim_ChartofAccounts.zip) 
+ - [<img src="../images/JSON.png" width="16px"> Dim_Date_Flexible_FY.json](files/Dim_Date.zip) - This works for any client that has any Financial Year of 12 months, set by the __Fiscal Year Start Month Number__ configuration setting.
+ - [<img src="../images/JSON.png" width="16px"> Dim_Projects.json](files/DIM_Projects.zip) 
 
 __NOTE:__ These files are zipped when you download them. You will need to unzip them to be able to use them.
 
