@@ -1,14 +1,14 @@
 # Altus Solution Starters
-A repo of tools and resources that assist Altus Partners or power users to deploy, troubleshoot and enhance the Altus product.
+A repository filled with tools and resources designed to empower Altus Partners and advanced users in deploying, troubleshooting, and optimising the Altus product. Although not core to every Altus installation, these Solution Starters serve as valuable stepping stones for partners aiming to address specific customer issues promptly and deliver immediate value.
 
 [Audit Report](Reporting/Audit/README.md)
-An optional Audit report for customers who require visibility on events occurring in Altus.
+An optional Audit Report tailored for customers seeking enhanced visibility into events within Altus.
 
 [Paginated Reports](Reporting/Paginated/README.md)
-Paginated Report examples to get you started quickly with paginated reports in Altus.
+Various examples of paginated reports that can be customized to meet your customer's unique requirements, providing a swift and efficient starting point.
 
 [Hygeine Report](Reporting/Hygiene/README.md)
-A Hygiene Report has been created that can help PMO officers and Administrators identify Projects/Programs/Portfolios, Resources, and Register items that need to be cleaned up or Projects that are nearing their forecast finish.
+Hygiene Report, a tool specifically designed for PMO officers and Administrators to identify and address cleanup needs for Projects, Programs, Portfolios, Resources, and Register items approaching their forecasted completion.
 
 [Timesheet to Finance ReSync - Flow](Tools/Timesheet-to-Finance-Sync-Flow/README.md)
-A Power Automate Flow for running the Timesheet to Finance actuals import service across all projects as a troubleshooting measure or a nightly job if review by Project Managers is not required.
+A Power Automate Flow for executing the Timesheet to Finance actuals import service across all projects. This tool serves as a troubleshooting measure or a nightly job, particularly useful when Project Manager review of financials is not required.
