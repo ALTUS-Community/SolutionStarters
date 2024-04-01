@@ -276,7 +276,7 @@ Use the following web resource template:
     <script>
        function getQueryStringFilter(context) {
            const id = parent.Xrm.Page.data.entity.getId().replace(/[{}]/g,'');
-           return `&rp:DimProjectProjectName=${id}`;
+           return `&rp:DimProjectProjectName=${id.toLowerCase()}`;
        }
        function loadIframe() {                                                    
            sensei_SenseiProject.Generic.IFrameService.Instance.setIframeSource("SenseiPowerBIIframe", "SSRS_Config_Setting", getQueryStringFilter);
