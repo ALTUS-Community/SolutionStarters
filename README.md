@@ -13,6 +13,9 @@ Hygiene Report, a tool specifically designed for PMO officers and Administrators
 [Timesheet to Finance ReSync - Flow](Tools/Timesheet-to-Finance-Sync-Flow/README.md)
 A Power Automate Flow for executing the Timesheet to Finance actuals import service across all projects. This tool serves as a troubleshooting measure or a nightly job, particularly useful when Project Manager review of financials is not required.
 
+[External Task Sync Health Check - Flow](Tools/External-Task-Sync-Health-Check-Flow/README.md)
+A Power Automate Flow to check data integrity of Altus Projects aligned to External Projects. Optionally can be run in Output mode or Execute mode to either display the misaligned data or action repairs to the misaligned data.
+
 
 ## Support for Solution Starters
 
