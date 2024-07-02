@@ -39,3 +39,5 @@ Please note that the Do While loop that processes each of the execute actions ha
 - The MaxBatchSize variable can be adjusted, but must not ever exceed 1000 (this is the maximum batch size allowed by Dataverse).
 
 - Save the changes
+
+Please note that the HTTP action to send high level telemetry (number of records affected) to Application Insights for Altus is included to assist in ensuring that Altus gain insight as to how many records are affected by task sync misalignment in customer environments. This action can be optionally deleted if required.
