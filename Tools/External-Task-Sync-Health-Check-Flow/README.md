@@ -1,4 +1,4 @@
-[Download External Task Sync Health Check Flow solution](ExternalTaskSyncHealthCheck_1_0_0_4.zip)
+[Download External Task Sync Health Check Flow solution](ExternalTaskSyncHealthCheck_1_0_0_5.zip)
 
 ## Flow steps:
 
@@ -21,7 +21,7 @@ Please note that the Do While loop that processes each of the execute actions ha
 - Please take the unmanaged solution .zip supplied, and import it into the environment it will run.
   - **Note** - this must be installed as unmanaged, as otherwise the parameters may not be modified.
 
-- Create the two connections, and ensure green ticks appear on the Flow overview page.
+- Create the two connections, and ensure green ticks appear on the Flow overview page. Note that the Solution import process may attempt to re-use existing connections of the same type. Ensure that if you are re-using exising connections that they are pointing to the same environment - so as to not get unexpected results. 
 - Enter the environment base URL in both text fields for the HTTP with Entra ID connection,  
   e.g., `'https://iq-atsumeru.crm6.dynamics.com/'`
 
