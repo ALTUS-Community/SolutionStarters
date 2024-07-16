@@ -1,6 +1,6 @@
 # Paginated Reports Solution Starters
 
-These reports have been created to provide a fast starting point for providing customers with meaningful SSRS reports to compliment their Altus installation.
+These SSRS reports have been created to compliment the Altus installation.
 These reports use a Power BI data model rather than Fetch XML.
 
 This Power BI data model has been created using a mixture of Dimensions and Direct Query, so that most of the data within the report is generated live and not subject to the normal Power BI refresh rates.
@@ -206,11 +206,12 @@ __NOTE:__ These files are zipped when you download them. You will need to unzip 
 
 - Download the Altus Status Report Data Model file and open it within Power BI
 - Log into Power BI using the current environment's credentials 
+  - Fill in the values for below parameters
+  - <img src="images/ParametersValue.png" alt="How to get to the embed link on a report." class="contentImage65" />
 - Open the __Transform Data__ view 
 - Click __Data source setings__ and update your credentials:
   - Click on the Dataflow item from the list, then __Edit Permissions__ and log in to the environment even if it says you're already signed in
   - Click on the environment link and follow the above process to log in to the environment
-- Update the parameters and the the SQL Register queries to the clients environment details as outlined in [Client Environment Variables](#client-environment-parameters)
 - Save and Test the Data Model
 -	Upload the report into the Power BI Workspace
 - Make sure the Data source credentials are correct
