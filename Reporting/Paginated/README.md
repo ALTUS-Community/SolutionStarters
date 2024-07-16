@@ -207,7 +207,7 @@ __NOTE:__ These files are zipped when you download them. You will need to unzip 
 - Download the Altus Status Report Data Model file and open it within Power BI
 - Log into Power BI using the current environment's credentials 
   - Fill in the values for below parameters
-  - <img src="images/ParametersValue.png" alt="How to get to the embed link on a report." class="contentImage65" />
+  <img src="images/ParameterValue.png" class="contentImage65" />
 - Open the __Transform Data__ view 
 - Click __Data source setings__ and update your credentials:
   - Click on the Dataflow item from the list, then __Edit Permissions__ and log in to the environment even if it says you're already signed in
