@@ -318,11 +318,11 @@ Choose the new html file you created and fill in the details like shown below
 
 Then add existing table like shown below
 
-<img src="images/NewTable.bmp" class="contentImage65" />
+<img src="images/Newtable.bmp" class="contentImage65" />
 
 If its Project report then choose Project , if its Portfolio choose Portfolio and if its Program then choose Program like shown below:
 
-<img src="images/ExistingTables.bmp" class="contentImage65" />
+<img src="images/Existingtables.bmp" class="contentImage65" />
 
 <img src="images/Selectedtables.bmp" class="contentImage65" />
 Check include table metadata checkbox and choose select objects
