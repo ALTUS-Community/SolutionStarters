@@ -295,24 +295,66 @@ Use the following web resource template:
 ```
 Within the template replace __SSRS_Config_Setting__ with the setting [defined](#configuration-setting) and change the QueryStringFilter accordingly.
 
-- Projects = ``` `&rp:DimProjectProjectName=${id}` ```
-- Programs = ``` `&rp:DimProgramsenseiprogram=${id}` ``` 
+- Projects = ``` `&rp:DimProjectProjectName=${id}` ``` which is your parameter name in the rdl file.
+- Programs = ``` `&rp:DimProgramsenseiprogram=${id}` ``` which is your parameter name in the rdl file.
 
 Once these changes have been made, create a new web resource within your solution and upload this file.
 
 #### Embedding
 
-##### Old Reports
+##### Paginated Report (.rdl files)
 
-To embed the report, open up the form you wish to display the report and add a new __tab__, we recommend a __1-column tab__.
-Select the section within the new tab and insert a __HTML web resource__, search for the web resource created [earlier](#web-resource) and insert it into the form.
-We recommend altering the component height to about 12 rows, however this can changed as per client preference.
+If the client wishes to to have both landscape and Portrait then the portrait rdl file can be found in Archive folder.
 
-<img src="images/SSRSReportEmbedClassic.gif" alt="An example of how to embed into a form." class="contentImage65" />
+To embed a paginated report navigate to make.powerapps.com. Then go to Solutions –  Eg:Customised Altus solutions or Power BI Solutions or create a new Solution if you want to keep it separate for Power BI Reports.
 
-##### New Data Model Reports
+Then navigate to the solution and click on New – More- Web resource.
 
-If the client wishes to to have both reports (i.e., Landscape and Portrait) within the same tab. We can accommodate this using our experimental tab within a tab control.
+<img src="images/WebResource.bmp" class="contentImage65" />
+
+Choose the new html file you created and fill in the details like shown below
+
+<img src="images/UploadHTML.bmp" class="contentImage65" />
+
+Then add existing table like shown below
+
+<img src="images/NewTable.bmp" class="contentImage65" />
+
+If its Project report then choose Project , if its Portfolio choose Portfolio and if its Program then choose Program like shown below:
+
+<img src="images/ExistingTables.bmp" class="contentImage65" />
+
+<img src="images/Selectedtables.bmp" class="contentImage65" />
+Check include table metadata checkbox and choose select objects
+
+Navigate to select objects and  choose tracking under Forms if you want to embed the report under Tracking
+
+<img src="images/Tracking.bmp" class="contentImage65" />
+Click on add and then its saved under solutions.
+
+Navigate to Project and then go to forms and edit in New tab
+<img src="images/Projects.bmp" class="contentImage65" />
+
+<img src="images/Newtab.bmp" class="contentImage65" />
+
+Click on Show hidden and then go to Components and add 1 column tab
+
+<img src="images/Components.bmp" class="contentImage65" />
+
+Rename the tab and then go to Display and then add new HTML web resource that was created in previous step
+
+<img src="images/HTMLResource.bmp" class="contentImage65" />
+Click on Add
+
+Final step should like below
+<img src="images/FinalStep.bmp" class="contentImage65" />
+
+Click on save and publish.
+
+After few minutes you can see the new embedded report inside Altus.
+
+
+
 
 <img src="images/SSRSReportEmbedBeta.png" alt="An example of how to embed into a using the sub tab control." class="contentImage65" />
 
