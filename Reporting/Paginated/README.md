@@ -356,9 +356,7 @@ After few minutes you can see the new embedded report inside Altus.
 
 
 
-<img src="images/SSRSReportEmbedBeta.png" alt="An example of how to embed into a using the sub tab control." class="contentImage65" />
 
-To achieve this please follow the above method along with the instructions on the [Sub Tab Control](https://hub.sensei.cloud/Docs/Altus/Configuration/Settings/Settings.html#sub-tab-control).
 
 <hr/>
 
