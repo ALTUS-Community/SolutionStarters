@@ -304,7 +304,7 @@ Once these changes have been made, create a new web resource within your solutio
 
 ##### Paginated Report (.rdl files)
 
-If the client wishes to to have both landscape and Portrait then the portrait rdl file can be found in Archive folder.
+If the client wishes to have both landscape and Portrait then the portrait rdl file can be found in Archive folder.
 
 To embed a paginated report navigate to make.powerapps.com. Then go to Solutions –  Eg:Customised Altus solutions or Power BI Solutions or create a new Solution if you want to keep it separate for Power BI Reports.
 
