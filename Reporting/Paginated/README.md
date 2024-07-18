@@ -207,7 +207,7 @@ __NOTE:__ These files are zipped when you download them. You will need to unzip 
 - Download the Altus Status Report Data Model file and open it within Power BI
 - Log into Power BI using the current environment's credentials 
   - Fill in the values for below parameters
-  - <img src="images/ParameterValues.bmp" class="contentImage65" />
+  - <img src="images/ParameterValues.png" class="contentImage65" />
 - Open the __Transform Data__ view 
 - Click __Data source setings__ and update your credentials:
   - Click on the Dataflow item from the list, then __Edit Permissions__ and log in to the environment even if it says you're already signed in
@@ -310,44 +310,44 @@ To embed a paginated report navigate to make.powerapps.com. Then go to Solutions
 
 Then navigate to the solution and click on New – More- Web resource.
 
-<img src="images/WebResource.bmp" class="contentImage65" />
+<img src="images/WebResource.png" class="contentImage65" />
 
 Choose the new html file you created and fill in the details like shown below
 
-<img src="images/UploadHTML.bmp" class="contentImage65" />
+<img src="images/UploadHTML.png" class="contentImage65" />
 
 Then add existing table like shown below
 
-<img src="images/Newtable.bmp" class="contentImage65" />
+<img src="images/Newtable.png" class="contentImage65" />
 
 If its Project report then choose Project , if its Portfolio choose Portfolio and if its Program then choose Program like shown below:
 
-<img src="images/Existingtables.bmp" class="contentImage65" />
+<img src="images/Existingtables.png" class="contentImage65" />
 
-<img src="images/Selectedtables.bmp" class="contentImage65" />
+<img src="images/Selectedtables.png" class="contentImage65" />
 Check include table metadata checkbox and choose select objects
 
 Navigate to select objects and  choose tracking under Forms if you want to embed the report under Tracking
 
-<img src="images/Tracking.bmp" class="contentImage65" />
+<img src="images/Tracking.png" class="contentImage65" />
 Click on add and then its saved under solutions.
 
 Navigate to Project and then go to forms and edit in New tab
-<img src="images/Projects.bmp" class="contentImage65" />
+<img src="images/Projects.png" class="contentImage65" />
 
-<img src="images/Newtab.bmp" class="contentImage65" />
+<img src="images/Newtab.png" class="contentImage65" />
 
 Click on Show hidden and then go to Components and add 1 column tab
 
-<img src="images/Components.bmp" class="contentImage65" />
+<img src="images/Components.png" class="contentImage65" />
 
 Rename the tab and then go to Display and then add new HTML web resource that was created in previous step
 
-<img src="images/HTMLResource.bmp" class="contentImage65" />
+<img src="images/HTMLResource.png" class="contentImage65" />
 Click on Add
 
 Final step should like below
-<img src="images/FinalStep.bmp" class="contentImage65" />
+<img src="images/FinalStep.png" class="contentImage65" />
 
 Click on save and publish.
 
