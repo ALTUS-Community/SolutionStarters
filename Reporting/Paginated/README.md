@@ -310,44 +310,44 @@ To embed a paginated report navigate to make.powerapps.com. Then go to Solutions
 
 Then navigate to the solution and click on New – More- Web resource.
 
-<img src="images/WebResource.jpg" class="contentImage65" />
+<img src="images/WebResource.jpg" alt = "New Web Resource" class="contentImage65" />
 
 Choose the new html file you created and fill in the details like shown below
 
-<img src="images/UploadHTML.jpg" class="contentImage65" />
+<img src="images/UploadHTML.jpg" alt = "New HTML file to upload" class="contentImage65" />
 
 Then add existing table like shown below
 
-<img src="images/Newtable.jpg" class="contentImage65" />
+<img src="images/Newtable.jpg" alt = "Add existing table" class="contentImage65" />
 
 If its Project report then choose Project , if its Portfolio choose Portfolio and if its Program then choose Program like shown below:
 
-<img src="images/Existingtables.jpg" class="contentImage65" />
+<img src="images/Existingtables.jpg" alt = "Choose the correct table" class="contentImage65" />
 
-<img src="images/Selectedtables.jpg" class="contentImage65" />
+<img src="images/Selectedtables.jpg" alt = "Selected tables" class="contentImage65" />
 Check include table metadata checkbox and choose select objects
 
 Navigate to select objects and  choose tracking under Forms if you want to embed the report under Tracking
 
-<img src="images/Tracking.jpg" class="contentImage65" />
+<img src="images/Tracking.jpg" alt = "Tracking" class="contentImage65" />
 Click on add and then its saved under solutions.
 
 Navigate to Project and then go to forms and edit in New tab
-<img src="images/Projects.jpg" class="contentImage65" />
+<img src="images/Projects.jpg" alt = "Edit Forms" class="contentImage65" />
 
-<img src="images/Newtab.jpg" class="contentImage65" />
+<img src="images/Newtab.jpg" alt = "Add new tab" class="contentImage65" />
 
 Click on Show hidden and then go to Components and add 1 column tab
 
-<img src="images/Components.jpg" class="contentImage65" />
+<img src="images/Components.jpg" alt = "Add new components" class="contentImage65" />
 
 Rename the tab and then go to Display and then add new HTML web resource that was created in previous step
 
-<img src="images/HTMLResource.jpg" class="contentImage65" />
+<img src="images/HTMLResource.jpg" alt = "Add new HTML Resource " class="contentImage65" />
 Click on Add
 
-Final step should like below
-<img src="images/FinalStep.jpg" class="contentImage65" />
+Final step should be like below
+<img src="images/FinalStep.jpg" alt = "Final Step" class="contentImage65" />
 
 Click on save and publish.
 
@@ -358,6 +358,12 @@ After few minutes you can see the new embedded report inside Altus.
 # Change Log
 
 <hr/>
+
+### 2024.07.18
+
+-Fixed the error with DIM_Project instead of DIM_Projects in  Altus_Status_Report_Data_Model
+-Moved Altus_Project_Status_Report_Portrait to Archive folder as its not used 
+-Moved Altus_PSR_1page to Archive folder as its not used.
 
 ### 2023.07.21
 
