@@ -361,9 +361,9 @@ After few minutes you can see the new embedded report inside Altus.
 
 ### 2024.07.18
 
--Fixed the error with DIM_Project instead of DIM_Projects in  Altus_Status_Report_Data_Model
--Moved Altus_Project_Status_Report_Portrait to Archive folder as its not used 
--Moved Altus_PSR_1page to Archive folder as its not used.
+- Fixed the error with DIM_Project instead of DIM_Projects in  Altus_Status_Report_Data_Model
+- Moved Altus_Project_Status_Report_Portrait to Archive folder as its not used 
+- Moved Altus_PSR_1page to Archive folder as its not used.
 
 ### 2023.07.21
 
