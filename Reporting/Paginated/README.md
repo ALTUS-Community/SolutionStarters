@@ -207,7 +207,7 @@ __NOTE:__ These files are zipped when you download them. You will need to unzip 
 - Download the Altus Status Report Data Model file and open it within Power BI
 - Log into Power BI using the current environment's credentials 
   - Fill in the values for below parameters
-  - <img src="images/ParameterValues.png" class="contentImage65" />
+  - <img src="images/ParameterValues.jpg" class="contentImage65" />
 - Open the __Transform Data__ view 
 - Click __Data source setings__ and update your credentials:
   - Click on the Dataflow item from the list, then __Edit Permissions__ and log in to the environment even if it says you're already signed in
@@ -220,12 +220,12 @@ __NOTE:__ These files are zipped when you download them. You will need to unzip 
 ### Connecting the Project and Program reporting files in the client environment
 
 Download each of the report templates:
-  - [<img src="images/RDL.png" width="16px"> Altus 1-page Project Status Report](Archive/Altus_PSR_1page.zip)  
-  - [<img src="images/RDL.png" width="16px"> Altus 1-page Project Status Report - similar to Status Update page](files/Altus_1-page-Project_Status_Report.zip)
-  - [<img src="images/RDL.png" width="16px"> Altus Project Status Report (Portrait)](Archive/Altus_Project_Status_Report_Portrait.zip)
-  - [<img src="images/RDL.png" width="16px"> Altus Project Status Report (Landscape)](files/Altus_Project_Status_Report_Landscape.zip)
-  - [<img src="images/RDL.png" width="16px"> Altus Program Status Report (Portrait)](files/Altus_Program_Status_Report_Portrait.zip) 
-  - [<img src="images/RDL.png" width="16px"> Altus Portfolio Status Report (Landscape)](files/Altus_Portfolio_Status_Report_Landscape.zip)   <p>
+  - [<img src="images/RDL.jpg" width="16px"> Altus 1-page Project Status Report](Archive/Altus_PSR_1page.zip)  
+  - [<img src="images/RDL.jpg" width="16px"> Altus 1-page Project Status Report - similar to Status Update page](files/Altus_1-page-Project_Status_Report.zip)
+  - [<img src="images/RDL.jpg" width="16px"> Altus Project Status Report (Portrait)](Archive/Altus_Project_Status_Report_Portrait.zip)
+  - [<img src="images/RDL.jpg" width="16px"> Altus Project Status Report (Landscape)](files/Altus_Project_Status_Report_Landscape.zip)
+  - [<img src="images/RDL.jpg" width="16px"> Altus Program Status Report (Portrait)](files/Altus_Program_Status_Report_Portrait.zip) 
+  - [<img src="images/RDL.jpg" width="16px"> Altus Portfolio Status Report (Landscape)](files/Altus_Portfolio_Status_Report_Landscape.zip)   <p>
 
   __NOTE:__ These files are zipped when you download them. You will need to unzip them to be able to use them.
 
@@ -259,13 +259,13 @@ To create a configuration setting, following the below steps.
 
 The report embed link can be found by visiting the report to be embedded in the Power BI workspace.
 
-<img src="images/SSRSReportEmbedNav.png" alt="How to get to the embed link on a report." class="contentImage65" />
+<img src="images/SSRSReportEmbedNav.jpg" alt="How to get to the embed link on a report." class="contentImage65" />
 
-<img src="images/SSRSReportEmbedValue.png" alt="The embed link area." class="contentImage65" />
+<img src="images/SSRSReportEmbedValue.jpg" alt="The embed link area." class="contentImage65" />
 
 The final configuration setting should look similar to that of the one below.
 
-<img src="images/SSRSConfigSetting.png" alt="An example SSRS config setting." class="contentImage65" />
+<img src="images/SSRSConfigSetting.jpg" alt="An example SSRS config setting." class="contentImage65" />
 
 #### Web Resource
 
@@ -310,49 +310,90 @@ To embed a paginated report navigate to make.powerapps.com. Then go to Solutions
 
 Then navigate to the solution and click on New – More- Web resource.
 
-<img src="images/WebResource.png" class="contentImage65" />
+<img src="images/WebResource.jpg" class="contentImage65" />
 
 Choose the new html file you created and fill in the details like shown below
 
-<img src="images/UploadHTML.png" class="contentImage65" />
+<img src="images/UploadHTML.jpg" class="contentImage65" />
 
 Then add existing table like shown below
 
-<img src="images/Newtable.png" class="contentImage65" />
+<img src="images/Newtable.jpg" class="contentImage65" />
 
 If its Project report then choose Project , if its Portfolio choose Portfolio and if its Program then choose Program like shown below:
 
-<img src="images/Existingtables.png" class="contentImage65" />
+<img src="images/Existingtables.jpg" class="contentImage65" />
 
-<img src="images/Selectedtables.png" class="contentImage65" />
+<img src="images/Selectedtables.jpg" class="contentImage65" />
 Check include table metadata checkbox and choose select objects
 
 Navigate to select objects and  choose tracking under Forms if you want to embed the report under Tracking
 
-<img src="images/Tracking.png" class="contentImage65" />
+<img src="images/Tracking.jpg" class="contentImage65" />
 Click on add and then its saved under solutions.
 
 Navigate to Project and then go to forms and edit in New tab
-<img src="images/Projects.png" class="contentImage65" />
+<img src="images/Projects.jpg" class="contentImage65" />
 
-<img src="images/Newtab.png" class="contentImage65" />
+<img src="images/Newtab.jpg" class="contentImage65" />
 
 Click on Show hidden and then go to Components and add 1 column tab
 
-<img src="images/Components.png" class="contentImage65" />
+<img src="images/Components.jpg" class="contentImage65" />
 
 Rename the tab and then go to Display and then add new HTML web resource that was created in previous step
 
-<img src="images/HTMLResource.png" class="contentImage65" />
+<img src="images/HTMLResource.jpg" class="contentImage65" />
 Click on Add
 
 Final step should like below
-<img src="images/FinalStep.png" class="contentImage65" />
+<img src="images/FinalStep.jpg" class="contentImage65" />
 
 Click on save and publish.
 
 After few minutes you can see the new embedded report inside Altus.
 
+<hr/>
+
+# Change Log
+
+<hr/>
+
+### 2023.07.21
+
+<p style='clear:right'></p>
+<img src='./images/PBI.jpg' alt="" style="width:48px;float:right">
+<p></p>
+
+- Updated all reports and the model so that if there is no Previous KPI Value in the database, the trend and tool-tip does not show.
+- Released the 1 page Project status reports
+
+### 2023.07.7
+
+<p style='clear:right'></p>
+<img src='./images/PBI.jpg' alt="" style="width:48px;float:right">
+<p></p>
+
+- Added Budget, Actual, Forecast Whole of Life Measures
+
+<img src="images/WoLStatusReport.jpg" alt="Explanation of new measure." class="contentImage65" />
+
+- Added new but modified Current Finanical Year
+
+<img src="images/CFYStatusReport.jpg" alt="Explanation of new measure." class="contentImage65" />
+
+
+
+<hr/>
+
+### 2023.05.31
+
+<p style='clear:right'></p>
+<img src='./images/PBI.jpg' alt="" style="width:48px;float:right">
+<p></p>
+
+- Released the Portfolio Status Report Template.
+- Added Strategic Themes and Goals to the Data Model
 
 
 
