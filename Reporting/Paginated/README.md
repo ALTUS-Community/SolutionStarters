@@ -172,7 +172,7 @@ These JSON files are the same as used in the Power BI report, so if they have al
 
  - [<img src="../images/JSON.png" width="16px"> DIM_ChartofAccounts.json](files/Dim_ChartofAccounts.zip) 
  - [<img src="../images/JSON.png" width="16px"> Dim_Date_Flexible_FY.json](files/Dim_Date.zip) - This works for any client that has any Financial Year of 12 months, set by the __Fiscal Year Start Month Number__ configuration setting.
- - [<img src="../images/JSON.png" width="16px"> Dim_Projects.json](files/DIM_Projects.zip) 
+ - [<img src="../images/JSON.png" width="16px"> Dim_Projects.json](files/Dim_Projects.zip) 
 
 __NOTE:__ These files are zipped when you download them. You will need to unzip them to be able to use them.
 
@@ -220,9 +220,9 @@ __NOTE:__ These files are zipped when you download them. You will need to unzip 
 ### Connecting the Project and Program reporting files in the client environment
 
 Download each of the report templates:
-  - [<img src="images/RDL.png" width="16px"> Altus 1-page Project Status Report](files/Altus_PSR_1page.zip)  
+  - [<img src="images/RDL.png" width="16px"> Altus 1-page Project Status Report](Archive/Altus_PSR_1page.zip)  
   - [<img src="images/RDL.png" width="16px"> Altus 1-page Project Status Report - similar to Status Update page](files/Altus_1-page-Project_Status_Report.zip)
-  - [<img src="images/RDL.png" width="16px"> Altus Project Status Report (Portrait)](files/Altus_Project_Status_Report_Portrait.zip)
+  - [<img src="images/RDL.png" width="16px"> Altus Project Status Report (Portrait)](Archive/Altus_Project_Status_Report_Portrait.zip)
   - [<img src="images/RDL.png" width="16px"> Altus Project Status Report (Landscape)](files/Altus_Project_Status_Report_Landscape.zip)
   - [<img src="images/RDL.png" width="16px"> Altus Program Status Report (Portrait)](files/Altus_Program_Status_Report_Portrait.zip) 
   - [<img src="images/RDL.png" width="16px"> Altus Portfolio Status Report (Landscape)](files/Altus_Portfolio_Status_Report_Landscape.zip)   <p>
@@ -357,45 +357,3 @@ After few minutes you can see the new embedded report inside Altus.
 
 
 
-
-<hr/>
-
-# Change Log
-
-<hr/>
-
-### 2023.07.21
-
-<p style='clear:right'></p>
-<img src='./images/PBI.png' alt="" style="width:48px;float:right">
-<p></p>
-
-- Updated all reports and the model so that if there is no Previous KPI Value in the database, the trend and tool-tip does not show.
-- Released the 1 page Project status reports
-
-### 2023.07.7
-
-<p style='clear:right'></p>
-<img src='./images/PBI.png' alt="" style="width:48px;float:right">
-<p></p>
-
-- Added Budget, Actual, Forecast Whole of Life Measures
-
-<img src="images/WoLStatusReport.png" alt="Explanation of new measure." class="contentImage65" />
-
-- Added new but modified Current Finanical Year
-
-<img src="images/CFYStatusReport.png" alt="Explanation of new measure." class="contentImage65" />
-
-
-
-<hr/>
-
-### 2023.05.31
-
-<p style='clear:right'></p>
-<img src='./images/PBI.png' alt="" style="width:48px;float:right">
-<p></p>
-
-- Released the Portfolio Status Report Template.
-- Added Strategic Themes and Goals to the Data Model
