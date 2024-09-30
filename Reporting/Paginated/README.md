@@ -87,7 +87,7 @@ There are 18 datasets for Project status report which are direct SQL queries
     dsChangeRequest_Project
     dsTransactionCurrency
 
-SQL Files which are used for datasets can be downloaded from - [Download SQL Code for Project Status Report](./files/Program_Status_Report/SQL/Program_Status_Report_Dataset_SQL_Code.zip)
+SQL Files which are used for datasets can be downloaded from - [Download SQL Code for Program Status Report](./files/Program_Status_Report/SQL/Program_Status_Report_Dataset_SQL_Code.zip)
 
 #### Parameters 
 
@@ -109,7 +109,7 @@ Program status report contains following information
 - Associated Project and Program Decisions
 - Associated Project and Program Change Requests
 
-rdl file can be downloaded from - [Download .rdl file for Program Status Report](./files/Portfolio_Status_Report/Reports/Altus_Portfolio_Status_Report.zip)
+rdl file can be downloaded from - [Download .rdl file for Portfolio Status Report](./files/Portfolio_Status_Report/Reports/Altus_Portfolio_Status_Report.zip)
 
 #### Datasets 
 
@@ -132,7 +132,7 @@ There are 16 datasets for Project status report which are direct SQL queries
     dsStatusUpdate_Program
     dsTransactionCurrency
 
-SQL Files which are used for datasets can be downloaded from - [Download SQL Code for Project Status Report](./files/Portfolio_Status_Report/SQL/Portfolio_Status_Report_Dataset_SQL_Code.zip)
+SQL Files which are used for datasets can be downloaded from - [Download SQL Code for Portfolio Status Report](./files/Portfolio_Status_Report/SQL/Portfolio_Status_Report_Dataset_SQL_Code.zip)
 
 #### Parameters 
 
