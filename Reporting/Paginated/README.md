@@ -1,6 +1,6 @@
 # Paginated Reports Solution Starters
 
-Paginated reports have been created to compliment the Altus installation to generate status reports for projects, program and portfolio.
+Paginated reports have been created to compliment Altus installation to generate status reports for projects, program and portfolio.
 These reports use only .rdl file which can be developed using Power BI Report Builder. It has direct SQL connection to Dataverse which contains Altus information. This is then published to Power BI Service as .rdl file.
 
 ## Reports
