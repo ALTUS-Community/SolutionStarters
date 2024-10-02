@@ -145,10 +145,34 @@ SQL Files which are used for datasets can be downloaded from - [Download SQL Cod
 ### PowerBI Updates
 
 #### Project Status Report
-1. Open the .rdl file which you have downloaded from the above steps and navigae to parameters like shown below:
+1. Open the .rdl file which you have downloaded from the above steps and navigate to parameters like shown below:
 
     <img src="images/ProjectImage1.png" alt = "Parameter updates" class="contentImage65" />
 
+    Make sure that the dataset, value and label field matches with your dataset
+
+2. Navigate to default values like shown below and add the default value as any projectid from your clients environment. This is optional.
+
+    <img src="images/ProjectImage2.png" alt = "Default Values" class="contentImage65" />
+
+3. Navigate to parameters and then to EnvironmentURL and add a default value that should be your clients environment. See below for example
+
+    <img src="images/ProjectImage3.png" alt = "Environment URL" class="contentImage65" />
+
+4. Make sure all the datasets have the correct parameters chosen if you have made any updates to the name of the parameter. 
+
+    <img src="images/ProjectImage4.png" alt = "Datasets parameters" class="contentImage65" />
+
+5. Save the .rdl file.
+
+6. The above steps need to be done for all three status reports - Project, Program and Portfolio status reports.
 
 ### Publishing it to PowerBI Service
 
+1. Open the .rdl file and once you have made all the necessary changes to the parameters then you will need to publish it to Power BI service in your clients environment.
+
+2. If your clients environment already have Power BI Standard reports then you can use the same workspace. Otherwise a new workspace need to be created.
+
+3. Publish the .rdl file (paginated report) to the workspace. See below example.
+
+    <img src="images/ProjectImage5.png" alt = "Publish report" class="contentImage65" />
