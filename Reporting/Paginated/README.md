@@ -142,3 +142,12 @@ SQL Files which are used for datasets can be downloaded from - [Download SQL Cod
 
 ## Installing the Reports in a Client's environment
 
+### PowerBI Updates
+
+#### Project Status Report
+1. Open the .rdl file which you have downloaded from the above steps and navigae to parameters like shown below:
+
+[Parameter Updates](./images/ProjectImage1.png){.contentImage65}
+
+### Publishing it to PowerBI Service
+
