@@ -63,7 +63,7 @@ Program status report contains following information
 - Program Lessons Learned
 - Associated Project Summary
 
-rdl file can be downloaded from - [Download .rdl file for Program Status Report](./files/Program_Status_Report/Reports/Altus_Program_Status_Report.zip)
+rdl file can be downloaded from - [Download .rdl file for Program Status Report] (./files/Program_Status_Report/Reports/Altus_Program_Status_Report.zip)
 
 #### Datasets   
 There are 18 datasets for Project status report which are direct SQL queries
