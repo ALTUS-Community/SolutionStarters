@@ -87,7 +87,7 @@ There are 18 datasets for Project status report which are direct SQL queries
     dsChangeRequest_Project
     dsTransactionCurrency
 
-SQL Files which are used for datasets can be downloaded from - [Download SQL Code for Program Status Report](./files/Program_Status_Report/SQL/Program_Status_Report_Dataset_SQL_Code.zip)
+SQL Files which are used for datasets can be downloaded from - [Download SQL Code for Program Status Report](./files/Program_Status_report/SQL/Program_Status_Report_Dataset_SQL_Code.zip)
 
 #### Parameters 
 
