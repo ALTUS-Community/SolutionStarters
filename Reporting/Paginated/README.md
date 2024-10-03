@@ -139,10 +139,6 @@ SQL Files which are used for datasets can be downloaded from - [Download SQL Cod
 
 - __Portfolio Id__ - parameter that will be passed for most of the datasets. This will be hidden in the reports and when embedded in Altus it fetches the portfolio that is currently open in Altus and passes the id as parameter
 
-## Embedding inside Altus
-
-[Download Instructions for embedding inside Altus](./files/Embedding_Paginated_Reports.docx)
-
 ## Installing the Reports in a Client's environment
 
 ### PowerBI Updates
@@ -179,3 +175,7 @@ SQL Files which are used for datasets can be downloaded from - [Download SQL Cod
 3. Publish the .rdl file (paginated report) to the workspace. See below example.
 
     <img src="images/ProjectImage5.png" alt = "Publish report" class="contentImage65" />
+
+## Embedding inside Altus
+
+[Download Instructions for embedding inside Altus](./files/Embedding_Paginated_Reports.docx)
