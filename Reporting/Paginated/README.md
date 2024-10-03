@@ -139,6 +139,10 @@ SQL Files which are used for datasets can be downloaded from - [Download SQL Cod
 
 - __Portfolio Id__ - parameter that will be passed for most of the datasets. This will be hidden in the reports and when embedded in Altus it fetches the portfolio that is currently open in Altus and passes the id as parameter
 
+### KPIs for Reports
+
+[Download KPI Info file if further information required](./files/Paginated_Reports_KPI.xlsx)
+
 ## Installing the Reports in a Client's environment
 
 ### PowerBI Updates
@@ -165,6 +169,7 @@ SQL Files which are used for datasets can be downloaded from - [Download SQL Cod
 5. Save the .rdl file.
 
 6. The above steps need to be done for all three status reports - Project, Program and Portfolio status reports.
+
 
 ### Publishing it to PowerBI Service
 
