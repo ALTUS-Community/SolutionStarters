@@ -1,13 +1,14 @@
 # Paginated Reports Solution Starters
 
 Paginated reports have been created to compliment Altus installation to generate status reports for projects, program and portfolio.
-These reports use only .rdl file which can be developed using Power BI Report Builder. It has direct SQL connection to Dataverse which contains Altus information. This is then published to Power BI Service as .rdl file.
+
+These reports are .rdl files and have been developed using the Power BI Report Builder. It has direct SQL connection to Dataverse which contains Altus data. This is then published to Power BI Service as .rdl file.
 
 ## Reports
 
 ### Project Status Reports
 
-Project status report contains following information
+Project status report contains following information:
 
 -  Project info and Project status like General KPI, Deliverables KPI, Schedule KPI, Financials KPI, Work KPI, Issues KPI, Risks KPI, Change Requests KPI and Project Progress and Effort pie chart
 - Financials - EAC by Financial Category line chart and Cost by Month bar chart, Category Costs and Financials
@@ -23,7 +24,7 @@ Project status report contains following information
  rdl file can be downloaded from - [Download .rdl file for Project Status Report](./files/Project_Status_Report/Reports/Altus_Project_Status_Report.zip)
 
 #### Datasets 
-There are 14 datasets for Project status report which are direct SQL queries
+There are 14 datasets for Project status report which are direct SQL queries:
     
     dsProject
     dsTasks
@@ -51,7 +52,7 @@ SQL Files which are used for datasets can be downloaded from - [Download SQL Cod
 
 
 ### Program Status Reports
-Program status report contains following information
+Program status report contains following information:
 
 - Program Info and Program Status like General KPI, Deliverables KPI, Schedule KPI, Financials KPI, Work KPI, Issues KPI, Risks KPI, Change Requests KPI and Program Progress and Project Effort pie chart
 - Associated Project Financials - EAC by Financial Category line chart and Cost by Month bar chart, Category Costs and Financials
@@ -66,7 +67,7 @@ Program status report contains following information
 rdl file can be downloaded from - [Download .rdl file for Program Status Report](./files/Program_Status_report/Reports/Altus_Program_Status_Report.zip)
 
 #### Datasets   
-There are 18 datasets for Project status report which are direct SQL queries
+There are 18 datasets for Project status report which are direct SQL queries:
 
     dsProject
     dsKeyDates
@@ -96,7 +97,7 @@ SQL Files which are used for datasets can be downloaded from - [Download SQL Cod
 
 ### Portfolio Status Reports
 
-Program status report contains following information
+Program status report contains following information:
 
 - Portfolio Info and Portfolio Summary like Description, Justification, Stakeholder Communications and Vision
 - Portfolio Key Dates
@@ -113,7 +114,7 @@ rdl file can be downloaded from - [Download .rdl file for Portfolio Status Repor
 
 #### Datasets 
 
-There are 16 datasets for Project status report which are direct SQL queries
+There are 16 datasets for Project status report which are direct SQL queries:
 
     dsProject
     dsKeyDates
