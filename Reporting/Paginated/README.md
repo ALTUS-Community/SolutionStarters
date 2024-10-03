@@ -140,6 +140,8 @@ SQL Files which are used for datasets can be downloaded from - [Download SQL Cod
 
 ## Embedding inside Altus
 
+[Download Instructions for embedding inside Altus](./files/Embedding_Paginated_Reports.docx)
+
 ## Installing the Reports in a Client's environment
 
 ### PowerBI Updates
@@ -148,7 +150,7 @@ SQL Files which are used for datasets can be downloaded from - [Download SQL Cod
 1. Open the .rdl file which you have downloaded from the above steps and navigate to parameters like shown below:
 
     <img src="images/ProjectImage1.png" alt = "Parameter updates" class="contentImage65" />
-
+ 
     Make sure that the dataset, value and label field matches with your dataset
 
 2. Navigate to default values like shown below and add the default value as any projectid from your clients environment. This is optional.
