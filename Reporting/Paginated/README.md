@@ -23,9 +23,10 @@ Project status report contains following information:
 
  rdl file can be downloaded from - [Download .rdl file for Project Status Report](./files/Project_Status_Report/Reports/Altus_Project_Status_Report.zip)
 
-#### Datasets 
+#### Datasets  
+
 There are 14 datasets for Project status report which are direct SQL queries:
-    
+  
     dsProject
     dsTasks
     dsKeyDates
@@ -43,15 +44,16 @@ There are 14 datasets for Project status report which are direct SQL queries:
     dsStatusUpdate
     dsTransactionCurrency
 
-
 SQL Files which are used for datasets can be downloaded from - [Download SQL Code for Project Status Report](./files/Project_Status_Report/SQL/Project_Status_Report_Dataset_SQL_Code.zip)
 
 
 #### Parameters 
+
 - __Project Id__ - parameter that will be passed for most of the datasets. This will be hidden in the reports and when embedded in Altus it fetches the project that is currently open in Altus and passes the id as paramater
 
 
 ### Program Status Reports
+
 Program status report contains following information:
 
 - Program Info and Program Status like General KPI, Deliverables KPI, Schedule KPI, Financials KPI, Work KPI, Issues KPI, Risks KPI, Change Requests KPI and Program Progress and Project Effort pie chart
@@ -66,7 +68,8 @@ Program status report contains following information:
 
 rdl file can be downloaded from - [Download .rdl file for Program Status Report](./files/Program_Status_report/Reports/Altus_Program_Status_Report.zip)
 
-#### Datasets   
+#### Datasets  
+
 There are 18 datasets for Project status report which are direct SQL queries:
 
     dsProject
@@ -93,7 +96,6 @@ SQL Files which are used for datasets can be downloaded from - [Download SQL Cod
 #### Parameters 
 
 - __Program Id__ - parameter that will be passed for most of the datasets. This will be hidden in the reports and when embedded in Altus it fetches the program that is currently open in Altus and passes the id as parameter
-
 
 ### Portfolio Status Reports
 
@@ -148,28 +150,28 @@ SQL Files which are used for datasets can be downloaded from - [Download SQL Cod
 ### PowerBI Updates
 
 #### Project Status Report
-1. Open the .rdl file which you have downloaded from the above steps and navigate to parameters like shown below:
 
-    <img src="images/ProjectImage1.png" alt = "Parameter updates" class="contentImage65" />
+1. Open the .rdl file which you have downloaded from the above steps and navigate to parameters like shown below:
  
-    Make sure that the dataset, value and label field matches with your dataset
+    ![Parameter updates](./images/ProjectImage1.png)
+
+      Make sure that the dataset, value and label field matches with your dataset
 
 2. Navigate to default values like shown below and add the default value as any projectid from your clients environment. This is optional.
 
-    <img src="images/ProjectImage2.png" alt = "Default Values" class="contentImage65" />
+     ![Default Values](./images/ProjectImage2.png)
 
 3. Navigate to parameters and then to EnvironmentURL and add a default value that should be your clients environment. See below for example
 
-    <img src="images/ProjectImage3.png" alt = "Environment URL" class="contentImage65" />
+    ![Environment URL](./images/ProjectImage3.png)
 
-4. Make sure all the datasets have the correct parameters chosen if you have made any updates to the name of the parameter. 
+4. Make sure all the datasets have the correct parameters chosen if you have made any updates to the name of the parameter.
 
-    <img src="images/ProjectImage4.png" alt = "Datasets parameters" class="contentImage65" />
+    ![Datasets parameters](./images/ProjectImage4.png)
 
 5. Save the .rdl file.
 
 6. The above steps need to be done for all three status reports - Project, Program and Portfolio status reports.
-
 
 ### Publishing it to PowerBI Service
 
@@ -179,8 +181,12 @@ SQL Files which are used for datasets can be downloaded from - [Download SQL Cod
 
 3. Publish the .rdl file (paginated report) to the workspace. See below example.
 
-    <img src="images/ProjectImage5.png" alt = "Publish report" class="contentImage65" />
+   ![Publish report](./images/ProjectImage5.png)
 
 ## Embedding inside Altus
 
 [Download Instructions for embedding inside Altus](./files/Embedding_Paginated_Reports.docx)
+
+## Legacy Paginated Reports
+
+[Previous legacy Paginated Reports](./README_Legacy.md)
