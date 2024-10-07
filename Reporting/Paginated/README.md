@@ -6,7 +6,7 @@ These reports are .rdl files and have been developed using the Power BI Report B
 
 ## What's New
 
-Check out our latest Release PSR2.0 as of October 7th:
+Check out our latest Release PSR 2.0 as of October 7th:
 
 The required files can de sourced from:
 
@@ -24,7 +24,7 @@ Portfolio Status Report - [Latest Code for Program Status Report](./files/Portfo
 
 - New icon for Project Status has been added - No KPI, Custom KPI
 
-- On the first page under Project dates and work - added Scheduled Finisg, Baseline finish and Variance for Baseline information
+- On the first page under Project dates and work - added Scheduled finish, Baseline finish and Variance for Baseline information
 
 - Under Milestones - added Baseline finish date
 
@@ -32,7 +32,7 @@ Portfolio Status Report - [Latest Code for Program Status Report](./files/Portfo
 
 - Updated all the font colour of Windings Icon
 
-- When financialsSummariseTotals value is turned on in settings then the data will change in the Category costs and Finacials table visual
+- When financialsSummariseTotals value is turned on in settings then the data will change in the Category costs and Financials table visual
 
 - Added Active and Postponed for Issues and Risks under the header
 
@@ -93,6 +93,8 @@ Portfolio Status Report - [Latest Code for Program Status Report](./files/Portfo
 - New icon for Project Status has been added - No KPI, Custom KPI
 
 - Added Baseline info - Baseline Finish under Associated Project Program Summary page.
+
+- Added Alternate currency information for all finance data - Base currency of Altus will now be displayed instead of $ symbol. Added a new dataset dsTransactionCurrency to the datasets for this to work.
 
 - Bug fixed for "no risks to display" when there is no data for risks, decisions and change Requests
 
