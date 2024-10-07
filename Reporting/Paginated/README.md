@@ -22,7 +22,7 @@ Portfolio Status Report - [Latest Code for Program Status Report](./files/Portfo
 
 - Updated the SQL code with the correct data mappings so that its consistent throughout the reports. Data mapping document can be found at the bottom of this page under Data mapping for SQL
 
-- New icon for Project Status has been added - No KPI, Custom KPI
+- New icon for Program Status has been added - No KPI, Custom KPI
 
 - On the first page under Project dates and work - added Scheduled finish, Baseline finish and Variance for Baseline information
 
@@ -56,7 +56,7 @@ Portfolio Status Report - [Latest Code for Program Status Report](./files/Portfo
 
 - Updated the SQL code with the correct data mappings so that its consistent throughout the reports. Data mapping document can be found at the bottom of this page under Data mapping for SQL
 
-- New icon for Project Status has been added - No KPI, Custom KPI
+- New icon for Portfolio Status has been added - No KPI, Custom KPI
 
 - Added Baseline info - Baseline Finish under Associated Project Summary page.
 
