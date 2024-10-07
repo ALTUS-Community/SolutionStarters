@@ -1,406 +1,296 @@
 # Paginated Reports Solution Starters
 
-These SSRS reports have been created to compliment the Altus installation.
-These reports use a Power BI data model rather than Fetch XML.
+Paginated reports have been created to compliment Altus installation to generate status reports for projects, program and portfolio.
 
-This Power BI data model has been created using a mixture of Dimensions and Direct Query, so that most of the data within the report is generated live and not subject to the normal Power BI refresh rates.
-This Power BI Data model can be used for multiple reports in the client environment and can be added to by consultants.
+These reports are .rdl files and have been developed using the Power BI Report Builder. It has direct SQL connection to Dataverse which contains Altus data. This is then published to Power BI Service as .rdl file.
 
-This data model and paginated reports can be used to replace most historic SSRS reports.
+## What's New
 
-Note: the biggest difference between using the new data model and Power BI Paginated Reports and creating an SSRS report from the Reporting Hub is the amount of flexibility you can build into the report directly. For example, the count cards on the Project Status Reports have all been created as measures in the Data model rather than directly into the report.
+Check out our latest Release PGR 2.0 as of October 7th:
 
-## Power BI Data Model
-The Data Model has been created so that it can be reused for Project, Program and Portfolio Status Reports.
+The required files can de sourced from:
 
-It is made up of a number of connections to the Power BI dimension tables (same as the Power BI BETA reports), direct SQL queries to data and measures built directly in the data model. 
+Project Status Report -  [Latest Code for Project Status Report](./files/Project_Status_Report/Reports/Altus_Project_Status_Report.zip).
 
-The measures contain the following items:
+Program Status Report - [Latest Code for Program Status Report](./files/Program_Status_report/Reports/Altus_Program_Status_Report.zip).
 
-__#Measures__: 
-- Count fields, like Total Risks 
-- SUM fields and calculations for Total Financials, like Budget, EAC 
-- Current Project KPI Summary fields
-- Previous Project KPI Summary fields
+Portfolio Status Report - [Latest Code for Program Status Report](./files/Portfolio_Status_Report/Reports/Altus_Portfolio_Status_Report.zip)
 
-__Program Status KPIs__: 
-- Program KPIs, current and previous
-- Program summary fields
+## Key Highlights
 
-__Project Status KPIs__: 
-- Project KPIs, current and previous
+### Project Status Report
+
+- Updated the SQL code with the correct data mappings so that its consistent throughout the reports. Data mapping document can be found at the bottom of this page under Data mapping for SQL
+
+- New icon for Project Status has been added when there is no KPI selected and when Custom KPI has been created in Altus
+
+- All KPIs in the report now match with whats in Altus
+
+- On the first page under Project dates and work - added Scheduled finish, Baseline finish and Variance for Baseline information
+
+- Under Milestones - added Baseline finish date
+
+- Added Alternate currency information for all finance data - Base currency of Altus will now be displayed instead of $ symbol. Added a new dataset dsTransactionCurrency to the datasets for this to work.
+
+- Updated all the font colour of Windings Icon
+
+- When financialsSummariseTotals value is turned on in settings then the data will change in the Category costs and Financials table visual
+
+- Added Active and Postponed for Issues and Risks under the header
+
+- Fixed the bug for Effort bar missing for projects where tasks dont have Effort
+
+- Fixed the font and font size through out the report to be consistent
+
+- Priority count has been fixed for all registers
+
+- Changed the labels for Cost by Month graph to show for all months
+
+- Fixed the bug for Effort completed and effort remaining to have rounded values
+
+- If the project progress and progress effort has no info then the bar will not be displayed
+
+- Milestones were not showing correct data which is now fixed
+
+- New column ER (Escalation Required) has been added for Decisions which was initially part of Priority
+
+### Program Status Report
+
+- Updated the SQL code with the correct data mappings so that its consistent throughout the reports. Data mapping document can be found at the bottom of this page under Data mapping for SQL
+
+- New icon for Program Status has been added when there is no KPI selected and when Custom KPI has been created in Altus
+
+- All KPIs in the report now match with whats in Altus
+
+- Added Baseline info - Baseline Finish under Associated Project Summary page.
+
+- Added Alternate currency information for all finance data - Base currency of Altus will now be displayed instead of $ symbol. Added a new dataset dsTransactionCurrency to the datasets for this to work.
+
+- Updated all the font colour of Windings Icon
+
+- When financialsSummariseTotals value is turned on in settings then the data will change in the Category costs and Finacials table visual
+
+- Added Active and Postponed for Issues and Risks under the header
+
+- Fixed the bug for Effort bar missing for projects where tasks dont have Effort
+
+- Fixed the bug for Associated Project Summary - Projects count which was incorrect
+
+- Fixed the font and font size through out the report to be consistent
+
+- Priority count has been fixed for all registers
+
+- Changed the labels for Cost by Month graph to show for all months
+
+- Fixed the bug for Effort completed and effort remaining to have rounded values
+
+- If the project progress and progress effort has no info then the bar will not be displayed
+
+- Fixed the bug for message - "No Project financials to display" if there is no finance information
+
+- Fixed the bug for count for Approved and Rejected in Program Change Requests page
+
+### Portfolio Status Report
+
+- Updated the SQL code with the correct data mappings so that its consistent throughout the reports. Data mapping document can be found at the bottom of this page under Data mapping for SQL
+
+- All KPIs in the report now match with whats in Altus
+
+- Added Baseline info - Baseline Finish under Associated Project Program Summary page.
+
+- Added Alternate currency information for all finance data - Base currency of Altus will now be displayed instead of $ symbol. Added a new dataset dsTransactionCurrency to the datasets for this to work.
+
+- Bug fixed for "no risks to display" when there is no data for risks, decisions and change Requests
+
+- Bug fixed for Program count on Associated Project Program Summary page
+
+## Reports
+
+### Project Status Reports
+
+Project status report contains following information:
+
+-  Project info and Project status like General KPI, Deliverables KPI, Schedule KPI, Financials KPI, Work KPI, Issues KPI, Risks KPI, Change Requests KPI and Project Progress and Effort pie chart
+- Financials - EAC by Financial Category line chart and Cost by Month bar chart, Category Costs and Financials
+- Milestones and Key Dates
+- Deliverables
+- Issues
+- Risks
+- Decisions
+- Change Requests
+- Lessons Learned
 
 
-### Client Environment Parameters
-There are a few items that need to be updated with the details of the environment you are loading these reports into:
+ rdl file can be downloaded from - [Download .rdl file for Project Status Report](./files/Project_Status_Report/Reports/Altus_Project_Status_Report.zip)
 
-There are three parameters in the data model that need to be updated to the client environment. These are found in the _Transform data_ area:
-- __Server__. Example: _iq-atsumeru.crm6.dynamics.com_
-- __Altus URL__. Example: _https://iq-atsumeru.crm6.dynamics.com/_
-- __Database__. Example: _iq-atsumeru_
+#### Datasets  
 
-There are IDs that need to be copied from the Power BI Workspace into the dataflows and Dimension files after the files have been uploaded into the new environment:
-- __Dataflow_Workspace_ID__ The ID from the Power BI workspace you have uploaded the data model into.
-- __Dim_ChartofAccounts_ID__ The dataflow ID from the Power BI workspace you have uploaded the data flow into. This is found at the end of the dataflow URL.
-- __Dim_Projects_ID__ The dataflow ID from the Power BI workspace you have uploaded the data flow into. This is found at the end of the dataflow URL.
-- __Dim_Date_ID__ The dataflow ID from the Power BI workspace you have uploaded the data flow into. This is found at the end of the dataflow URL.
+There are 14 datasets for Project status report which are direct SQL queries:
+  
+    dsProject
+    dsTasks
+    dsKeyDates
+    dsDeliverables
+    dsIssues
+    dsRisks
+    dsDecisions
+    dsChanges
+    dsChanges
+    dsChanges
+    dsLessons
+    lookup_Project
+    dsMilestones
+    dsFinancialTransactions
+    dsStatusUpdate
+    dsTransactionCurrency
 
-### Register URL configuration
-The Register __URL__ fields within the Data Model are generated within the SQL statements for each of the registers. These cannot be built using the variables listed above and have been built with the URL hard coded directly into the SQL statement. Example:
-
-     Task_URL = concat('https://senseiuat3.crm6.dynamics.com','/main.aspx?appid=',app.appmoduleid,'&pagetype=entityrecord&etn=sensei_task&id=',t.[sensei_taskid])
-
-     FROM [dbo].[sensei_task] t <br>
-     CROSS JOIN ( SELECT appmoduleid FROM [dbo].[appmodule] WHERE name = 'Altus') app
-
-- Each of these queries will need to be updated with the correct URL for the new environment.
-- The Cross Join needs to be checked to make sure that the appmodule value is correct. In the above example it is 'Altus'. If it needs to be updated this will also need to be done on every Fact query.
-
-Note: these will need to be updated within each of the SQL Fact queries.
-
-If you have installed the reports using an Azure DevOps project in Visual Studio Code you will be able to perform a find and replace to update the above values quickly.
-
-For more details on Azure DevOps project setup please review the [Updating the models and reports with new code/features after post deployment section in Beta reports](https://hub.sensei.cloud/Docs/Altus/Configuration/Reporting/Index.html?tabs=beta#updating-the-models-and-reports-with-new-codefeatures-after-post-deployment)
-
-#### Using Visual Studio Code to update the URLs
-
-- In your Visual Studio Code project select __Edit > Find__
-- Search for the URL. Using the example URL above type: _concat('https://senseiuat3.crm6_
-- Select __Edit > Replace __
-- Type the new URL in the same format as the text you searched on into the Replace field 
-- Click the __Replace All__ button. The text will be updated
-
-This process can be repeated to change all the CROSS JOIN Where name statements if they also need to be updated.
+SQL Files which are used for datasets can be downloaded from - [Download SQL Code for Project Status Report](./files/Project_Status_Report/SQL/Project_Status_Report_Dataset_SQL_Code.zip)
 
 
-## Project Status Reports
+#### Parameters 
 
-The default reports contain the following formatting:
-
-- Register KPIs are based on the register record and are found as the left most column of the register tables. These KPIs and counts above each table are based on the following calculations:
-  - Overdue - Red Diamond (4) = Due Date in the past
-  - Due Date Missing - Amber Triangle (3) = Due Date field value missing
-  - Postponed/On Hold - Grey Circle (2) = Record Status is Postponed or On Hold
-  - On Track - Green Circle (1) = Due Date current or in future
-  - Completed - Green Circle with a tick (0) = Record Status Closed, Cancelled, Approved or Rejected <p>
-
-- Register Date field shading is only on Active records:
-  - Red = Overdue
-  - Amber = Due Date Missing <p>
-
-- The Issue Priority count is only counting Active Issues (filter in report).
-- The Risk Score count is only counting Active Risks (filter in report). The risk score contains the following calculation:
-  - High > 12
-  - Medium > 3 and <= 12
-  - Low <= 3  <p>
-- Change Requests Total Cost Estimate includes all values except Rejected records (filter in report).
-
-If any of these items need to be updated they will need to be changed in the data model except for those tagged with (filter in report).
-
-### Include in Project Status Report filtering
-
-The __Include in PSR__ field has been added to the data model and reports but no filtering has been turned on in the reports by default.
-To include this feature you will need to setup filtering on the tables in the report and potentially the Count fields in the data model, depending on your client's requirements.
-
-### Fiscal Year Financial Reporting
-
-By default the financial data in the report is shown by calendar month. The field __sensei_fiscal_period__ has been added to the report, and can be used if the client requests to show this graph by fiscal period.
-
-## Program Status Report
-
-The default Program Status report contains formatting like the Project Status Reports.
-
-The filtering of Projects within a Program has been done by using the __Projects_Total__ count. This field will only create a 1 if the project is within the Program selected. This type of filtering will need to be added to any new Project sections added to this report.
-
-## Portfolio Status Report
-
-The default Portfolio Status report contains formatting like the Project Status Reports.
-
-### Include in Program Status Report filtering
-
-The __Include in Program Report__ field has been added to the data model and report but no filtering has been turned on in the report by default.
-To include this feature you will need to setup filtering on the tables in the report and potentially the Count fields in the data model, depending on your client's requirements.
+- __Project Id__ - parameter that will be passed for most of the datasets. This will be hidden in the reports and when embedded in Altus it fetches the project that is currently open in Altus and passes the id as paramater
 
 
-## Include in PSR/Program Report Setup
+### Program Status Reports
 
-By default, Altus includes fields on registers to allow the item to be Included in PSR and Included in Program and Portfolio Reports. These fields will need to be added onto any registers the client requires them on.
-The default value for these fields are Yes, but, any register items created prior to this field being released (April 2023) will have no value.
+Program status report contains following information:
 
-The fields created in the Entity table are:
+- Program Info and Program Status like General KPI, Deliverables KPI, Schedule KPI, Financials KPI, Work KPI, Issues KPI, Risks KPI, Change Requests KPI and Program Progress and Project Effort pie chart
+- Associated Project Financials - EAC by Financial Category line chart and Cost by Month bar chart, Category Costs and Financials
+- Program Key Dates
+- Program Issues
+- Program Risks
+- Program Decisions
+- Program Change Requests
+- Program Lessons Learned
+- Associated Project Summary
 
-- [sensei_includeinprogramreport] 
-- [sensei_includeinpsr] 
+rdl file can be downloaded from - [Download .rdl file for Program Status Report](./files/Program_Status_report/Reports/Altus_Program_Status_Report.zip)
 
-The fields visible in the Report are:
+#### Datasets  
 
-- [sensei_includeinprogramreport] - Boolean field
-- [sensei_includeinprogramreportname] - Yes/No field - This field has been added to the Program and Portfolio Status Report
-- [sensei_includeinpsr] - Boolean field
-- [sensei_includeinpsrname] - Yes/No field - This field has been added to the Project Status Reports
+There are 18 datasets for Project status report which are direct SQL queries:
 
-Both of the fields are available on the following registers:
+    dsProject
+    dsKeyDates
+    dsIssues
+    dsRisks
+    dsDecisions
+    dsChanges
+    dsLessons
+    lookup_project
+    dsFinancialTransactions
+    dsStatusUpdate
+    lookup_Program
+    dsProgram
+    dsStatusUpdate_Project
+    dsIssues_Project
+    dsRisks_Project
+    dsDecisions_Project
+    dsChangeRequest_Project
+    dsTransactionCurrency
 
-| Register | Project | Program | Portfolio |
-| ----- | ----- | ----- | ----- |
-| Change Requests | Yes | Yes | Yes |
-| Decisions | Yes | Yes | Yes |
-| Deliverables | Yes |  |  |
-| Issues | Yes | Yes |  |
-| Lessons Learned | Yes | Yes |  |
-| Risks | Yes | Yes | Yes |
+SQL Files which are used for datasets can be downloaded from - [Download SQL Code for Program Status Report](./files/Program_Status_report/SQL/Program_Status_Report_Dataset_SQL_Code.zip)
 
-If needed, Consultants can change the default value of these fields to No.
+#### Parameters 
 
-## Rich Text Formatting in Paginated Reports
-If you would like to set up the fields in your reports so that they use Rich Text formatting please review the video below:
+- __Program Id__ - parameter that will be passed for most of the datasets. This will be hidden in the reports and when embedded in Altus it fetches the program that is currently open in Altus and passes the id as parameter
 
-- [Rich Text Formatting in Paginated Reports](https://youtu.be/gbp5tMmW7BQ)
+### Portfolio Status Reports
 
+Program status report contains following information:
+
+- Portfolio Info and Portfolio Summary like Description, Justification, Stakeholder Communications and Vision
+- Portfolio Key Dates
+- Portfolio Risks
+- Portfolio Decisions
+- Portfolio Change Requests
+- Summary - Associated Projects and Programs linked to projects
+- Associated Project and Program Issues
+- Associated Project and Program Risks
+- Associated Project and Program Decisions
+- Associated Project and Program Change Requests
+
+rdl file can be downloaded from - [Download .rdl file for Portfolio Status Report](./files/Portfolio_Status_Report/Reports/Altus_Portfolio_Status_Report.zip)
+
+#### Datasets 
+
+There are 16 datasets for Project status report which are direct SQL queries:
+
+    dsProject
+    dsKeyDates
+    dsRisks
+    dsDecisions
+    dsChanges
+    lookup_Project
+    dsFinancialTransactions_Portfolio_Project
+    lookup_Portfolio
+    dsPortfolio
+    dsStatusUpdate_Project
+    dsIssues_Project_Program
+    dsRisks_Project_Program
+    dsDecisions_Project_Program
+    dsChangeRequest_Project_Program
+    dsStatusUpdate_Program
+    dsTransactionCurrency
+
+SQL Files which are used for datasets can be downloaded from - [Download SQL Code for Portfolio Status Report](./files/Portfolio_Status_Report/SQL/Portfolio_Status_Report_Dataset_SQL_Code.zip)
+
+#### Parameters 
+
+- __Portfolio Id__ - parameter that will be passed for most of the datasets. This will be hidden in the reports and when embedded in Altus it fetches the portfolio that is currently open in Altus and passes the id as parameter
+
+### Data Mapping for SQL
+
+[Download Data Mapping information used in SQL code](./files/Paginated_Reports_Data_Mapping.xlsx)
+
+### KPIs for Reports
+
+[Download KPI Info file if further information required](./files/Paginated_Reports_KPI.xlsx)
 
 ## Installing the Reports in a Client's environment
 
-### Installing the JSON Files
+### PowerBI Updates
 
-These JSON files are the same as used in the Power BI report, so if they have already been installed in the environment you can skip this step.
+#### Project Status Report
 
-- Navigate to the clients Power BI workspace
+1. Open the .rdl file which you have downloaded from the above steps and navigate to parameters like shown below:
+ 
+    ![Parameter updates](./images/ProjectImage1.png)
 
-- Select __New__ > __Dataflow__
+      Make sure that the dataset, value and label field matches with your dataset
 
-- Select __Import model__. Import each of the following json files:
+2. Navigate to default values like shown below and add the default value as any projectid from your clients environment. This is optional.
 
- - [<img src="../images/JSON.png" width="16px"> DIM_ChartofAccounts.json](files/Dim_ChartofAccounts.zip) 
- - [<img src="../images/JSON.png" width="16px"> Dim_Date_Flexible_FY.json](files/Dim_Date.zip) - This works for any client that has any Financial Year of 12 months, set by the __Fiscal Year Start Month Number__ configuration setting.
- - [<img src="../images/JSON.png" width="16px"> Dim_Projects.json](files/Dim_Projects.zip) 
+     ![Default Values](./images/ProjectImage2.png)
 
-__NOTE:__ These files are zipped when you download them. You will need to unzip them to be able to use them.
+3. Navigate to parameters and then to EnvironmentURL and add a default value that should be your clients environment. See below for example
 
-#### Setting up the Dataflows for this environment:
+    ![Environment URL](./images/ProjectImage3.png)
 
-- Open each of the dataflows from within the Power BI service and click __Edit tables__ and update the Parameters with the current environment’s details, then click __Save & Close__ . You will need to update the credentials for these Dataflows and log into the current environment for the data to preview.
+4. Make sure all the datasets have the correct parameters chosen if you have made any updates to the name of the parameter.
 
-  - Parameters:
-    - Dim_ChartofAccounts
-       -	DataverseInstanceURL<p>
-    - Dim_Date 
-       -	DataverseInstanceURL<p>
-    - Dim_Project
-       - DataverseURL
-       - DataverseInstanceURL
-       - Idea Effort Multiplier (set to 100) (leave this value unless you would like to reset it)
-
-#### Setting up the Data Source Connections and refresh schedules for the Dataflows:
-
-- Open up each of the Settings pages for the dataflows and confirm that:
-  - The Data source credentials have no issues
-  - Set up their Refresh schedule:
-    - Dim_Project: based on client needs, the recommendation is hourly and staggered from the refresh schedule for the data model.
-    - Dim_ChartofAccounts: this data flow only needs to be refreshed once a day, as it relates to the Financial Categories within Altus, this data is traditionally not updated often. 
-    - Dim_Date: this dataflow is an excel spreadsheet containing dates as far as 31-12-2075. This dataflow is only refreshed on the initial deployment. No further updates or schedule are required.
-- Refresh all the dataflows.
-
-### Installing the Data Model 
-
-- [<img src="../images/TemplateFile-48.png" width="16px"> Altus Status Report Data Model](files/Altus_Status_Report_Data_Model.pbit) <p>
+    ![Datasets parameters](./images/ProjectImage4.png)
 
-- Download the Altus Status Report Data Model file and open it within Power BI
-- Log into Power BI using the current environment's credentials 
-  - Fill in the values for below parameters
-  - <img src="images/ParameterValues.jpg" class="contentImage65" />
-- Open the __Transform Data__ view 
-- Click __Data source setings__ and update your credentials:
-  - Click on the Dataflow item from the list, then __Edit Permissions__ and log in to the environment even if it says you're already signed in
-  - Click on the environment link and follow the above process to log in to the environment
-- Save and Test the Data Model
--	Upload the report into the Power BI Workspace
-- Make sure the Data source credentials are correct
-- Set a Refresh Schedule for this report. (Hourly throughout the day, on a staggered schedule to the Dim_Project Data flow)
+5. Save the .rdl file.
 
-### Connecting the Project and Program reporting files in the client environment
+6. The above steps need to be done for all three status reports - Project, Program and Portfolio status reports.
 
-Download each of the report templates:
-  - [<img src="images/RDL.jpg" width="16px"> Altus 1-page Project Status Report](Archive/Altus_PSR_1page.zip)  
-  - [<img src="images/RDL.jpg" width="16px"> Altus 1-page Project Status Report - similar to Status Update page](files/Altus_1-page-Project_Status_Report.zip)
-  - [<img src="images/RDL.jpg" width="16px"> Altus Project Status Report (Portrait)](Archive/Altus_Project_Status_Report_Portrait.zip)
-  - [<img src="images/RDL.jpg" width="16px"> Altus Project Status Report (Landscape)](files/Altus_Project_Status_Report_Landscape.zip)
-  - [<img src="images/RDL.jpg" width="16px"> Altus Program Status Report (Portrait)](files/Altus_Program_Status_Report_Portrait.zip) 
-  - [<img src="images/RDL.jpg" width="16px"> Altus Portfolio Status Report (Landscape)](files/Altus_Portfolio_Status_Report_Landscape.zip)   <p>
+### Publishing it to PowerBI Service
 
-  __NOTE:__ These files are zipped when you download them. You will need to unzip them to be able to use them.
+1. Open the .rdl file and once you have made all the necessary changes to the parameters then you will need to publish it to Power BI service in your clients environment.
 
-- Open each of the reports in the __Power BI Report Builder__. 
-- Sign into the client environment in the Report Builder.
-- Create a link to the new Dataset in __Data > Power BI Dataset__, do not create a new dataset when the system prompts you to. Cancel out of the Dataset Properties window.
-- Open each of the Datasets in the report, using the __Dataset Properties__ option, and Update the __Data Source__ to the new Data Source.
-- Test the report.
-- Delete the old __Data Source__ from the report.
-- Upload the report into the Power BI Workspace.
+2. If your clients environment already have Power BI Standard reports then you can use the same workspace. Otherwise a new workspace need to be created.
 
-### Embedding the reports in a tab on the Project/Program/Portfolio
+3. Publish the .rdl file (paginated report) to the workspace. See below example.
 
-For each report (e.g., Project Landscape, Project Portrait, etc) that needs to be embedded the following artifacts will need to be created.
+   ![Publish report](./images/ProjectImage5.png)
 
-1. A configuration setting to contain the Report URL.
-2. A web resource to iframe the report.
+## Embedding inside Altus
 
-#### Configuration Setting
+[Download Instructions for embedding inside Altus](./files/Embedding_Paginated_Reports.docx)
 
-To create a configuration setting, following the below steps.
+## Legacy Paginated Reports
 
-1. Navigate to Settings => System Configuration => Configuration Settings
-2. Create a new record using __+ New__
-3. Fill in the information.
-   1. Category: __Power BI__
-   2. Display Name: __XYZ SSRS Config Setting__
-   3. Name: __XYZ_SSRS_Config_Setting__
-   4. Description: *Optional*
-   5. Value: The report embed link for the report.
-
-The report embed link can be found by visiting the report to be embedded in the Power BI workspace.
-
-<img src="images/SSRSReportEmbedNav.jpg" alt="How to get to the embed link on a report." class="contentImage65" />
-
-<img src="images/SSRSReportEmbedValue.jpg" alt="The embed link area." class="contentImage65" />
-
-The final configuration setting should look similar to that of the one below.
-
-<img src="images/SSRSConfigSetting.jpg" alt="An example SSRS config setting." class="contentImage65" />
-
-#### Web Resource
-
-Use the following web resource template:
-
-```
-<html><head><style data-merge-styles="true"></style>
-    <script src="sensei_SenseiProject.bundle.js" type="text/javascript"></script>
-    <script>
-       function getQueryStringFilter(context) {
-           const id = parent.Xrm.Page.data.entity.getId().replace(/[{}]/g,'');
-           return `&rp:DimProjectProjectName=${id.toLowerCase()}`;
-       }
-       function loadIframe() {                                                    
-           sensei_SenseiProject.Generic.IFrameService.Instance.setIframeSource("SenseiPowerBIIframe", "SSRS_Config_Setting", getQueryStringFilter);
-       }
-    </script>
-    <meta>
-    <meta>
-    <meta>
- </head>
- <body onload="loadIframe()" onfocusout="parent.setEmailRange();" style="overflow-wrap: break-word;">
-    <iframe id="SenseiPowerBIIframe" width="100%" height="100%" src="" frameborder="0" allowfullscreen="true"></iframe>
- </body>
-</html>
-</iframe></body></html>  
-```
-Within the template replace __SSRS_Config_Setting__ with the setting [defined](#configuration-setting) and change the QueryStringFilter accordingly.
-
-- Projects = ``` `&rp:DimProjectProjectName=${id}` ``` which is your parameter name in the rdl file.
-- Programs = ``` `&rp:DimProgramsenseiprogram=${id}` ``` which is your parameter name in the rdl file.
-
-Once these changes have been made, create a new web resource within your solution and upload this file.
-
-#### Embedding
-
-##### Paginated Report (.rdl files)
-
-If the client wishes to have both landscape and Portrait then the portrait rdl file can be found in Archive folder.
-
-To embed a paginated report navigate to make.powerapps.com. Then go to Solutions –  Eg:Customised Altus solutions or Power BI Solutions or create a new Solution if you want to keep it separate for Power BI Reports.
-
-Then navigate to the solution and click on New – More- Web resource.
-
-<img src="images/WebResource.jpg" alt = "New Web Resource" class="contentImage65" />
-
-Choose the new html file you created and fill in the details like shown below
-
-<img src="images/UploadHTML.jpg" alt = "New HTML file to upload" class="contentImage65" />
-
-Then add existing table like shown below
-
-<img src="images/Newtable.jpg" alt = "Add existing table" class="contentImage65" />
-
-If its Project report then choose Project , if its Portfolio choose Portfolio and if its Program then choose Program like shown below:
-
-<img src="images/Existingtables.jpg" alt = "Choose the correct table" class="contentImage65" />
-
-<img src="images/Selectedtables.jpg" alt = "Selected tables" class="contentImage65" />
-Check include table metadata checkbox and choose select objects
-
-Navigate to select objects and  choose tracking under Forms if you want to embed the report under Tracking
-
-<img src="images/Tracking.jpg" alt = "Tracking" class="contentImage65" />
-Click on add and then its saved under solutions.
-
-Navigate to Project and then go to forms and edit in New tab
-<img src="images/Projects.jpg" alt = "Edit Forms" class="contentImage65" />
-
-<img src="images/Newtab.jpg" alt = "Add new tab" class="contentImage65" />
-
-Click on Show hidden and then go to Components and add 1 column tab
-
-<img src="images/Components.jpg" alt = "Add new components" class="contentImage65" />
-
-Rename the tab and then go to Display and then add new HTML web resource that was created in previous step
-
-<img src="images/HTMLResource.jpg" alt = "Add new HTML Resource " class="contentImage65" />
-Click on Add
-
-Final step should be like below
-<img src="images/FinalStep.jpg" alt = "Final Step" class="contentImage65" />
-
-Click on save and publish.
-
-After few minutes you can see the new embedded report inside Altus.
-
-<hr/>
-
-# Change Log
-
-<hr/>
-
-### 2024.07.18
-
-- Fixed the error with DIM_Project instead of DIM_Projects in  Altus_Status_Report_Data_Model
-- Moved Altus_Project_Status_Report_Portrait to Archive folder as its not used 
-- Moved Altus_PSR_1page to Archive folder as its not used.
-
-### 2023.07.21
-
-<p style='clear:right'></p>
-<img src='./images/PBI.jpg' alt="" style="width:48px;float:right">
-<p></p>
-
-- Updated all reports and the model so that if there is no Previous KPI Value in the database, the trend and tool-tip does not show.
-- Released the 1 page Project status reports
-
-### 2023.07.7
-
-<p style='clear:right'></p>
-<img src='./images/PBI.jpg' alt="" style="width:48px;float:right">
-<p></p>
-
-- Added Budget, Actual, Forecast Whole of Life Measures
-
-<img src="images/WoLStatusReport.jpg" alt="Explanation of new measure." class="contentImage65" />
-
-- Added new but modified Current Finanical Year
-
-<img src="images/CFYStatusReport.jpg" alt="Explanation of new measure." class="contentImage65" />
-
-
-
-<hr/>
-
-### 2023.05.31
-
-<p style='clear:right'></p>
-<img src='./images/PBI.jpg' alt="" style="width:48px;float:right">
-<p></p>
-
-- Released the Portfolio Status Report Template.
-- Added Strategic Themes and Goals to the Data Model
-
-
-
-
+[Previous legacy Paginated Reports](./README_Legacy.md)
