@@ -22,7 +22,7 @@ Portfolio Status Report - [Latest Code for Program Status Report](./files/Portfo
 
 - Updated the SQL code with the correct data mappings so that its consistent throughout the reports. Data mapping document can be found at the bottom of this page under Data mapping for SQL
 
-- New icon for Program Status has been added - No KPI, Custom KPI
+- New icon for Project Status has been added when there is no KPI selected and when Custom KPI has been created in Altus
 
 - All KPIs in the report now match with whats in Altus
 
@@ -58,7 +58,7 @@ Portfolio Status Report - [Latest Code for Program Status Report](./files/Portfo
 
 - Updated the SQL code with the correct data mappings so that its consistent throughout the reports. Data mapping document can be found at the bottom of this page under Data mapping for SQL
 
-- New icon for Project Status has been added - No KPI, Custom KPI
+- New icon for Program Status has been added when there is no KPI selected and when Custom KPI has been created in Altus
 
 - All KPIs in the report now match with whats in Altus
 
