@@ -24,6 +24,8 @@ Portfolio Status Report - [Latest Code for Program Status Report](./files/Portfo
 
 - New icon for Program Status has been added - No KPI, Custom KPI
 
+- All KPIs in the report now match with whats in Altus
+
 - On the first page under Project dates and work - added Scheduled finish, Baseline finish and Variance for Baseline information
 
 - Under Milestones - added Baseline finish date
@@ -55,6 +57,10 @@ Portfolio Status Report - [Latest Code for Program Status Report](./files/Portfo
 ### Program Status Report
 
 - Updated the SQL code with the correct data mappings so that its consistent throughout the reports. Data mapping document can be found at the bottom of this page under Data mapping for SQL
+
+- New icon for Project Status has been added - No KPI, Custom KPI
+
+- All KPIs in the report now match with whats in Altus
 
 - Added Baseline info - Baseline Finish under Associated Project Summary page.
 
@@ -88,7 +94,7 @@ Portfolio Status Report - [Latest Code for Program Status Report](./files/Portfo
 
 - Updated the SQL code with the correct data mappings so that its consistent throughout the reports. Data mapping document can be found at the bottom of this page under Data mapping for SQL
 
-- New icon for Project Status has been added - No KPI, Custom KPI
+- All KPIs in the report now match with whats in Altus
 
 - Added Baseline info - Baseline Finish under Associated Project Program Summary page.
 
