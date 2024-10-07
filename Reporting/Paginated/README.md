@@ -6,7 +6,7 @@ These reports are .rdl files and have been developed using the Power BI Report B
 
 ## What's New
 
-Check out our latest Release PSR 2.0 as of October 7th:
+Check out our latest Release PGR 2.0 as of October 7th:
 
 The required files can de sourced from:
 
