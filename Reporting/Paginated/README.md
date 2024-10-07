@@ -56,8 +56,6 @@ Portfolio Status Report - [Latest Code for Program Status Report](./files/Portfo
 
 - Updated the SQL code with the correct data mappings so that its consistent throughout the reports. Data mapping document can be found at the bottom of this page under Data mapping for SQL
 
-- New icon for Portfolio Status has been added - No KPI, Custom KPI
-
 - Added Baseline info - Baseline Finish under Associated Project Summary page.
 
 - Added Alternate currency information for all finance data - Base currency of Altus will now be displayed instead of $ symbol. Added a new dataset dsTransactionCurrency to the datasets for this to work.
