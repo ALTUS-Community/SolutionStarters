@@ -1,12 +1,13 @@
-[Download External Task Sync Health Check Flow solution](ExternalTaskSyncHealthCheck_1_0_0_5.zip)
+[Download External Task Sync Health Check Flow solution](ExternalTaskSyncHealthCheck_1_0_0_9.zip)
 
 ## Flow steps:
 
-The External Task Sync Health Check Flow will identify (and optionally fix) 4 scenarios where externally linked project tasks have come out of alignment.
+The External Task Sync Health Check Flow will identify (and optionally fix) 5 scenarios where externally linked project tasks have come out of alignment.
 1. Altus Project is aligned to an external project record but the sensei_externalprojectid value on the sensei_project record is null. When executed, the Flow will re-populate the sensei_externalprojectid value on the Altus Project.
 2. Altus Project is not aligned to an external project, but still contains tasks which have external task ids and field locks. When executed, the Flow will Delete or Unlink these tasks (dependent on the DeleteOrphanTasks variable in the Flow). 
 3. Altus Project is aligned to an external project, but contains tasks which reference external ids which do not exist in either the external task table or the task sync table. When executed, the Flow will delete these tasks.
 4. Altus Project is aligned to an external project, but there are external tasks which do not have a corresponding Project Task or a reference to the Altus Project. When executed the Flow will populate the Lookup to the Project on the External Task record and trigger creation of the Project Task.
+5. Altus Tasks have an external task id, but no external task record referring back to that task can be found, identifying it as a duplicate. When executed, the Flow will delete the duplicate tasks.
 
 This Flow can be run daily as an overnight repair job, or on an ad-hoc basis as required.
 
@@ -35,7 +36,7 @@ Please note that the Do While loop that processes each of the execute actions ha
 - Change the recurrence settings to match your preferences. (If choosing to run it ad-hoc, simply use the option to turn the Flow off when not in use)
 - Change the 'Environment URL' variable to be the base environment URL.
 - The WillExecuteChanges variable has a default value of 'false'. When set to false, the Flow will run to identify any misaligned data but will not make any changes. Instead the 'Execute or Output' Scopes will use a Compose action to display the data that would otherwise be passed through to execution. To switch to execute mode, change the value of the WillExecuteChanges variable to true.
-- The DeleteOrphanTasks variable has a default value of 'false'. When set to false then for Scenario 2, the Flow will *Update* any identified orphan tasks to remove the external links (making them native Altus tasks). When set to true, then for Scenario 2, the Flow will *Delete* any identified orphan tasks. Note that this variable has no impact on the behaviour of Scenario 3 (in that scenario, tasks will always be marked for delete).
+- The DeleteOrphanTasks variable has a default value of 'false'. When set to false then for Scenario 2, the Flow will *Update* any identified orphan tasks to remove the external links (making them native Altus tasks). When set to true, then for Scenario 2, the Flow will *Delete* any identified orphan tasks. Note that this variable has no impact on the behaviour of Scenario 3 or scenario 5 (in that scenario, tasks will always be marked for delete).
 - The MaxBatchSize variable can be adjusted, but must not ever exceed 1000 (this is the maximum batch size allowed by Dataverse).
 
 - Save the changes
