@@ -7,7 +7,7 @@ The External Task Sync Health Check Flow will identify (and optionally fix) 5 sc
 2. Altus Project is not aligned to an external project, but still contains tasks which have external task ids and field locks. When executed, the Flow will Delete or Unlink these tasks (dependent on the DeleteOrphanTasks variable in the Flow). 
 3. Altus Project is aligned to an external project, but contains tasks which reference external ids which do not exist in either the external task table or the task sync table. When executed, the Flow will delete these tasks.
 4. Altus Project is aligned to an external project, but there are external tasks which do not have a corresponding Project Task or a reference to the Altus Project. When executed the Flow will populate the Lookup to the Project on the External Task record and trigger creation of the Project Task.
-5. Tasks have an external task id, no external task record referring back to that task can be found, identifying it as a duplicate task. When executed, the Flow will delete the duplicate tasks.
+5. Altus Tasks have an external task id, but no external task record referring back to that task can be found, identifying it as a duplicate. When executed, the Flow will delete the duplicate tasks.
 
 This Flow can be run daily as an overnight repair job, or on an ad-hoc basis as required.
 
