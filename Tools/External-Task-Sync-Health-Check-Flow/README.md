@@ -1,4 +1,4 @@
-[Download External Task Sync Health Check Flow solution](ExternalTaskSyncHealthCheck_1_0_0_9.zip)
+[Download External Task Sync Health Check Flow solution](ExternalTaskSyncHealthCheck_1_0_0_10.zip)
 
 ## Flow steps:
 
