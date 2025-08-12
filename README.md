@@ -1,5 +1,10 @@
 # Altus Solution Starters
+
 A repository filled with tools and resources designed to empower Altus Partners and advanced users in deploying, troubleshooting, and optimising the Altus product. Although not core to every Altus installation, these Solution Starters serve as valuable stepping stones for partners aiming to address specific customer issues promptly and deliver immediate value.
+
+[Altus Theme Library](Themes/README.md)
+
+Power Apps’ modern UI now supports per-environment theming, allowing Altus to be styled to match each client’s branding.  Here is a library of common themes to try.
 
 [Audit Report](Reporting/Audit/README.md)
 An optional Audit Report tailored for customers seeking enhanced visibility into events within Altus.
@@ -16,8 +21,6 @@ A Power Automate Flow for executing the Timesheet to Finance actuals import serv
 [External Task Sync Health Check - Flow](Tools/External-Task-Sync-Health-Check-Flow/README.md)
 A Power Automate Flow to check data integrity of Altus Projects aligned to External Projects. Optionally can be run in Output mode or Execute mode to either display the misaligned data or action repairs to the misaligned data.
 
-
 ## Support for Solution Starters
 
-Please be aware that Altus Solution Starters are not supported as part of the core Altus product and are shared within the Altus Community as valuable resources for partners to quickly produce tailored customer solutions. While Solution Starters might have some unfinished elements or issues, we invite you to utilise the GitHub issues feature above to bring attention to any problems or areas that could benefit from improvement. Feel free to submit a Pull Request of your own if you have a solution in mind. Our aim is to foster collaboration in this space, empowering all partners to create outstanding Altus experiences. Your contributions and collaboration are essential to achieving this goal. 
-
+Please be aware that Altus Solution Starters are not supported as part of the core Altus product and are shared within the Altus Community as valuable resources for partners to quickly produce tailored customer solutions. While Solution Starters might have some unfinished elements or issues, we invite you to utilise the GitHub issues feature above to bring attention to any problems or areas that could benefit from improvement. Feel free to submit a Pull Request of your own if you have a solution in mind. Our aim is to foster collaboration in this space, empowering all partners to create outstanding Altus experiences. Your contributions and collaboration are essential to achieving this goal.

@@ -1,0 +1,50 @@
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio 2015/2017 cache/options directory
+.vs/
+
+# Error report
+report.*.0.001.json
+
+**/generated/ManifestTypes.d.ts
+**/out/controls/**
+src/_components/build/**
+.vscode/settings.json
+.vs/ProjectSettings.json
+.vs/Sensei.Kaizen.PCFControls/**
+**/.webpack_cache/**
+
+# dependencies
+**/node_modules
+
+# generated directory
+**/generated
+
+# output directory
+**/out
+
+# msbuild output directories
+**/bin
+**/obj
+
+#webpack cache
+**/.webpack_cache
+
+# MSBuild Binary and Structured Log
+*.binlog
+
+# coverage directory
+**/coverage
+
+src/*/dist/
+
+src/override/
+
+src/pnpm-exec-summary.json
+
+junit.xml

@@ -1,0 +1,6 @@
+<CustomTheme basePaletteColor="#2E78C9" lockPrimary="true" vibrancy="2" hueTorsion="13"
+    font="Inter, sans-serif">
+    <AppHeaderColors background="#616161" foreground="#FFFFFF" backgroundHover="#4D4C4C"
+        foregroundHover="#FFFFFF" backgroundPressed="#2F2D2D" foregroundPressed="#FFFFFF"
+        backgroundSelected="#616161" foregroundSelected="#FFFFFF" />
+</CustomTheme>
