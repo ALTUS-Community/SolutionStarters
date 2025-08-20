@@ -35,6 +35,7 @@ Please note that the Do While loop that processes each of the execute actions ha
 
 - Change the recurrence settings to match your preferences. (If choosing to run it ad-hoc, simply use the option to turn the Flow off when not in use)
 - Change the 'Environment URL' variable to be the base environment URL.
+- The 'PlannerPremiumGUID' variable should already be correct for a default Altus installation, but if you have a custom External System record for Planner Premium, you will need to change this to the sensei_externalsystemid for 'Planner Premium' in your environment.
 - The WillExecuteChanges variable has a default value of 'false'. When set to false, the Flow will run to identify any misaligned data but will not make any changes. Instead the 'Execute or Output' Scopes will use a Compose action to display the data that would otherwise be passed through to execution. To switch to execute mode, change the value of the WillExecuteChanges variable to true.
 - The DeleteOrphanTasks variable has a default value of 'false'. When set to false then for Scenario 2, the Flow will *Update* any identified orphan tasks to remove the external links (making them native Altus tasks). When set to true, then for Scenario 2, the Flow will *Delete* any identified orphan tasks. Note that this variable has no impact on the behaviour of Scenario 3 or scenario 5 (in that scenario, tasks will always be marked for delete).
 - The MaxBatchSize variable can be adjusted, but must not ever exceed 1000 (this is the maximum batch size allowed by Dataverse).
