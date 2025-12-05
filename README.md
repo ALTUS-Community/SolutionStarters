@@ -22,7 +22,7 @@ A Power Automate Flow for executing the Timesheet to Finance actuals import serv
 A Power Automate Flow to check data integrity of Altus Projects aligned to External Projects. Optionally can be run in Output mode or Execute mode to either display the misaligned data or action repairs to the misaligned data.
 
 [Project Online to Altus Migration Scripts](Tools/Project-Online-to-Altus-Migration/README.md)
-Project Online to Altus Migration starter scripts. Can be used to create Bookable Resources and Projects in Altus and (coming soon) to publish Project Online schedules to Altus using the Altus for Project add-in. Has been tested with version 2025.11.04.7 of Altus.
+Project Online to Altus Migration starter scripts. Can be used to create Bookable Resources and Projects in Altus and to publish Project Online schedules to Altus using the Altus for Project add-in. Has been tested with version 2025.11.04.7 of Altus.
 
 ## Support for Solution Starters
 
