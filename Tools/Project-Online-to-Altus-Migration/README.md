@@ -96,3 +96,82 @@ Project import will perform the following actions:
       - An associated ExternalProject record will be created in Altus (and aligned to the Project Desktop external system)
   - The Published MPP file in the Files directory will be updated to include the custom properties required to align it to the Altus Project when used with the Altus for Project add-in. If the custom properties already contain the correct values, no changes will be made.
   - If in What-If mode, no Project, External Project or Custom Property updates will be performed. Instead, a log entry will be noted.
+
+## Custom Field Mapping
+
+The scripts provide a mechanism to map additional Project and Resource fields from Project Online into Dataverse columns.
+
+### Prerequisites
+
+1. The destination column must already exist in Dataverse on the appropriate table:
+   - Projects: `sensei_project`
+   - Resources: `sensei_bookableresource`
+2. Use the **logical name** (lowercase) of the Dataverse column, not the display name.
+
+### Where to Edit
+
+- **Projects:** `ImportProjects.ps1` — look for the `$project = @{ ... }` hashtable and the `CustomFields[]` example block.
+- **Resources:** `ImportResources.ps1` — look for `$newBookableResource = @{ ... }` (both Named and Generic sections).
+
+### Data Sources
+
+| Entity    | File Pattern                         | Where Fields Live                                      |
+|-----------|--------------------------------------|--------------------------------------------------------|
+| Projects  | `*_reporting.json`                   | OOTB: direct properties on `ReportingProjectData.Project`; Custom: `CustomFields[]` array |
+| Resources | `*_reporting_Resources.json`         | Direct properties on each resource object              |
+
+### Mapping OOTB (Out-of-the-Box) Fields
+
+OOTB fields are direct properties on the project/resource object. Add these inside the `$project` or `$newBookableResource` hashtable:
+
+**Projects example** (in `ImportProjects.ps1`):
+```powershell
+'cr_project_text_ootb' = $projectName                                           # Text
+'cr_project_date_ootb' = ($reportingProject.ProjectStartDate -as [datetime])    # Date
+'cr_project_whole_ootb' = ($reportingProject.ProjectIdentifier -as [int])       # Whole Number
+'cr_project_decimal_ootb' = ($reportingProject.ProjectCalendarDuration -as [decimal]) # Decimal
+```
+
+**Resources example** (in `ImportResources.ps1`):
+```powershell
+'cr_resource_text_ootb' = $projectResource.ResourceName                         # Text
+'cr_resource_date_ootb' = $projectResource.ResourceCreatedDate                  # Date
+'cr_resource_whole_ootb' = $projectResource.ResourceType                        # Whole Number
+'cr_resource_decimal_ootb' = $projectResource.ResourceStandardRate              # Decimal
+```
+
+### Mapping Enterprise Custom Fields (Projects only)
+
+Project Online Enterprise Custom Fields are exported under `ReportingProjectData.Project.CustomFields[]`. Each entry has:
+- `CustomFieldName` — the display name of the field in Project Online.
+- `CFValue.'#text'` — the actual value (as a string).
+
+Add this block **after** the `$project = @{ ... }` hashtable but **before** calling `New-Record`:
+
+```powershell
+if ($reportingProject -and $reportingProject.CustomFields) {
+    # Text field
+    $cfText = $reportingProject.CustomFields | Where-Object { $_.CustomFieldName -eq 'Your Text Field' } | Select-Object -First 1
+    if ($cfText -and $cfText.CFValue.'#text') {
+        $project['cr_project_text_custom'] = [string]$cfText.CFValue.'#text'
+    }
+
+    # Date field
+    $cfDate = $reportingProject.CustomFields | Where-Object { $_.CustomFieldName -eq 'Your Date Field' } | Select-Object -First 1
+    if ($cfDate -and $cfDate.CFValue.'#text') {
+        $project['cr_project_date_custom'] = ($cfDate.CFValue.'#text' -as [datetime])
+    }
+}
+```
+
+### Supported Data Types
+
+| Dataverse Type   | PowerShell Cast     | Example                                              |
+|------------------|---------------------|------------------------------------------------------|
+| Text             | `[string]`          | `$project['cr_text'] = [string]$value`               |
+| Whole Number     | `-as [int]`         | `$project['cr_int'] = ($value -as [int])`            |
+| Decimal/Currency | `-as [decimal]`     | `$project['cr_dec'] = ($value -as [decimal])`        |
+| Date             | `-as [datetime]`    | `$project['cr_date'] = ($value -as [datetime])`      |
+
+> **Note:** Lookup and Choice fields require different handling (`@odata.bind` for lookups, integer option-set values for choices) and are not covered by the simple examples above.
+

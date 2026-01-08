@@ -110,6 +110,53 @@ function ImportProjects {
                     $projectName = $projectData.NewDataSet.Project.ProjectName
                     Write-Host "Project: $projectName ($projectGuid)" -ForegroundColor Gray
 
+                    # --- Load Additional Metadata (Required for Custom Field Mapping) ---
+                    # The _published.json has limited metadata. The _reporting.json contains project-level
+                    # reporting fields (including custom fields) useful for mapping into Dataverse.
+                    $reportingProject = $null
+                    $reportingJsonFileName = $mpp.Name.Replace("_published.mpp", "_reporting.json")
+                    $reportingJsonPath = Join-Path $filesPath $reportingJsonFileName
+                    if (Test-Path $reportingJsonPath) {
+                        Write-Host "Reading Reporting JSON file: $reportingJsonFileName" -ForegroundColor Gray
+                        try {
+                            $reportingData = Get-Content -Path $reportingJsonPath -Raw | ConvertFrom-Json
+
+                            if ($reportingData -and $reportingData.PSObject.Properties.Name -contains 'ReportingProjectData') {
+                                $rpd = $reportingData.ReportingProjectData
+
+                                if ($rpd -and $rpd.PSObject.Properties.Name -contains 'Project') {
+                                    $projectNode = $rpd.Project
+                                    if ($projectNode -is [System.Array]) {
+                                        $reportingProject = $projectNode | Where-Object {
+                                            ($_.ProjectUID -eq $projectGuid) -or ($_.ProjectUId -eq $projectGuid)
+                                        } | Select-Object -First 1
+                                    }
+                                    else {
+                                        if (($projectNode.ProjectUID -eq $projectGuid) -or ($projectNode.ProjectUId -eq $projectGuid)) {
+                                            $reportingProject = $projectNode
+                                        }
+                                    }
+                                }
+                                elseif ($rpd -is [System.Array]) {
+                                    $reportingProject = $rpd | Where-Object {
+                                        ($_.ProjectUID -eq $projectGuid) -or ($_.ProjectUId -eq $projectGuid)
+                                    } | Select-Object -First 1
+                                }
+                            }
+
+                            if (-not $reportingProject) {
+                                Write-Host "  Warning: Reporting data loaded but ProjectUId '$projectGuid' not found in ReportingProjectData." -ForegroundColor Yellow
+                            }
+                        }
+                        catch {
+                            Write-Host "  Warning: Could not parse reporting JSON '$reportingJsonFileName': $_" -ForegroundColor Yellow
+                        }
+                    }
+                    else {
+                        Write-Host "Reporting JSON not found for custom fields: $reportingJsonFileName" -ForegroundColor DarkYellow
+                    }
+                    # --------------------------------------------------------
+
                     # Check if Project exists in Dataverse (based on sensei_externalprojectid match)
                     $existingProject = $projectDesktopProjects | Where-Object { $_.sensei_externalprojectid -eq "ProjectDesktop_$projectGuid" }
                     #check if there is a sensei_project record with the sensei_externalprojectid but no external project reference
@@ -124,17 +171,49 @@ function ImportProjects {
                         #will still check MPP custom properties - so still need the id for later
                         $newProjectId = $existingProject.sensei_projectid
 
+                        # --- OPTIONAL: Update custom fields on existing projects ---
+                        # Uncomment and modify the block below to PATCH custom fields onto existing project records.
+                        # See the "create new project" block below for the full pattern.
+                        # ---------------------------------------------------------------
+
                     }
                     else {
                         # Create Project record in Dataverse
                         if ($ExecutionMode) {
                             if ($null -eq $orphanedProject) {
                                 Write-Host "Creating Project record in Dataverse for $projectName..." -ForegroundColor Green
+
                                 $project = @{
                                     'sensei_name' = $projectName
                                     'sensei_projecttype@odata.bind' = "/sensei_enterpriseprojecttypes($($DefaultProjectTypeId))"
                                     'sensei_externalprojectid' = "ProjectDesktop_$projectGuid"
-                                }                        
+
+                                    # --- EXAMPLES: Mapping Project Online Fields to Dataverse ---
+                                    # NOTE: Target Dataverse columns must already exist (use logical names).
+                                    # NOTE: Project custom fields come from *_reporting.json via $reportingProject.
+
+                                    # OOTB fields (examples: Text/Date/Whole/Decimal)
+                                    # 'cr_project_text_ootb' = $projectName # Text
+                                    # 'cr_project_date_ootb' = ($reportingProject.ProjectStartDate -as [datetime]) # Date
+                                    # 'cr_project_whole_ootb' = ($reportingProject.ProjectIdentifier -as [int]) # Whole Number
+                                    # 'cr_project_decimal_ootb' = ($reportingProject.ProjectCalendarDuration -as [decimal]) # Decimal/Currency
+
+                                    # ------------------------------------------------------------
+                                }
+
+                                # --- OPTIONAL: Map Enterprise Custom Fields from CustomFields[] ---
+                                # Custom fields are in $reportingProject.CustomFields[] with CustomFieldName and CFValue.'#text'.
+                                # Uncomment and modify:
+                                #
+                                # if ($reportingProject -and $reportingProject.CustomFields) {
+                                #     $cfText = $reportingProject.CustomFields | Where-Object { $_.CustomFieldName -eq 'Your Text Field' } | Select-Object -First 1
+                                #     if ($cfText -and $cfText.CFValue.'#text') { $project['cr_project_text_custom'] = [string]$cfText.CFValue.'#text' }
+                                #
+                                #     $cfDate = $reportingProject.CustomFields | Where-Object { $_.CustomFieldName -eq 'Your Date Field' } | Select-Object -First 1
+                                #     if ($cfDate -and $cfDate.CFValue.'#text') { $project['cr_project_date_custom'] = ($cfDate.CFValue.'#text' -as [datetime]) }
+                                # }
+                                # -----------------------------------------------------------------------
+
                                 $newProjectId = New-Record -setName 'sensei_projects' -body $project
                                 $nProjectsCreated++
                                 Write-Host "Created Project record in Dataverse for $projectName with ID: $newProjectId" -ForegroundColor Green
@@ -160,6 +239,7 @@ function ImportProjects {
                             if ($null -eq $orphanedProject) {
                                 Write-Host "[What-If] Would create Project record in Dataverse for $projectName." -ForegroundColor Magenta
                                 $nProjectsCreated++
+
                             }
                             Write-Host "[What-If] Would create External Project record in Dataverse for $projectName." -ForegroundColor Magenta
                             #for the purposes of checking custom properties, we need a project id even in what-if mode
