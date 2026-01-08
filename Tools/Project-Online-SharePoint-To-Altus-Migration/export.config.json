@@ -1,0 +1,146 @@
+{
+  "version": "1.0",
+  "lists": [
+    {
+      "spListTitle": "Risks",
+      "entityLogicalName": "sensei_risk",
+      "projectLookupAttribute": "sensei_project",
+      "projectLookupEntityLogicalName": "sensei_project",
+      "projectLookupTextSource": "Web.Title",
+      "backlinkAttribute": "sensei_sourceitemurl",
+      "columnMap": [
+        { "spFieldInternalName": "Title", "entityAttribute": "sensei_name", "type": "Text" },
+        { "spFieldInternalName": "Description", "entityAttribute": "sensei_description", "type": "Text" },
+        { "spFieldInternalName": "DueDate", "entityAttribute": "sensei_duedate", "type": "DateTime" },
+        {
+          "spFieldInternalName": "Status",
+          "entityAttribute": "statuscode",
+          "type": "Status",
+          "choiceMap": {
+            "(1) Active": 1,
+            "(2) Postponed": 955000000,
+            "(3) Closed": 955000001
+          }
+        },
+        {
+          "spFieldInternalName": "Category",
+          "entityAttribute": "sensei_category",
+          "type": "OptionSet",
+          "choiceMap": {
+            "Resource": 955000000,
+            "Scope": 955000001,
+            "Schedule": 955000002,
+            "Technology": 955000003,
+            "Business Process": 955000004,
+            "Vendor": 955000005,
+            "Management Escalation": 955000006,
+            "Other": 955000007
+          }
+        },
+
+        {
+          "spFieldInternalName": "Probability",
+          "entityAttribute": "sensei_likelihood",
+          "type": "OptionSet",
+          "thresholds": {
+            "0": 955000000,
+            "0.2": 955000001,
+            "0.4": 955000002,
+            "0.6": 955000003,
+            "0.8": 955000004
+          }
+        },
+        {
+          "spFieldInternalName": "Impact",
+          "entityAttribute": "sensei_consequence",
+          "type": "OptionSet",
+          "thresholds": {
+            "0": 955000000,
+            "1": 955000000,
+            "3": 955000001,
+            "5": 955000002,
+            "7": 955000003,
+            "9": 955000004
+          }
+        },
+
+        { "spFieldInternalName": "Exposure", "entityAttribute": "sensei_riskscore", "type": "Number" },
+        { "spFieldInternalName": "Cost", "entityAttribute": "sensei_cost", "type": "Money" },
+
+        { "spFieldInternalName": "Mitigation_x0020_plan", "entityAttribute": "sensei_mitigationplan", "type": "Text" },
+        { "spFieldInternalName": "Contingency_x0020_plan", "entityAttribute": "sensei_contingencyplan", "type": "Text" },
+        { "spFieldInternalName": "Trigger_x0020_Description", "entityAttribute": "sensei_triggerdescription", "type": "Text" },
+
+        {
+          "spFieldInternalName": "Trigger",
+          "entityAttribute": "sensei_trigger",
+          "type": "OptionSet",
+          "choiceMap": {
+            "Date": 955000000,
+            "Exposure over threshold": 955000001,
+            "Tasks not completed": 955000002,
+            "Other": 955000003
+          }
+        },
+
+        { "spFieldInternalName": "AssignedTo", "entityAttribute": "sensei_assignedto", "type": "Lookup", "lookupEntity": "systemuser" }
+      ]
+    },
+
+    {
+      "spListTitle": "Issues",
+      "entityLogicalName": "sensei_issue",
+      "projectLookupAttribute": "sensei_project",
+      "projectLookupEntityLogicalName": "sensei_project",
+      "projectLookupTextSource": "Web.Title",
+      "backlinkAttribute": "sensei_sourceitemurl",
+      "columnMap": [
+        { "spFieldInternalName": "Title", "entityAttribute": "sensei_name", "type": "Text" },
+        { "spFieldInternalName": "Description", "entityAttribute": "sensei_description", "type": "Text" },
+        { "spFieldInternalName": "DueDate", "entityAttribute": "sensei_duedate", "type": "DateTime" },
+
+        {
+          "spFieldInternalName": "Status",
+          "entityAttribute": "statuscode",
+          "type": "Status",
+          "choiceMap": {
+            "(1) Active": 1,
+            "(2) Postponed": 955000000,
+            "(3) Closed": 955000001
+          }
+        },
+        {
+          "spFieldInternalName": "Category",
+          "entityAttribute": "sensei_category",
+          "type": "OptionSet",
+          "choiceMap": {
+            "Resource": 955000000,
+            "Scope": 955000001,
+            "Schedule": 955000002,
+            "Technology": 955000003,
+            "Business Process": 955000004,
+            "Vendor": 955000005,
+            "Management Escalation": 955000006,
+            "Other": 955000007
+          }
+        },
+
+        {
+          "spFieldInternalName": "Priority",
+          "entityAttribute": "sensei_priority",
+          "type": "OptionSet",
+          "choiceMap": {
+            "(1) High": 1,
+            "(2) Medium": 2,
+            "(3) Low": 3
+          }
+        },
+
+        { "spFieldInternalName": "AssignedTo", "entityAttribute": "sensei_assignedto", "type": "Lookup", "lookupEntity": "systemuser" },
+
+        { "spFieldInternalName": "Cost_x0020_Impact", "entityAttribute": "sensei_costimpact", "type": "Money" },
+        { "spFieldInternalName": "Resolution", "entityAttribute": "sensei_resolution", "type": "Text" }
+      ]
+    }
+  ]
+}

@@ -48,3 +48,8 @@ src/override/
 src/pnpm-exec-summary.json
 
 junit.xml
+
+# Project Online to Altus Migration Tool
+Tools/Project-Online-SharePoint-To-Altus-Migration/Build/
+Tools/Project-Online-SharePoint-To-Altus-Migration/Output/
+Tools/Project-Online-SharePoint-To-Altus-Migration/POLExports/
