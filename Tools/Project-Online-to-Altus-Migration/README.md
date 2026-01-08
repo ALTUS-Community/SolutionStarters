@@ -110,8 +110,8 @@ The scripts provide a mechanism to map additional Project and Resource fields fr
 
 ### Where to Edit
 
-- **Projects:** `ImportProjects.ps1` — look for the `$project = @{ ... }` hashtable and the `CustomFields[]` example block.
-- **Resources:** `ImportResources.ps1` — look for `$newBookableResource = @{ ... }` (both Named and Generic sections).
+- **Projects:** `ImportProjects.ps1` — edit the **USER CONFIGURATION (EDIT HERE)** section at the top of the file (above the `===== Don't edit below this line =====` marker).
+- **Resources:** `ImportResources.ps1` — edit the **USER CONFIGURATION (EDIT HERE)** section at the top of the file (above the `===== Don't edit below this line =====` marker).
 
 ### Data Sources
 
@@ -122,22 +122,22 @@ The scripts provide a mechanism to map additional Project and Resource fields fr
 
 ### Mapping OOTB (Out-of-the-Box) Fields
 
-OOTB fields are direct properties on the project/resource object. Add these inside the `$project` or `$newBookableResource` hashtable:
+OOTB fields are direct properties on the project/resource object. Uncomment and edit lines inside the mapping functions.
 
-**Projects example** (in `ImportProjects.ps1`):
+**Projects** — edit `Add-ProjectDataverseFieldMappings` in `ImportProjects.ps1`:
 ```powershell
-'cr_project_text_ootb' = $projectName                                           # Text
-'cr_project_date_ootb' = ($reportingProject.ProjectStartDate -as [datetime])    # Date
-'cr_project_whole_ootb' = ($reportingProject.ProjectIdentifier -as [int])       # Whole Number
-'cr_project_decimal_ootb' = ($reportingProject.ProjectCalendarDuration -as [decimal]) # Decimal
+$Project['cr_project_text_ootb'] = $ProjectName
+$Project['cr_project_date_ootb'] = ($ReportingProject.ProjectStartDate -as [datetime])
+$Project['cr_project_whole_ootb'] = ($ReportingProject.ProjectIdentifier -as [int])
+$Project['cr_project_decimal_ootb'] = ($ReportingProject.ProjectCalendarDuration -as [decimal])
 ```
 
-**Resources example** (in `ImportResources.ps1`):
+**Resources** — edit `Add-NamedResourceDataverseFieldMappings` or `Add-GenericResourceDataverseFieldMappings` in `ImportResources.ps1`:
 ```powershell
-'cr_resource_text_ootb' = $projectResource.ResourceName                         # Text
-'cr_resource_date_ootb' = $projectResource.ResourceCreatedDate                  # Date
-'cr_resource_whole_ootb' = $projectResource.ResourceType                        # Whole Number
-'cr_resource_decimal_ootb' = $projectResource.ResourceStandardRate              # Decimal
+$ResourceBody['cr_resource_text_ootb'] = $ProjectResource.ResourceName
+$ResourceBody['cr_resource_date_ootb'] = ($ProjectResource.ResourceCreatedDate -as [datetime])
+$ResourceBody['cr_resource_whole_ootb'] = ($ProjectResource.ResourceType -as [int])
+$ResourceBody['cr_resource_decimal_ootb'] = ($ProjectResource.ResourceStandardRate -as [decimal])
 ```
 
 ### Mapping Enterprise Custom Fields (Projects only)
@@ -146,22 +146,16 @@ Project Online Enterprise Custom Fields are exported under `ReportingProjectData
 - `CustomFieldName` — the display name of the field in Project Online.
 - `CFValue.'#text'` — the actual value (as a string).
 
-Add this block **after** the `$project = @{ ... }` hashtable but **before** calling `New-Record`:
+Use the helper function `Get-ReportingCustomFieldTextValue` inside `Add-ProjectDataverseFieldMappings`:
 
 ```powershell
-if ($reportingProject -and $reportingProject.CustomFields) {
-    # Text field
-    $cfText = $reportingProject.CustomFields | Where-Object { $_.CustomFieldName -eq 'Your Text Field' } | Select-Object -First 1
-    if ($cfText -and $cfText.CFValue.'#text') {
-        $project['cr_project_text_custom'] = [string]$cfText.CFValue.'#text'
-    }
+# Text field
+$textValue = Get-ReportingCustomFieldTextValue -ReportingProject $ReportingProject -CustomFieldName 'Your Text Field'
+if ($textValue) { $Project['cr_project_text_custom'] = [string]$textValue }
 
-    # Date field
-    $cfDate = $reportingProject.CustomFields | Where-Object { $_.CustomFieldName -eq 'Your Date Field' } | Select-Object -First 1
-    if ($cfDate -and $cfDate.CFValue.'#text') {
-        $project['cr_project_date_custom'] = ($cfDate.CFValue.'#text' -as [datetime])
-    }
-}
+# Date field
+$dateValue = Get-ReportingCustomFieldTextValue -ReportingProject $ReportingProject -CustomFieldName 'Your Date Field'
+if ($dateValue) { $Project['cr_project_date_custom'] = ($dateValue -as [datetime]) }
 ```
 
 ### Supported Data Types

@@ -1,6 +1,104 @@
 . $PSScriptRoot\ExtendedTableOperations.ps1
 . $PSScriptRoot\Defaults.ps1
 
+# ------------------------------
+# USER CONFIGURATION (EDIT HERE)
+# ------------------------------
+
+function Add-NamedResourceDataverseFieldMappings {
+    param(
+        [Parameter(Mandatory = $true)]
+        [hashtable]$ResourceBody,
+
+        [Parameter(Mandatory = $true)]
+        $ProjectResource
+    )
+
+    # Add Named Resource -> Dataverse column mappings here.
+    # Use Dataverse logical column names (lowercase). Columns must already exist.
+
+    # --- OOTB fields (from $ProjectResource) ---
+    # $ResourceBody['cr_resource_text_ootb'] = $ProjectResource.ResourceName
+    # $ResourceBody['cr_resource_date_ootb'] = ($ProjectResource.ResourceCreatedDate -as [datetime])
+    # $ResourceBody['cr_resource_whole_ootb'] = ($ProjectResource.ResourceType -as [int])
+    # $ResourceBody['cr_resource_decimal_ootb'] = ($ProjectResource.ResourceStandardRate -as [decimal])
+
+    # --- Custom fields (replace RHS with your *_reporting_Resources.json property names) ---
+    # $ResourceBody['cr_resource_text_custom'] = [string]$ProjectResource.Custom_Notes
+    # $ResourceBody['cr_resource_date_custom'] = ($ProjectResource.Custom_OnboardingDate -as [datetime])
+}
+
+function Add-GenericResourceDataverseFieldMappings {
+    param(
+        [Parameter(Mandatory = $true)]
+        [hashtable]$ResourceBody,
+
+        [Parameter(Mandatory = $true)]
+        $GenericResource
+    )
+
+    # Add Generic Resource -> Dataverse column mappings here.
+    # Use Dataverse logical column names (lowercase). Columns must already exist.
+
+    # --- OOTB fields (from $GenericResource) ---
+    # $ResourceBody['cr_generic_resource_text_ootb'] = $GenericResource.ResourceName
+    # $ResourceBody['cr_generic_resource_date_ootb'] = ($GenericResource.ResourceCreatedDate -as [datetime])
+    # $ResourceBody['cr_generic_resource_whole_ootb'] = ($GenericResource.ResourceType -as [int])
+    # $ResourceBody['cr_generic_resource_decimal_ootb'] = ($GenericResource.ResourceStandardRate -as [decimal])
+
+    # --- Custom fields (replace RHS with your *_reporting_Resources.json property names) ---
+    # $ResourceBody['cr_generic_resource_text_custom'] = [string]$GenericResource.Custom_Notes
+    # $ResourceBody['cr_generic_resource_date_custom'] = ($GenericResource.Custom_OnboardingDate -as [datetime])
+}
+
+function New-NamedBookableResourceDataverseBody {
+    param(
+        [Parameter(Mandatory = $true)]
+        $ProjectResource,
+
+        [Parameter(Mandatory = $true)]
+        $MatchingSystemUser,
+
+        [Parameter(Mandatory = $true)]
+        $DefaultTargetUtilisation,
+
+        [Parameter(Mandatory = $true)]
+        [string]$DefaultPrimaryRoleId,
+
+        [Parameter(Mandatory = $true)]
+        [string]$DefaultEnterpriseCalendarId
+    )
+
+    $resourceBody = @{
+        'sensei_name' = $ProjectResource.ResourceName
+        'sensei_resourcetype' = 955000001  # Named Resource
+        'sensei_user@odata.bind' = "/systemusers($($MatchingSystemUser.systemuserid))"
+        'sensei_targetutilization' = $DefaultTargetUtilisation
+        'sensei_primaryrole@odata.bind' = "/sensei_bookableresources($DefaultPrimaryRoleId)"
+        'sensei_enterprisecalendar@odata.bind' = "/sensei_enterprisecalendars($DefaultEnterpriseCalendarId)"
+    }
+
+    Add-NamedResourceDataverseFieldMappings -ResourceBody $resourceBody -ProjectResource $ProjectResource
+    return $resourceBody
+}
+
+function New-GenericBookableResourceDataverseBody {
+    param(
+        [Parameter(Mandatory = $true)]
+        $GenericResource
+    )
+
+    $resourceBody = @{
+        'sensei_name' = $GenericResource.ResourceName
+        'sensei_resourcetype' = 955000000  # Generic Resource
+    }
+
+    Add-GenericResourceDataverseFieldMappings -ResourceBody $resourceBody -GenericResource $GenericResource
+    return $resourceBody
+}
+
+# ====== Don't edit below this line ======
+
 <#
 .SYNOPSIS
 Imports resources into Dataverse.
@@ -155,30 +253,12 @@ function ImportResources {
                 Write-Host "Creating Bookable Resource for '$($projectResource.ResourceName)' with login '$($projectResource.ExtractedEmail)'." -ForegroundColor Green
 
                 # Create new Bookable Resource
-                $newBookableResource = @{
-                    'sensei_name' = $projectResource.ResourceName
-                    'sensei_resourcetype' = 955000001  # Named Resource
-                    'sensei_user@odata.bind' = "/systemusers($($matchingSystemUser.systemuserid))"
-                    'sensei_targetutilization' = $DefaultTargetUtilisation
-                    'sensei_primaryrole@odata.bind' = "/sensei_bookableresources($($DefaultPrimaryRoleId))"
-                    'sensei_enterprisecalendar@odata.bind' = "/sensei_enterprisecalendars($($DefaultEnterpriseCalendarId))"
-
-                    # --- EXAMPLES: Mapping Resource Fields to Dataverse ---
-                    # NOTE: Target Dataverse columns must already exist (use logical names).
-
-                    # OOTB fields (examples: Text/Date/Whole/Decimal)
-                    # 'cr_resource_text_ootb' = $projectResource.ResourceName # Text
-                    # 'cr_resource_date_ootb' = $projectResource.ResourceCreatedDate # Date
-                    # 'cr_resource_whole_ootb' = $projectResource.ResourceType # Whole Number
-                    # 'cr_resource_decimal_ootb' = $projectResource.ResourceStandardRate # Decimal/Currency
-
-                    # Custom fields (examples; replace RHS with your *_reporting_Resources.json property names)
-                    # 'cr_resource_text_custom' = $projectResource.Custom_Notes # Text
-                    # 'cr_resource_date_custom' = $projectResource.Custom_OnboardingDate # Date
-                    # 'cr_resource_whole_custom' = $projectResource.Custom_YearsExp # Whole Number
-                    # 'cr_resource_decimal_custom' = $projectResource.Custom_ContractRate # Decimal/Currency
-                    # ------------------------------------------------------
-                }
+                $newBookableResource = New-NamedBookableResourceDataverseBody `
+                    -ProjectResource $projectResource `
+                    -MatchingSystemUser $matchingSystemUser `
+                    -DefaultTargetUtilisation $DefaultTargetUtilisation `
+                    -DefaultPrimaryRoleId $DefaultPrimaryRoleId `
+                    -DefaultEnterpriseCalendarId $DefaultEnterpriseCalendarId
 
                 $newResource = New-Record -setName 'sensei_bookableresources' -body $newBookableResource
                 Write-Host "Created Named Bookable Resource '$($projectResource.ResourceName)'." -ForegroundColor Green
@@ -214,26 +294,7 @@ function ImportResources {
                     Write-Host "Creating Generic Bookable Resource for '$($genericResource.ResourceName)'." -ForegroundColor Green
 
                     # Create new Generic Bookable Resource
-                    $newBookableResource = @{
-                        'sensei_name' = $genericResource.ResourceName
-                        'sensei_resourcetype' = 955000000  # Generic Resource
-
-                        # --- EXAMPLES: Mapping Resource Fields to Dataverse ---
-                        # NOTE: Target Dataverse columns must already exist (use logical names).
-
-                        # OOTB fields (examples: Text/Date/Whole/Decimal)
-                        # 'cr_generic_resource_text_ootb' = $genericResource.ResourceName # Text
-                        # 'cr_generic_resource_date_ootb' = $genericResource.ResourceCreatedDate # Date
-                        # 'cr_generic_resource_whole_ootb' = $genericResource.ResourceType # Whole Number
-                        # 'cr_generic_resource_decimal_ootb' = $genericResource.ResourceStandardRate # Decimal/Currency
-
-                        # Custom fields (examples; replace RHS with your *_reporting_Resources.json property names)
-                        # 'cr_generic_resource_text_custom' = $genericResource.Custom_Notes # Text
-                        # 'cr_generic_resource_date_custom' = $genericResource.Custom_OnboardingDate # Date
-                        # 'cr_generic_resource_whole_custom' = $genericResource.Custom_YearsExp # Whole Number
-                        # 'cr_generic_resource_decimal_custom' = $genericResource.Custom_ContractRate # Decimal/Currency
-                        # ------------------------------------------------------
-                    }
+                    $newBookableResource = New-GenericBookableResourceDataverseBody -GenericResource $genericResource
                     $newBookableResource = New-Record -setName 'sensei_bookableresources' -body $newBookableResource
                     Write-Host "Created Generic Bookable Resource '$($genericResource.ResourceName)'." -ForegroundColor Green
                 }

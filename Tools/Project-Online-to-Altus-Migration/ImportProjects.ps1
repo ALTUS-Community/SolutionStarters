@@ -3,6 +3,112 @@
 # Load Windows Forms for DoEvents support in COM automation
 Add-Type -AssemblyName System.Windows.Forms
 
+# ------------------------------
+# USER CONFIGURATION (EDIT HERE)
+# ------------------------------
+
+function Get-ReportingCustomFieldTextValue {
+    param(
+        [Parameter(Mandatory = $false)]
+        $ReportingProject,
+
+        [Parameter(Mandatory = $true)]
+        [string]$CustomFieldName
+    )
+
+    if (-not $ReportingProject) { return $null }
+    if (-not ($ReportingProject.PSObject.Properties.Name -contains 'CustomFields')) { return $null }
+    if (-not $ReportingProject.CustomFields) { return $null }
+
+    $cf = $ReportingProject.CustomFields | Where-Object { $_.CustomFieldName -eq $CustomFieldName } | Select-Object -First 1
+    if (-not $cf) { return $null }
+    if (-not ($cf.PSObject.Properties.Name -contains 'CFValue')) { return $null }
+    if (-not $cf.CFValue) { return $null }
+
+    return $cf.CFValue.'#text'
+}
+
+function Add-ProjectDataverseFieldMappings {
+    param(
+        [Parameter(Mandatory = $true)]
+        [hashtable]$Project,
+
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectName,
+
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectGuid,
+
+        [Parameter(Mandatory = $false)]
+        $ReportingProject
+    )
+
+    # Add Project -> Dataverse column mappings here.
+    # Use Dataverse logical column names (lowercase). Columns must already exist.
+
+    # --- OOTB fields (from $ReportingProject or $ProjectName) ---
+    # $Project['cr_project_text_ootb'] = $ProjectName
+    # $Project['cr_project_date_ootb'] = ($ReportingProject.ProjectStartDate -as [datetime])
+    # $Project['cr_project_whole_ootb'] = ($ReportingProject.ProjectIdentifier -as [int])
+    # $Project['cr_project_decimal_ootb'] = ($ReportingProject.ProjectCalendarDuration -as [decimal])
+
+    # --- Enterprise Custom Fields (from $ReportingProject.CustomFields[]) ---
+    # $textValue = Get-ReportingCustomFieldTextValue -ReportingProject $ReportingProject -CustomFieldName 'Your Text Field'
+    # if ($textValue) { $Project['cr_project_text_custom'] = [string]$textValue }
+    #
+    # $dateValue = Get-ReportingCustomFieldTextValue -ReportingProject $ReportingProject -CustomFieldName 'Your Date Field'
+    # if ($dateValue) { $Project['cr_project_date_custom'] = ($dateValue -as [datetime]) }
+}
+
+function New-ProjectDataverseBody {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectName,
+
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectGuid,
+
+        [Parameter(Mandatory = $true)]
+        [string]$DefaultProjectTypeId,
+
+        [Parameter(Mandatory = $false)]
+        $ReportingProject
+    )
+
+    $project = @{
+        'sensei_name' = $ProjectName
+        'sensei_projecttype@odata.bind' = "/sensei_enterpriseprojecttypes($DefaultProjectTypeId)"
+        'sensei_externalprojectid' = "ProjectDesktop_$ProjectGuid"
+    }
+
+    Add-ProjectDataverseFieldMappings -Project $project -ProjectName $ProjectName -ProjectGuid $ProjectGuid -ReportingProject $ReportingProject
+    return $project
+}
+
+function Get-ProjectDataverseUpdateBody {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectName,
+
+        [Parameter(Mandatory = $true)]
+        [string]$ProjectGuid,
+
+        [Parameter(Mandatory = $false)]
+        $ReportingProject
+    )
+
+    $updateBody = @{}
+
+    # Optional: if you want to PATCH fields onto existing/orphaned project records, add the same mappings here.
+    # Example:
+    # $textValue = Get-ReportingCustomFieldTextValue -ReportingProject $ReportingProject -CustomFieldName 'Your Text Field'
+    # if ($textValue) { $updateBody['cr_project_text_custom'] = [string]$textValue }
+
+    return $updateBody
+}
+
+# ====== Don't edit below this line ======
+
 <#
 .SYNOPSIS
 Imports projects into Dataverse.
@@ -171,10 +277,13 @@ function ImportProjects {
                         #will still check MPP custom properties - so still need the id for later
                         $newProjectId = $existingProject.sensei_projectid
 
-                        # --- OPTIONAL: Update custom fields on existing projects ---
-                        # Uncomment and modify the block below to PATCH custom fields onto existing project records.
-                        # See the "create new project" block below for the full pattern.
-                        # ---------------------------------------------------------------
+                        if ($ExecutionMode) {
+                            $updateBody = Get-ProjectDataverseUpdateBody -ProjectName $projectName -ProjectGuid $projectGuid -ReportingProject $reportingProject
+                            if ($updateBody.Count -gt 0) {
+                                Write-Host "Updating Project fields (existing record)..." -ForegroundColor Green
+                                Update-Record -setName 'sensei_projects' -id $newProjectId -body $updateBody
+                            }
+                        }
 
                     }
                     else {
@@ -183,36 +292,7 @@ function ImportProjects {
                             if ($null -eq $orphanedProject) {
                                 Write-Host "Creating Project record in Dataverse for $projectName..." -ForegroundColor Green
 
-                                $project = @{
-                                    'sensei_name' = $projectName
-                                    'sensei_projecttype@odata.bind' = "/sensei_enterpriseprojecttypes($($DefaultProjectTypeId))"
-                                    'sensei_externalprojectid' = "ProjectDesktop_$projectGuid"
-
-                                    # --- EXAMPLES: Mapping Project Online Fields to Dataverse ---
-                                    # NOTE: Target Dataverse columns must already exist (use logical names).
-                                    # NOTE: Project custom fields come from *_reporting.json via $reportingProject.
-
-                                    # OOTB fields (examples: Text/Date/Whole/Decimal)
-                                    # 'cr_project_text_ootb' = $projectName # Text
-                                    # 'cr_project_date_ootb' = ($reportingProject.ProjectStartDate -as [datetime]) # Date
-                                    # 'cr_project_whole_ootb' = ($reportingProject.ProjectIdentifier -as [int]) # Whole Number
-                                    # 'cr_project_decimal_ootb' = ($reportingProject.ProjectCalendarDuration -as [decimal]) # Decimal/Currency
-
-                                    # ------------------------------------------------------------
-                                }
-
-                                # --- OPTIONAL: Map Enterprise Custom Fields from CustomFields[] ---
-                                # Custom fields are in $reportingProject.CustomFields[] with CustomFieldName and CFValue.'#text'.
-                                # Uncomment and modify:
-                                #
-                                # if ($reportingProject -and $reportingProject.CustomFields) {
-                                #     $cfText = $reportingProject.CustomFields | Where-Object { $_.CustomFieldName -eq 'Your Text Field' } | Select-Object -First 1
-                                #     if ($cfText -and $cfText.CFValue.'#text') { $project['cr_project_text_custom'] = [string]$cfText.CFValue.'#text' }
-                                #
-                                #     $cfDate = $reportingProject.CustomFields | Where-Object { $_.CustomFieldName -eq 'Your Date Field' } | Select-Object -First 1
-                                #     if ($cfDate -and $cfDate.CFValue.'#text') { $project['cr_project_date_custom'] = ($cfDate.CFValue.'#text' -as [datetime]) }
-                                # }
-                                # -----------------------------------------------------------------------
+                                $project = New-ProjectDataverseBody -ProjectName $projectName -ProjectGuid $projectGuid -DefaultProjectTypeId $DefaultProjectTypeId -ReportingProject $reportingProject
 
                                 $newProjectId = New-Record -setName 'sensei_projects' -body $project
                                 $nProjectsCreated++
@@ -221,6 +301,12 @@ function ImportProjects {
                             else {
                                 $newProjectId = $orphanedProject.sensei_projectid
                                 Write-Host "Using existing orphaned Project record in Dataverse for $projectName with ID: $newProjectId" -ForegroundColor Green
+                            }
+
+                            $updateBody = Get-ProjectDataverseUpdateBody -ProjectName $projectName -ProjectGuid $projectGuid -ReportingProject $reportingProject
+                            if ($updateBody.Count -gt 0) {
+                                Write-Host "Updating Project fields (new/orphaned record)..." -ForegroundColor Green
+                                Update-Record -setName 'sensei_projects' -id $newProjectId -body $updateBody
                             }
 
                             Write-Host "Creating External Project record in Dataverse for $projectName..." -ForegroundColor Green
