@@ -48,7 +48,7 @@
 
 param(
     [Parameter(Mandatory = $false)]
-    [string]$D365Url = "https://senseijumpstart.crm.dynamics.com",
+    [string]$D365Url,
     
     [Parameter(Mandatory = $false)]
     [string]$SchemaPath = (Join-Path $PSScriptRoot "data_schema.xml"),
@@ -57,7 +57,7 @@ param(
     [string]$DataFolder = (Join-Path $PSScriptRoot "Output"),
     
     [Parameter(Mandatory = $false)]
-    [string]$MigrationExePath = ".\Sensei.DevOps.D365.DataMigration\bin\Debug\net8.0\win-x64\Sensei.DevOps.D365.DataMigration.exe",
+    [string]$MigrationExePath = (Join-Path $PSScriptRoot "Tools\DataMigration\Sensei.DevOps.D365.DataMigration.exe"),
     
     [Parameter(Mandatory = $false)]
     [bool]$Force = $false,
@@ -72,29 +72,118 @@ param(
     [string[]]$ProjectFilter = @(),
 
     [Parameter(Mandatory = $false)]
-    [string]$POLExportPath
+    [string]$POLExportPath = (Join-Path $PSScriptRoot "POLExports"),
+
+    [Parameter(Mandatory = $false)]
+    [switch]$Consolidate,
+
+    [Parameter(Mandatory = $false)]
+    [string]$ConsolidatedOutput = (Join-Path $PSScriptRoot "Output\Data_merged.xml")
 )
 
 if (-not $PSScriptRoot) {
     $PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 }
 
-# Import migration helpers
-$migrationHelpersPath = Join-Path $PSScriptRoot "Migration-Helpers.ps1"
-if (-not (Test-Path $migrationHelpersPath)) {
-    Write-Error "Migration helpers script not found: $migrationHelpersPath"
-    exit 1
+$ConsolidatedOutput = Join-Path $PSScriptRoot (Split-Path -Path $ConsolidatedOutput -Leaf)
+if (-not $PSBoundParameters.ContainsKey('Consolidate')) {
+    $Consolidate = $true
 }
-. $migrationHelpersPath
+
+# Import common helpers
+$commonHelpersPath = Join-Path $PSScriptRoot "Common-Helpers.ps1"
+if (-not (Test-Path $commonHelpersPath)) {
+    Write-Error "Common helpers script not found: $commonHelpersPath"
+    $global:LASTEXITCODE = 1
+    return
+}
+. $commonHelpersPath
+
+function Merge-DataFiles {
+    param(
+        [Parameter(Mandatory = $true)] [System.IO.FileInfo[]]$Files,
+        [Parameter(Mandatory = $true)] [string]$OutputPath
+    )
+
+    if (-not $Files -or $Files.Count -eq 0) { return $null }
+
+    # Load first file as base
+    [xml]$baseDoc = Get-Content -Raw -Path $Files[0].FullName
+    $baseRoot = $baseDoc.SelectSingleNode("/entities")
+
+    # Merge remaining files
+    if ($Files.Count -gt 1) {
+        for ($i = 1; $i -lt $Files.Count; $i++) {
+            [xml]$doc = Get-Content -Raw -Path $Files[$i].FullName
+            $docRoot = $doc.SelectSingleNode("/entities")
+            
+            if (-not $docRoot) { continue }
+            
+            # Iterate through entities in source document
+            foreach ($sourceEntity in $docRoot.SelectNodes("entity")) {
+                $entityName = $sourceEntity.GetAttribute("name")
+                $targetEntity = $baseRoot.SelectSingleNode("entity[@name='$entityName']")
+                
+                if (-not $targetEntity) {
+                    # Entity doesn't exist in target; import entire entity
+                    $cloned = $baseDoc.ImportNode($sourceEntity, $true)
+                    [void]$baseRoot.AppendChild($cloned)
+                    continue
+                }
+
+                # Entity exists; merge records and m2m relationships
+                $targetRecords = $targetEntity.SelectSingleNode("records")
+                $sourceRecords = $sourceEntity.SelectSingleNode("records")
+                
+                if ($sourceRecords) {
+                    if (-not $targetRecords) {
+                        $targetRecords = $baseDoc.CreateElement("records")
+                        [void]$targetEntity.AppendChild($targetRecords)
+                    }
+                    
+                    foreach ($rec in $sourceRecords.SelectNodes("record")) {
+                        $clonedRec = $baseDoc.ImportNode($rec, $true)
+                        [void]$targetRecords.AppendChild($clonedRec)
+                    }
+                }
+
+                # Merge m2m relationships
+                $targetM2m = $targetEntity.SelectSingleNode("m2mrelationships")
+                $sourceM2m = $sourceEntity.SelectSingleNode("m2mrelationships")
+                
+                if ($sourceM2m) {
+                    if (-not $targetM2m) {
+                        $targetM2m = $baseDoc.CreateElement("m2mrelationships")
+                        [void]$targetEntity.AppendChild($targetM2m)
+                    }
+                    
+                    foreach ($rel in $sourceM2m.SelectNodes("relationship")) {
+                        $clonedRel = $baseDoc.ImportNode($rel, $true)
+                        [void]$targetM2m.AppendChild($clonedRel)
+                    }
+                }
+            }
+        }
+    }
+
+    # Refresh timestamp
+    $rootNode = $baseDoc.DocumentElement
+    if ($rootNode.timestamp) {
+        $rootNode.SetAttribute("timestamp", (Get-Date).ToString('o'))
+    }
+
+    $baseDoc.Save($OutputPath)
+    return (Get-Item $OutputPath)
+}
 
 # Ensure paths are absolute
 $SchemaPath = Resolve-Path $SchemaPath -ErrorAction Stop
 $DataFolder = Resolve-Path $DataFolder -ErrorAction Stop
 $MigrationExePath = Resolve-Path $MigrationExePath -ErrorAction Stop
 
-Write-Host "=" * 80 -ForegroundColor Cyan
+Write-Host ("=" * 80) -ForegroundColor Cyan
 Write-Host "Dynamics 365 Data Import - Project Data Migration" -ForegroundColor Cyan
-Write-Host "=" * 80 -ForegroundColor Cyan
+Write-Host ("=" * 80) -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Configuration:" -ForegroundColor Yellow
 Write-Host "  D365 URL:              $D365Url"
@@ -122,13 +211,15 @@ if ($POLExportPath) {
 # Verify schema file exists
 if (-not (Test-Path $SchemaPath)) {
     Write-Error "Schema file not found: $SchemaPath"
-    exit 1
+    $global:LASTEXITCODE = 1
+    return
 }
 
 # Verify migration executable exists
 if (-not (Test-Path $MigrationExePath)) {
     Write-Error "Migration executable not found: $MigrationExePath"
-    exit 1
+    $global:LASTEXITCODE = 1
+    return
 }
 
 # Find all Data.xml files in subdirectories
@@ -136,7 +227,8 @@ $dataFiles = Get-ChildItem -Path $DataFolder -Filter "Data.xml" -Recurse -File
 
 if ($dataFiles.Count -eq 0) {
     Write-Warning "No Data.xml files found in $DataFolder"
-    exit 0
+    $global:LASTEXITCODE = 0
+    return
 }
 
 # Apply project filter if specified
@@ -168,12 +260,26 @@ if ($ProjectFilter -and $ProjectFilter.Count -gt 0) {
     
     if ($dataFiles.Count -eq 0) {
         Write-Warning "No projects match the filter: $($ProjectFilter -join ', ')"
-        exit 0
+        $global:LASTEXITCODE = 0
+        return
     }
 }
 
 Write-Host "Found $($dataFiles.Count) Data.xml file(s) to import" -ForegroundColor Green
 Write-Host ""
+
+# Consolidate to a single Data.xml if requested
+if ($Consolidate) {
+    Write-Host "Consolidating $($dataFiles.Count) Data.xml file(s) into: $ConsolidatedOutput" -ForegroundColor Yellow
+    $merged = Merge-DataFiles -Files $dataFiles -OutputPath $ConsolidatedOutput
+    if (-not $merged) {
+        Write-Warning "Consolidation produced no output; aborting import."
+        $global:LASTEXITCODE = 1
+        return
+    }
+    $dataFiles = @($merged)
+    Write-Host "Consolidation complete. Running single import for merged file." -ForegroundColor Green
+}
 
 # Track results
 $results = @()
@@ -207,9 +313,9 @@ foreach ($dataFile in $dataFiles) {
         "-D365Url", "`"$D365Url`"",
         "-SchemaPath", "`"$SchemaPath`"",
         "-DataPath", "`"$dataPath`"",
-        "-Force", $Force.ToString().ToLower(),
+        "-Force", "`"$($Force.ToString().ToLower())`"",
         "-ParallelRequests", $ParallelRequests.ToString(),
-        "-EnableDisablingOfPlugins", $EnableDisablingOfPlugins.ToString().ToLower()
+        "-EnableDisablingOfPlugins", "`"$($EnableDisablingOfPlugins.ToString().ToLower())`""
     )
     
     # Execute migration
@@ -274,9 +380,9 @@ foreach ($dataFile in $dataFiles) {
 }
 
 # Summary
-Write-Host "=" * 80 -ForegroundColor Cyan
+Write-Host ("=" * 80) -ForegroundColor Cyan
 Write-Host "Import Summary" -ForegroundColor Cyan
-Write-Host "=" * 80 -ForegroundColor Cyan
+Write-Host ("=" * 80) -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Total Projects:        $($dataFiles.Count)"
 Write-Host "Successful Imports:    $successCount" -ForegroundColor Green
@@ -295,9 +401,10 @@ Write-Host ""
 # Exit with appropriate code
 if ($failureCount -gt 0) {
     Write-Host "Import completed with errors" -ForegroundColor Yellow
-    exit 1
+    $global:LASTEXITCODE = 1
 }
 else {
     Write-Host "All imports completed successfully!" -ForegroundColor Green
-    exit 0
+    $global:LASTEXITCODE = 0
 }
+return

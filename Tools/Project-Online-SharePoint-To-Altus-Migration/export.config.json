@@ -9,9 +9,21 @@
       "projectLookupTextSource": "Web.Title",
       "backlinkAttribute": "sensei_sourceitemurl",
       "columnMap": [
-        { "spFieldInternalName": "Title", "entityAttribute": "sensei_name", "type": "Text" },
-        { "spFieldInternalName": "Description", "entityAttribute": "sensei_description", "type": "Text" },
-        { "spFieldInternalName": "DueDate", "entityAttribute": "sensei_duedate", "type": "DateTime" },
+        {
+          "spFieldInternalName": "Title",
+          "entityAttribute": "sensei_name",
+          "type": "Text"
+        },
+        {
+          "spFieldInternalName": "Description",
+          "entityAttribute": "sensei_description",
+          "type": "Text"
+        },
+        {
+          "spFieldInternalName": "DueDate",
+          "entityAttribute": "sensei_duedate",
+          "type": "DateTime"
+        },
         {
           "spFieldInternalName": "Status",
           "entityAttribute": "statuscode",
@@ -34,7 +46,10 @@
             "Business Process": 955000004,
             "Vendor": 955000005,
             "Management Escalation": 955000006,
-            "Other": 955000007
+            "Other": 955000007,
+            "(1) Category1": 955000007,
+            "(2) Category2": 955000007,
+            "(3) Category3": 955000007
           }
         },
 
@@ -64,12 +79,32 @@
           }
         },
 
-        { "spFieldInternalName": "Exposure", "entityAttribute": "sensei_riskscore", "type": "Number" },
-        { "spFieldInternalName": "Cost", "entityAttribute": "sensei_cost", "type": "Money" },
+        {
+          "spFieldInternalName": "Exposure",
+          "entityAttribute": "sensei_riskscore",
+          "type": "Number"
+        },
+        {
+          "spFieldInternalName": "Cost",
+          "entityAttribute": "sensei_cost",
+          "type": "Money"
+        },
 
-        { "spFieldInternalName": "Mitigation_x0020_plan", "entityAttribute": "sensei_mitigationplan", "type": "Text" },
-        { "spFieldInternalName": "Contingency_x0020_plan", "entityAttribute": "sensei_contingencyplan", "type": "Text" },
-        { "spFieldInternalName": "Trigger_x0020_Description", "entityAttribute": "sensei_triggerdescription", "type": "Text" },
+        {
+          "spFieldInternalName": "Mitigation_x0020_plan",
+          "entityAttribute": "sensei_mitigationplan",
+          "type": "Text"
+        },
+        {
+          "spFieldInternalName": "Contingency_x0020_plan",
+          "entityAttribute": "sensei_contingencyplan",
+          "type": "Text"
+        },
+        {
+          "spFieldInternalName": "Trigger_x0020_Description",
+          "entityAttribute": "sensei_triggerdescription",
+          "type": "Text"
+        },
 
         {
           "spFieldInternalName": "Trigger",
@@ -83,7 +118,12 @@
           }
         },
 
-        { "spFieldInternalName": "AssignedTo", "entityAttribute": "sensei_assignedto", "type": "Lookup", "lookupEntity": "systemuser" }
+        {
+          "spFieldInternalName": "AssignedTo",
+          "entityAttribute": "sensei_assignedto",
+          "type": "Lookup",
+          "lookupEntity": "systemuser"
+        }
       ]
     },
 
@@ -95,9 +135,21 @@
       "projectLookupTextSource": "Web.Title",
       "backlinkAttribute": "sensei_sourceitemurl",
       "columnMap": [
-        { "spFieldInternalName": "Title", "entityAttribute": "sensei_name", "type": "Text" },
-        { "spFieldInternalName": "Description", "entityAttribute": "sensei_description", "type": "Text" },
-        { "spFieldInternalName": "DueDate", "entityAttribute": "sensei_duedate", "type": "DateTime" },
+        {
+          "spFieldInternalName": "Title",
+          "entityAttribute": "sensei_name",
+          "type": "Text"
+        },
+        {
+          "spFieldInternalName": "Description",
+          "entityAttribute": "sensei_description",
+          "type": "Text"
+        },
+        {
+          "spFieldInternalName": "DueDate",
+          "entityAttribute": "sensei_duedate",
+          "type": "DateTime"
+        },
 
         {
           "spFieldInternalName": "Status",
@@ -121,7 +173,10 @@
             "Business Process": 955000004,
             "Vendor": 955000005,
             "Management Escalation": 955000006,
-            "Other": 955000007
+            "Other": 955000007,
+            "(1) Category1": 955000007,
+            "(2) Category2": 955000007,
+            "(3) Category3": 955000007
           }
         },
 
@@ -136,10 +191,23 @@
           }
         },
 
-        { "spFieldInternalName": "AssignedTo", "entityAttribute": "sensei_assignedto", "type": "Lookup", "lookupEntity": "systemuser" },
+        {
+          "spFieldInternalName": "AssignedTo",
+          "entityAttribute": "sensei_assignedto",
+          "type": "Lookup",
+          "lookupEntity": "systemuser"
+        },
 
-        { "spFieldInternalName": "Cost_x0020_Impact", "entityAttribute": "sensei_costimpact", "type": "Money" },
-        { "spFieldInternalName": "Resolution", "entityAttribute": "sensei_resolution", "type": "Text" }
+        {
+          "spFieldInternalName": "Cost_x0020_Impact",
+          "entityAttribute": "sensei_costimpact",
+          "type": "Money"
+        },
+        {
+          "spFieldInternalName": "Resolution",
+          "entityAttribute": "sensei_resolution",
+          "type": "Text"
+        }
       ]
     }
   ]

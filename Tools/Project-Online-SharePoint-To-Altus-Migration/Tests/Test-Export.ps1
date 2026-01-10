@@ -18,9 +18,9 @@ param(
     [string]$GeneratedDataPath = ""  # Optional: path to generated Data.xml to validate
 )
 
-Write-Host "=" * 80 -ForegroundColor Cyan
+Write-Host ("=" * 80) -ForegroundColor Cyan
 Write-Host "Export Configuration & Output Validation Tests" -ForegroundColor Cyan
-Write-Host "=" * 80 -ForegroundColor Cyan
+Write-Host ("=" * 80) -ForegroundColor Cyan
 Write-Host ""
 
 # Load PnP.PowerShell to make SharePoint types available for testing
@@ -247,10 +247,10 @@ else {
     }
 }
 
-# Load helper functions Load helper functions
-$helpersPath = "..\Export-Helpers.ps1"$helpersPath = "..\Export-Helpers.ps1"
+# Load helper functions
+$helpersPath = "..\Common-Helpers.ps1"
 if (-not (Test-Path $helpersPath)) {
-    Test-Result -TestName "Helper script found" -Passed $false -Message "Cannot find Export-Helpers.ps1"
+    Test-Result -TestName "Helper script found" -Passed $false -Message "Cannot find Common-Helpers.ps1"
 }
 else {
     Test-Result -TestName "Helper script found" -Passed $true
@@ -508,7 +508,7 @@ catch {
 }
 
 # Summary
-Write-Host "`n" + ("=" * 80) -ForegroundColor Cyan
+Write-Host ("=" * 80) -ForegroundColor Cyan
 Write-Host "Test Summary" -ForegroundColor Cyan
 Write-Host ("=" * 80) -ForegroundColor Cyan
 Write-Host ""

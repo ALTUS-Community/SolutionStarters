@@ -52,14 +52,14 @@ $SiteCollections = @(
 # ------------------------------------------------------------------------------
 # Dynamics 365 Settings (for Import Operations)
 # ------------------------------------------------------------------------------
-$D365Url = "https://senseijumpstart.crm.dynamics.com"  # Your D365 environment URL
-$ImportParallelRequests = 4                             # Number of parallel import threads (1-10)
-$ImportForce = $false                                   # $true = update existing records, $false = insert only
+$D365Url = "" # Your D365 environment URL
+$ImportParallelRequests = 4                          # Number of parallel import threads (1-10)
+$ImportForce = $true                                 # $true = update existing records, $false = insert only
 
 # ------------------------------------------------------------------------------
-# Document Import Settings
+# Backlink Settings
 # ------------------------------------------------------------------------------
-$TargetSiteCollectionUrl = "https://senseijumpstart.sharepoint.com/sites/altusdocuments"                           # Target SharePoint site collection for document import (e.g., https://tenant.sharepoint.com/sites/target)
+$BacklinkFieldName = ""  # Field name to store backlink to SharePoint item URL (if the sharepoint site will be available ongoing... it has been migrated out of Project Online)
 
 # ------------------------------------------------------------------------------
 # Authentication Settings
@@ -83,7 +83,7 @@ $BaseOutputFolder = Join-Path $ScriptDir "Output"
 # PROMPT USER FOR OPERATION MODE
 # ==============================================================================
 
-Write-Host "`n" + ("=" * 80) -ForegroundColor Cyan
+Write-Host ("=" * 80) -ForegroundColor Cyan
 Write-Host "SharePoint to Altus Migration Tool" -ForegroundColor Cyan
 Write-Host ("=" * 80) -ForegroundColor Cyan
 Write-Host ""
@@ -110,8 +110,6 @@ Write-Host ""
 Write-Host "Select operation mode:" -ForegroundColor Yellow
 Write-Host "  [1] Export Lists - Extract data from SharePoint to XML files" -ForegroundColor White
 Write-Host "  [2] Import Lists - Load existing XML files into Dynamics 365" -ForegroundColor White
-# Write-Host "  [3] Export Documents - Export documents, metadata, and version history" -ForegroundColor White
-# Write-Host "  [4] Import Documents - Import documents to target SharePoint site collection" -ForegroundColor White
 Write-Host "  [Q] Quit" -ForegroundColor Gray
 Write-Host ""
 
@@ -131,21 +129,69 @@ if ($choice -match '^[Qq]$') {
 $operationMode = switch ($choice) {
   "1" { "ExportData" }
   "2" { "ImportData" }
-  "3" { "ExportDocuments" }
-  "4" { "ImportDocuments" }
 }
 
 Write-Host "`nSelected mode: $operationMode" -ForegroundColor Green
 Write-Host ""
+
+# Check if D365Url is configured, prompt if empty and importing
+if ([string]::IsNullOrWhiteSpace($D365Url) -and $operationMode -eq "ImportData") {
+  Write-Host "No Dynamics 365 URL configured." -ForegroundColor Yellow
+  Write-Host ""
+  $D365Url = Read-Host "Enter the Dynamics 365 environment URL (e.g., https://orgname.crm.dynamics.com)"
+  
+  if ([string]::IsNullOrWhiteSpace($D365Url)) {
+    Write-Host "No D365 URL provided. Operation cancelled." -ForegroundColor Red
+    exit 0
+  }
+  
+  Write-Host ""
+  Write-Host "Using D365 environment: $D365Url" -ForegroundColor Green
+  Write-Host ""
+}
+
+# Check if site collections are configured, prompt if empty and exporting
+if ($SiteCollections.Count -eq 0 -and $operationMode -eq "ExportData") {
+  Write-Host "No site collections configured." -ForegroundColor Yellow
+  Write-Host ""
+  $siteUrl = Read-Host "Enter the source SharePoint site collection URL (e.g., https://tenant.sharepoint.com/sites/pwa)"
+  
+  if ([string]::IsNullOrWhiteSpace($siteUrl)) {
+    Write-Host "No URL provided. Operation cancelled." -ForegroundColor Red
+    exit 0
+  }
+  
+  Write-Host ""
+  $folderName = Read-Host "Enter the folder name for POLExports lookup (e.g., PWA_Main, vNext)"
+  
+  if ([string]::IsNullOrWhiteSpace($folderName)) {
+    Write-Host "No folder name provided. Operation cancelled." -ForegroundColor Red
+    exit 0
+  }
+  
+  $SiteCollections = @(
+    @{
+      Url           = $siteUrl
+      FolderName    = $folderName
+      ProjectFilter = @()
+    }
+  )
+  
+  Write-Host ""
+  Write-Host "Using site collection: $siteUrl" -ForegroundColor Green
+  Write-Host "Output folder: $folderName" -ForegroundColor Gray
+  Write-Host "POL Export path: .\POLExports\$folderName" -ForegroundColor Gray
+  Write-Host ""
+}
 
 # Summary tracking
 $totalSites = $SiteCollections.Count
 $processedSites = 0
 $results = @()
 
-Write-Host "=" * 80 -ForegroundColor Cyan
+Write-Host ("=" * 80) -ForegroundColor Cyan
 Write-Host "$operationMode - Multi-Site Collection Migration" -ForegroundColor Cyan
-Write-Host "=" * 80 -ForegroundColor Cyan
+Write-Host ("=" * 80) -ForegroundColor Cyan
 Write-Host "Processing $totalSites site collection(s)`n" -ForegroundColor White
 
 # Process each site collection
@@ -187,6 +233,7 @@ foreach ($site in $SiteCollections) {
       OutputFolder      = $siteOutputFolder
       ClientId          = $ClientId
       POLExportPath     = $polExportPath
+      BacklinkFieldName = $BacklinkFieldName
     }
     
     if ($projectFilter -and $projectFilter.Count -gt 0) {
@@ -199,7 +246,7 @@ foreach ($site in $SiteCollections) {
       Write-Host "  Starting export..." -ForegroundColor Cyan
       $exportStartTime = Get-Date
         
-      & ".\01-export-lists.ps1" @exportParams
+      & (Join-Path $ScriptDir "01-export-lists.ps1") @exportParams
         
       $exportDuration = (Get-Date) - $exportStartTime
       
@@ -241,7 +288,7 @@ foreach ($site in $SiteCollections) {
       Write-Host "  Starting import to D365..." -ForegroundColor Cyan
       $importStartTime = Get-Date
         
-      & ".\02-import-lists.ps1" @importParams
+      & (Join-Path $ScriptDir "02-import-lists.ps1") @importParams
         
       $importDuration = (Get-Date) - $importStartTime
       
@@ -263,85 +310,11 @@ foreach ($site in $SiteCollections) {
   }
   
   # ==============================================================================
-  # DOCUMENT EXPORT PHASE
+  # RECORD RESULTS
   # ==============================================================================
-  
-  if ($operationMode -eq "ExportDocuments") {
-    # Build parameters for document export script
-    $docExportParams = @{
-      SiteCollectionUrl = $siteUrl
-      OutputFolder      = $siteOutputFolder
-      ClientId          = $ClientId
-      POLExportPath     = $polExportPath
-    }
-    
-    if ($projectFilter -and $projectFilter.Count -gt 0) {
-      $docExportParams.ProjectFilter = $projectFilter
-    }
-    
-    # Run the document export
-    try {
-      Write-Host "  Starting document export..." -ForegroundColor Cyan
-      $docExportStartTime = Get-Date
-        
-      & ".\03-export-documents.ps1" @docExportParams
-        
-      $docExportDuration = (Get-Date) - $docExportStartTime
-      
-      if ($LASTEXITCODE -ne 0) {
-        Write-Host "  Document export failed!" -ForegroundColor Red
-      }
-      else {
-        Write-Host "  Document export completed in $($docExportDuration.ToString('hh\:mm\:ss'))" -ForegroundColor Green
-      }
-    }
-    catch {
-      Write-Host "  ERROR during document export: $($_.Exception.Message)" -ForegroundColor Red
-    }
-  }
-  
-  # ==============================================================================
-  # IMPORT DOCUMENTS PHASE
-  # ==============================================================================
-  
-  if ($operationMode -eq "ImportDocuments") {
-    # Build parameters for document import script
-    $docImportParams = @{
-      SourceFolder            = $siteOutputFolder
-      TargetSiteCollectionUrl = $TargetSiteCollectionUrl
-      ClientId                = $ClientId
-      POLExportPath           = $polExportPath
-    }
-    
-    if ($projectFilter -and $projectFilter.Count -gt 0) {
-      $docImportParams.ProjectFilter = $projectFilter
-    }
-    
-    # Run the document import
-    try {
-      Write-Host "  Starting document import..." -ForegroundColor Cyan
-      $docImportStartTime = Get-Date
-        
-      & ".\04-import-documents.ps1" @docImportParams
-        
-      $docImportDuration = (Get-Date) - $docImportStartTime
-      
-      if ($LASTEXITCODE -ne 0) {
-        Write-Host "  Document import failed!" -ForegroundColor Red
-      }
-      else {
-        Write-Host "  Document import completed in $($docImportDuration.ToString('hh\:mm\:ss'))" -ForegroundColor Green
-      }
-    }
-    catch {
-      Write-Host "  ERROR during document import: $($_.Exception.Message)" -ForegroundColor Red
-    }
-  }
-  
-  # Record results
   $siteDuration = (Get-Date) - $siteStartTime
   $status = if ($siteSuccess) { "Success" } else { "Failed" }
-  
+
   $results += [PSCustomObject]@{
     SiteName     = $folderName
     Url          = $siteUrl
@@ -350,12 +323,13 @@ foreach ($site in $SiteCollections) {
     Duration     = $siteDuration.ToString("hh\:mm\:ss")
     OutputFolder = $siteOutputFolder
   }
-  
+
   Write-Host "  Total time: $($siteDuration.ToString('hh\:mm\:ss'))" -ForegroundColor $(if ($siteSuccess) { "Green" } else { "Red" })
 }
 
 # Display summary
-Write-Host "`n" + ("=" * 80) -ForegroundColor Cyan
+Write-Host ""
+Write-Host ("=" * 80) -ForegroundColor Cyan
 Write-Host "Migration Summary" -ForegroundColor Cyan
 Write-Host ("=" * 80) -ForegroundColor Cyan
 Write-Host ""
