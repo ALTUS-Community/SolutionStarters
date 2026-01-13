@@ -1,0 +1,1009 @@
+<entities >
+  <entity name="sensei_idea" displayname="Idea" etc="10260" primaryidfield="sensei_ideaid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Contributors Invited" name="sensei_contributorsinvited" type="bool" customfield="true" />
+      <field displayname="Create Proposal" name="sensei_createproposal" type="bool" customfield="true" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Department" name="sensei_department" type="optionsetvalue" customfield="true" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Effort Score" name="sensei_effortscore" type="number" customfield="true" />
+      <field displayname="Estimated Cost" name="sensei_estimatedcost" type="decimal" customfield="true" />
+      <field displayname="Idea" name="sensei_ideaid" type="guid" primaryKey="true" />
+      <field displayname="Idea Score" name="sensei_ideascore" type="number" customfield="true" />
+      <field displayname="Impact Score" name="sensei_impactscore" type="number" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Investment Category" name="sensei_investmentcategory" type="optionsetvalue" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Number of Votes" name="sensei_numberofvotes" type="number" customfield="true" />
+      <field displayname="Process Id" name="processid" type="guid" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Related Challenge" name="sensei_relatedchallenge" type="entityreference" lookupType="sensei_challenge" customfield="true" />
+      <field displayname="Review Completed" name="sensei_reviewcompleted" type="bool" customfield="true" />
+      <field displayname="Risk Score" name="sensei_riskscore" type="number" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Submit for Review" name="sensei_submitforreview" type="bool" customfield="true" />
+      <field displayname="Type" name="sensei_type" type="optionsetvalue" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="sensei_strategictheme" displayname="Strategic Theme" etc="10321" primaryidfield="sensei_strategicthemeid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Sponsor" name="sensei_sponsor" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Strategic Theme" name="sensei_strategicthemeid" type="guid" primaryKey="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="sensei_strategicgoal" displayname="Strategic Goal" etc="10320" primaryidfield="sensei_strategicgoalid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Objective" name="sensei_objective" type="string" customfield="true" />
+      <field displayname="Portfolio" name="sensei_portfolio" type="entityreference" lookupType="sensei_portfolio" customfield="true" />
+      <field displayname="Program" name="sensei_program" type="entityreference" lookupType="sensei_program" customfield="true" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Scale" name="sensei_scale" type="optionsetvalue" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Strategic Goal" name="sensei_strategicgoalid" type="guid" primaryKey="true" />
+      <field displayname="Strategic Theme" name="sensei_strategictheme" type="entityreference" lookupType="sensei_strategictheme" customfield="true" />
+      <field displayname="Target Date" name="sensei_targetdate" type="datetime" customfield="true" />
+      <field displayname="Unit of Measure" name="sensei_unitofmeasure" type="optionsetvalue" customfield="true" />
+      <field displayname="Value" name="sensei_value" type="decimal" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="sensei_benefittracking" displayname="Benefit Tracking" etc="10322" primaryidfield="sensei_benefittrackingid" primarynamefield="sensei_entryid" disableplugins="false">
+    <fields>
+      <field displayname="Actual Value" name="sensei_actualvalue" type="decimal" customfield="true" />
+      <field displayname="Benefit" name="sensei_benefit" type="entityreference" lookupType="sensei_benefit" customfield="true" />
+      <field displayname="Benefit Tracking" name="sensei_benefittrackingid" type="guid" primaryKey="true" />
+      <field displayname="Benefit Tracking Entry Id" name="sensei_entryid" type="string" customfield="true" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Date" name="sensei_date" type="datetime" customfield="true" />
+      <field displayname="Entry Type" name="sensei_entrytype" type="bool" customfield="true" />
+      <field displayname="Forecast Value" name="sensei_forecastvalue" type="decimal" customfield="true" />
+      <field displayname="Planned Value" name="sensei_plannedvalue" type="decimal" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Comment" name="sensei_statuscomment" type="string" customfield="true" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Type" name="sensei_type" type="optionsetvalue" customfield="true" />
+      <field displayname="Value" name="sensei_value" type="decimal" customfield="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_challenge" displayname="Challenge" etc="10259" primaryidfield="sensei_challengeid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Accept ideas until" name="sensei_acceptideasuntil" type="datetime" customfield="true" />
+      <field displayname="Announce Voting" name="sensei_announcevoting" type="bool" customfield="true" />
+      <field displayname="Area" name="sensei_area" type="optionsetvalue" customfield="true" />
+      <field displayname="Begin Final Review" name="sensei_beginfinalreview" type="bool" customfield="true" />
+      <field displayname="Challenge" name="sensei_challengeid" type="guid" primaryKey="true" />
+      <field displayname="Challenge Sponsor" name="sensei_challengesponsor" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Close Challenge" name="sensei_closechallenge" type="bool" customfield="true" />
+      <field displayname="Close Challenge to new Ideas" name="sensei_closechallengetonewideas" type="bool" customfield="true" />
+      <field displayname="Completion Date" name="sensei_completiondate" type="datetime" customfield="true" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Department" name="sensei_department" type="optionsetvalue" customfield="true" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Idea Review Date" name="sensei_ideareviewdate" type="datetime" customfield="true" />
+      <field displayname="Identify Stakeholders" name="sensei_identifystakeholders" type="bool" customfield="true" />
+      <field displayname="Impact" name="sensei_impact" type="number" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Issue Awards" name="sensei_issueawards" type="bool" customfield="true" />
+      <field displayname="Launch Challenge" name="sensei_launchchallenge" type="bool" customfield="true" />
+      <field displayname="Launch Date" name="sensei_launchdate" type="datetime" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Number of Ideas" name="sensei_numberofideas" type="number" customfield="true" />
+      <field displayname="Number of Ideas (Last Updated On)" name="sensei_numberofideas_date" type="datetime" customfield="true" />
+      <field displayname="Number of Ideas (State)" name="sensei_numberofideas_state" type="number" customfield="true" />
+      <field displayname="Priority" name="sensei_priority" type="number" customfield="true" />
+      <field displayname="Process Id" name="processid" type="guid" />
+      <field displayname="Record Created On" name="overriddencreatedon" type="datetime" />
+      <field displayname="Review Committee" name="sensei_reviewcommittee" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Review Ideas" name="sensei_reviewideas" type="bool" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Strategic Theme" name="sensei_strategictheme" type="entityreference" lookupType="sensei_strategictheme" customfield="true" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="sensei_constraint" displayname="Constraint" etc="10310" primaryidfield="sensei_constraintid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Constraint" name="sensei_constraint" type="string" customfield="true" />
+      <field displayname="Constraint" name="sensei_constraintid" type="guid" primaryKey="true" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Category" name="sensei_category" type="optionsetvalue" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Program" name="sensei_program" type="entityreference" lookupType="sensei_program" customfield="true" />
+      <field displayname="Portfolio" name="sensei_portfolio" type="entityreference" lookupType="sensei_portfolio" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_assumption" displayname="Assumption" etc="10309" primaryidfield="sensei_assumptionid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Assumption" name="sensei_assumptionid" type="guid" primaryKey="true" />
+      <field displayname="Assumption" name="sensei_assumption" type="string" customfield="true" />
+      <field displayname="Category" name="sensei_category" type="optionsetvalue" customfield="true" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Portfolio" name="sensei_portfolio" type="entityreference" lookupType="sensei_portfolio" customfield="true" />
+      <field displayname="Program" name="sensei_program" type="entityreference" lookupType="sensei_program" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+    </fields>
+  </entity>
+  <entity name="sensei_benefitoutcome" displayname="Benefit Outcome" etc="10317" primaryidfield="sensei_benefitoutcomeid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Benefit" name="sensei_benefit" type="entityreference" lookupType="sensei_benefit" customfield="true" />
+      <field displayname="Category" name="sensei_category" type="optionsetvalue" customfield="true" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Due Date" name="sensei_duedate" type="datetime" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Outcome" name="sensei_benefitoutcomeid" type="guid" primaryKey="true" />
+      <field displayname="Progress Update" name="sensei_progressupdate" type="string" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="sensei_benefitoutput" displayname="Benefit Output" etc="10318" primaryidfield="sensei_benefitoutputid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Benefit" name="sensei_benefit" type="entityreference" lookupType="sensei_benefit" customfield="true" />
+      <field displayname="Category" name="sensei_category" type="optionsetvalue" customfield="true" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Due Date" name="sensei_duedate" type="datetime" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Output" name="sensei_benefitoutputid" type="guid" primaryKey="true" />
+      <field displayname="Progress Update" name="sensei_progressupdate" type="string" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+    </fields>
+    <relationships />
+  </entity>
+  <entity name="sensei_portfolio" displayname="Portfolio" etc="10160" primaryidfield="sensei_portfolioid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Benefits Strategy" name="sensei_benefitsstrategy" type="string" customfield="true" />
+      <field displayname="Cost Type" name="sensei_costtype" type="optionsetvalue" customfield="true" />
+      <field displayname="Department" name="sensei_department" type="optionsetvalue" customfield="true" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Expected Benefits" name="sensei_expectedbenefits" type="string" customfield="true" />
+      <field displayname="Investment Category" name="sensei_investmentcategory" type="optionsetvalue" customfield="true" />
+      <field displayname="Justification" name="sensei_justification" type="string" customfield="true" />
+      <field displayname="Location" name="sensei_location" type="string" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Organisational Change Impact" name="sensei_organisationalchangeimpact" type="optionsetvalue" customfield="true" />
+      <field displayname="Percent Complete" name="sensei_percentcomplete" type="number" customfield="true" />
+      <field displayname="Portfolio" name="sensei_portfolioid" type="guid" primaryKey="true" />
+      <field displayname="Problem Statement" name="sensei_problemstatement" type="string" customfield="true" />
+      <field displayname="Program Governance" name="sensei_programgovernance" type="string" customfield="true" />
+      <field displayname="Resources Needed" name="sensei_resourcesneeded" type="string" customfield="true" />
+      <field displayname="Scope" name="sensei_scope" type="string" customfield="true" />
+      <field displayname="Sponsor" name="sensei_sponsor" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Stakeholder Considerations" name="sensei_stakeholderconsiderations" type="string" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Vision" name="sensei_vision" type="string" customfield="true" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+    </fields>
+  </entity>
+  <entity name="sensei_benefit" displayname="Benefit" etc="10140" primaryidfield="sensei_benefitid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Assumptions" name="sensei_objectiveassumptions" type="string" customfield="true" />
+      <field displayname="Benefit" name="sensei_benefitid" type="guid" primaryKey="true" />
+      <field displayname="Benefit Goal Value" name="sensei_benefitgoalvalue" type="decimal" customfield="true" />
+      <field displayname="Benefit Impact" name="sensei_financialbenefit" type="optionsetvalue" customfield="true" />
+      <field displayname="Category" name="sensei_category" type="optionsetvalue" customfield="true" />
+      <field displayname="Cumulative Measure" name="sensei_cumulativemeasure" type="bool" customfield="true" />
+      <field displayname="Department" name="sensei_department" type="optionsetvalue" customfield="true" />
+      <field displayname="Dependencies" name="sensei_objectivedependencies" type="string" customfield="true" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Direct" name="sensei_direct" type="bool" customfield="true" />
+      <field displayname="Finish" name="sensei_finish" type="datetime" customfield="true" />
+      <field displayname="Goal" name="sensei_objectivegoal" type="string" customfield="true" />
+      <field displayname="Investment Category" name="sensei_investmentcategory" type="optionsetvalue" customfield="true" />
+      <field displayname="Location" name="sensei_location" type="optionsetvalue" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Portfolio" name="sensei_portfolio" type="entityreference" lookupType="sensei_portfolio" customfield="true" />
+      <field displayname="Program" name="sensei_program" type="entityreference" lookupType="sensei_program" customfield="true" />
+      <field displayname="Project" name="sensei_project" type="entityreference" lookupType="sensei_project" customfield="true" />
+      <field displayname="Realised Date" name="sensei_realiseddate" type="datetime" customfield="true" />
+      <field displayname="Scale" name="sensei_scale" type="optionsetvalue" customfield="true" />
+      <field displayname="Sponsor" name="sensei_sponsor" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Start" name="sensei_start" type="datetime" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Strategic Goal" name="sensei_strategicgoal" type="entityreference" lookupType="sensei_strategicgoal" customfield="true" />
+      <field displayname="Strategic Theme" name="sensei_strategictheme" type="entityreference" lookupType="sensei_strategictheme" customfield="true" />
+      <field displayname="Tangible" name="sensei_tangible" type="bool" customfield="true" />
+      <field displayname="Timeline" name="sensei_timeline" type="bool" customfield="true" />
+      <field displayname="Timeline" name="sensei_objectivetimeline" type="string" customfield="true" />
+      <field displayname="Type" name="sensei_type" type="bool" customfield="true" />
+      <field displayname="Unit of Measure" name="sensei_unitofmeasure" type="optionsetvalue" customfield="true" />
+      <field displayname="Update Interval" name="sensei_updateinterval" type="optionsetvalue" customfield="true" />
+      <field displayname="Process Id" name="processid" type="guid" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+    </fields>
+  </entity>
+  <entity name="sensei_proposal" displayname="Proposal" etc="10167" primaryidfield="sensei_proposalid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Business Benefits" name="sensei_businessbenefits" type="string" customfield="true" />
+      <field displayname="Business Case completed?" name="sensei_stage1_question1" type="bool" customfield="true" />
+      <field displayname="Department" name="sensei_department" type="optionsetvalue" customfield="true" />
+      <field displayname="Departmental Approval?" name="sensei_stage1_question2" type="bool" customfield="true" />
+      <field displayname="Estimated Effort (Hrs)" name="sensei_estimatedeffort" type="decimal" customfield="true" />
+      <field displayname="Financial Benefits" name="sensei_financialbenefits" type="decimal" customfield="true" />
+      <field displayname="Investment Category" name="sensei_investmentcategory" type="optionsetvalue" customfield="true" />
+      <field displayname="Outcome" name="sensei_outcome" type="string" customfield="true" />
+      <field displayname="Outcome Comments" name="sensei_outcomecomments" type="string" customfield="true" />
+      <field displayname="Problem Statement" name="sensei_problemstatement" type="string" customfield="true" />
+      <field displayname="Process Id" name="processid" type="guid" />
+      <field displayname="Project Manager" name="sensei_projectmanager" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Proposal" name="sensei_proposalid" type="guid" primaryKey="true" />
+      <field displayname="Proposal Costs" name="sensei_proposalcosts" type="decimal" customfield="true" />
+      <field displayname="Description" name="sensei_proposaldescription" type="string" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Proposed Finish" name="sensei_proposedfinish" type="datetime" customfield="true" />
+      <field displayname="Proposed 'Go Live' Date" name="sensei_proposedgolivedate" type="datetime" customfield="true" />
+      <field displayname="Proposed Start" name="sensei_proposedstart" type="datetime" customfield="true" />
+      <field displayname="ROI" name="sensei_roi" type="decimal" customfield="true" />
+      <field displayname="Sensei Project" name="sensei_project" type="entityreference" lookupType="sensei_project" customfield="true" />
+      <field displayname="Sponsor" name="sensei_sponsor" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Status" name="sensei_status" type="optionsetvalue" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Steering Committee Approval?" name="sensei_stage2_question1" type="bool" customfield="true" />
+      <field displayname="Submit Approval" name="sensei_submitapproval" type="bool" customfield="true" />
+      <field displayname="Submit Approval Atsumeru" name="sensei_submitapprovalatsumeru" type="bool" customfield="true" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+    </fields>
+  </entity>
+  <entity name="sensei_financialitem" displayname="Financial Item" etc="10153" primaryidfield="sensei_financialitemid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Actual Cost Locked " name="sensei_actualcostlocked" type="bool" customfield="true" />
+      <field displayname="Budget Locked" name="sensei_budgetlocked" type="bool" customfield="true" />
+      <field displayname="Department" name="sensei_department" type="optionsetvalue" customfield="true" />
+      <field displayname="Financial Category" name="sensei_financialcategory" type="entityreference" lookupType="sensei_financialcategory" customfield="true" />
+      <field displayname="Financial Item" name="sensei_financialitemid" type="guid" primaryKey="true" />
+      <field displayname="Forecast Cost Locked" name="sensei_forecastcostlocked" type="bool" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Note" name="sensei_note" type="string" customfield="true" />
+      <field displayname="Portfolio" name="sensei_portfolio" type="entityreference" lookupType="sensei_portfolio" customfield="true" />
+      <field displayname="Program" name="sensei_program" type="entityreference" lookupType="sensei_program" customfield="true" />
+      <field displayname="Project" name="sensei_project" type="entityreference" lookupType="sensei_project" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Task" name="sensei_task" type="entityreference" lookupType="sensei_task" customfield="true" />
+      <field displayname="Type" name="sensei_type" type="optionsetvalue" customfield="true" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+    </fields>
+  </entity>
+  <entity name="sensei_lessonlearned" displayname="Lesson Learned" etc="10159" primaryidfield="sensei_lessonlearnedid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Category" name="sensei_category" type="optionsetvalue" customfield="true" />
+      <field displayname="ID" name="sensei_id" type="string" customfield="true" />
+      <field displayname="Lesson Learned" name="sensei_lessonlearned" type="string" customfield="true" />
+      <field displayname="Lesson Learned" name="sensei_lessonlearnedid" type="guid" primaryKey="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Observation" name="sensei_observation" type="string" customfield="true" />
+      <field displayname="Portfolio" name="sensei_portfolio" type="entityreference" lookupType="sensei_portfolio" customfield="true" />
+      <field displayname="Program" name="sensei_program" type="entityreference" lookupType="sensei_program" customfield="true" />
+      <field displayname="Project" name="sensei_project" type="entityreference" lookupType="sensei_project" customfield="true" />
+      <field displayname="Recommendation" name="sensei_recommendation" type="string" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Action Taken" name="sensei_actiontaken" type="string" customfield="true" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+    </fields>
+  </entity>
+  <entity name="sensei_changerequest" displayname="Change Request" etc="10147" primaryidfield="sensei_changerequestid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Approved / Rejected By" name="sensei_approvedrejectedby" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Approved / Rejected Date" name="sensei_approvedrejecteddate" type="datetime" customfield="true" />
+      <field displayname="Assigned To" name="sensei_assignedto" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Assumptions" name="sensei_assumptions" type="string" customfield="true" />
+      <field displayname="Category" name="sensei_category" type="optionsetvalue" customfield="true" />
+      <field displayname="Change Request" name="sensei_changerequestid" type="guid" primaryKey="true" />
+      <field displayname="Cost Estimate" name="sensei_costestimate" type="money" customfield="true" />
+      <field displayname="Cost Estimate (Base)" name="sensei_costestimate_base" type="money" customfield="true" />
+      <field displayname="Cost Estimate Details" name="sensei_costestimatedetails" type="string" customfield="true" />
+      <field displayname="Date Closed" name="sensei_dateclosed" type="datetime" customfield="true" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Driven By" name="sensei_drivenby" type="optionsetvaluecollection" customfield="true" />
+      <field displayname="Due Date" name="sensei_duedate" type="datetime" customfield="true" />
+      <field displayname="Duration Estimate" name="sensei_durationestimate" type="number" customfield="true" />
+      <field displayname="Duration Estimate Details" name="sensei_durationestimatedetails" type="string" customfield="true" />
+      <field displayname="ID" name="sensei_id" type="string" customfield="true" />
+      <field displayname="Impact on Other Projects" name="sensei_impactonotherprojects" type="string" customfield="true" />
+      <field displayname="Implementation Date" name="sensei_implementationdate" type="datetime" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Portfolio" name="sensei_portfolio" type="entityreference" lookupType="sensei_portfolio" customfield="true" />
+      <field displayname="Priority" name="sensei_priority" type="optionsetvalue" customfield="true" />
+      <field displayname="Program" name="sensei_program" type="entityreference" lookupType="sensei_program" customfield="true" />
+      <field displayname="Project" name="sensei_project" type="entityreference" lookupType="sensei_project" customfield="true" />
+      <field displayname="Resource Impacts" name="sensei_resourceimpacts" type="string" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Work Effort Details" name="sensei_workeffortdetails" type="string" customfield="true" />
+      <field displayname="Work Effort Estimate" name="sensei_workeffortestimate" type="number" customfield="true" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+    </fields>
+  </entity>
+  <entity name="sensei_decision" displayname="Decision" etc="10149" primaryidfield="sensei_decisionid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Approver" name="sensei_approver" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Assigned To" name="sensei_assignedto" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Category" name="sensei_category" type="optionsetvalue" customfield="true" />
+      <field displayname="Date Created" name="sensei_datecreated" type="datetime" customfield="true" />
+      <field displayname="Decision" name="sensei_decisionid" type="guid" primaryKey="true" />
+      <field displayname="Decision Date" name="sensei_decisiondate" type="datetime" customfield="true" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Due Date" name="sensei_duedate" type="datetime" customfield="true" />
+      <field displayname="Escalation Manager" name="sensei_escalationmanager" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Escalation Required" name="sensei_escalationrequired" type="bool" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Portfolio" name="sensei_portfolio" type="entityreference" lookupType="sensei_portfolio" customfield="true" />
+      <field displayname="Priority" name="sensei_priority" type="optionsetvalue" customfield="true" />
+      <field displayname="Program" name="sensei_program" type="entityreference" lookupType="sensei_program" customfield="true" />
+      <field displayname="Project" name="sensei_project" type="entityreference" lookupType="sensei_project" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+    </fields>
+  </entity>
+  <entity name="sensei_risk" displayname="Risk" etc="10169" primaryidfield="sensei_riskid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Assigned To" name="sensei_assignedto" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Benefit" name="sensei_benefit" type="entityreference" lookupType="sensei_benefit" customfield="true" />
+      <field displayname="Category" name="sensei_category" type="optionsetvalue" customfield="true" />
+      <field displayname="Consequence" name="sensei_consequence" type="optionsetvalue" customfield="true" />
+      <field displayname="Consequence Index" name="sensei_consequenceindex" type="number" customfield="true" />
+      <field displayname="Contingency Plan" name="sensei_contingencyplan" type="string" customfield="true" />
+      <field displayname="Cost" name="sensei_cost" type="money" customfield="true" />
+      <field displayname="Cost (Base)" name="sensei_cost_base" type="money" customfield="true" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Due Date" name="sensei_duedate" type="datetime" customfield="true" />
+      <field displayname="ID" name="sensei_id" type="string" customfield="true" />
+      <field displayname="Likelihood" name="sensei_likelihood" type="optionsetvalue" customfield="true" />
+      <field displayname="Likelihood Index" name="sensei_likelihoodindex" type="number" customfield="true" />
+      <field displayname="Mitigation Plan" name="sensei_mitigationplan" type="string" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Portfolio" name="sensei_portfolio" type="entityreference" lookupType="sensei_portfolio" customfield="true" />
+      <field displayname="Program" name="sensei_program" type="entityreference" lookupType="sensei_program" customfield="true" />
+      <field displayname="Project" name="sensei_project" type="entityreference" lookupType="sensei_project" customfield="true" />
+      <field displayname="Risk" name="sensei_riskid" type="guid" primaryKey="true" />
+      <field displayname="Risk Score" name="sensei_riskscore" type="number" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Trigger" name="sensei_trigger" type="optionsetvalue" customfield="true" />
+      <field displayname="Trigger Description" name="sensei_triggerdescription" type="string" customfield="true" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+    </fields>
+  </entity>
+  <entity name="sensei_issue" displayname="Issue" etc="10157" primaryidfield="sensei_issueid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Assigned To" name="sensei_assignedto" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Category" name="sensei_category" type="optionsetvalue" customfield="true" />
+      <field displayname="Cost Impact" name="sensei_costimpact" type="money" customfield="true" />
+      <field displayname="Cost Impact (Base)" name="sensei_costimpact_base" type="money" customfield="true" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Due Date" name="sensei_duedate" type="datetime" customfield="true" />
+      <field displayname="ID" name="sensei_id" type="string" customfield="true" />
+      <field displayname="Issue" name="sensei_issueid" type="guid" primaryKey="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Portfolio" name="sensei_portfolio" type="entityreference" lookupType="sensei_portfolio" customfield="true" />
+      <field displayname="Priority" name="sensei_priority" type="optionsetvalue" customfield="true" />
+      <field displayname="Program" name="sensei_program" type="entityreference" lookupType="sensei_program" customfield="true" />
+      <field displayname="Project" name="sensei_project" type="entityreference" lookupType="sensei_project" customfield="true" />
+      <field displayname="Resolution" name="sensei_resolution" type="string" customfield="true" />
+      <field displayname="Schedule Impact" name="sensei_scheduleimpact" type="number" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+    </fields>
+  </entity>
+  <entity name="sensei_statusupdate" displayname="Status Update" etc="10172" primaryidfield="sensei_statusupdateid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Actual Work" name="sensei_actualwork" type="decimal" customfield="true" />
+      <field displayname="Baseline Comment" name="sensei_baselinecomment" type="string" customfield="true" />
+      <field displayname="Baseline Created Date" name="sensei_baselinecreateddate" type="datetime" customfield="true" />
+      <field displayname="Baseline Finish" name="sensei_baselinefinish" type="datetime" customfield="true" />
+      <field displayname="Baseline Name" name="sensei_baselinename" type="string" customfield="true" />
+      <field displayname="Baseline Total Work" name="sensei_baselinetotalwork" type="decimal" customfield="true" />
+      <field displayname="Budget" name="sensei_budget" type="money" customfield="true" />
+      <field displayname="Budget (Base)" name="sensei_budget_base" type="money" customfield="true" />
+      <field displayname="Change Requests Approved" name="sensei_changerequestsapproved" type="money" customfield="true" />
+      <field displayname="Change Requests Approved (Base)" name="sensei_changerequestsapproved_base" type="money" customfield="true" />
+      <field displayname="Change Requests Due Date Missing" name="sensei_changerequestsduedatemissing" type="number" customfield="true" />
+      <field displayname="Change Requests KPI" name="sensei_changerequestskpi" type="optionsetvalue" customfield="true" />
+      <field displayname="Change Requests Overdue" name="sensei_changerequestsoverdue" type="number" customfield="true" />
+      <field displayname="Change Requests Rejected" name="sensei_changerequestsrejected" type="money" customfield="true" />
+      <field displayname="Change Requests Rejected (Base)" name="sensei_changerequestsrejected_base" type="money" customfield="true" />
+      <field displayname="Change Requests Status" name="sensei_changerequestsstatus" type="string" customfield="true" />
+      <field displayname="Change Requests Submitted" name="sensei_changerequestssubmitted" type="money" customfield="true" />
+      <field displayname="Change Requests Submitted (Base)" name="sensei_changerequestssubmitted_base" type="money" customfield="true" />
+      <field displayname="Deliverables Active" name="sensei_deliverablesactive" type="number" customfield="true" />
+      <field displayname="Deliverables Due Date Missing" name="sensei_deliverablesduedatemissing" type="number" customfield="true" />
+      <field displayname="Deliverables KPI" name="sensei_deliverableskpi" type="optionsetvalue" customfield="true" />
+      <field displayname="Deliverables Overdue" name="sensei_deliverablesoverdue" type="number" customfield="true" />
+      <field displayname="Deliverables Status" name="sensei_deliverablesstatus" type="string" customfield="true" />
+      <field displayname="Duration" name="sensei_duration" type="decimal" customfield="true" />
+      <field displayname="Financials KPI" name="sensei_financialskpi" type="optionsetvalue" customfield="true" />
+      <field displayname="Financials Status" name="sensei_financialsstatus" type="string" customfield="true" />
+      <field displayname="Forecast" name="sensei_forecast" type="money" customfield="true" />
+      <field displayname="Forecast (Base)" name="sensei_forecast_base" type="money" customfield="true" />
+      <field displayname="ID" name="sensei_id" type="string" customfield="true" />
+      <field displayname="Is Baseline" name="sensei_isbaseline" type="bool" customfield="true" />
+      <field displayname="Issues Active" name="sensei_issuesactive" type="number" customfield="true" />
+      <field displayname="Issues Due Date Missing" name="sensei_issuesduedatemissing" type="number" customfield="true" />
+      <field displayname="Issues KPI" name="sensei_issueskpi" type="optionsetvalue" customfield="true" />
+      <field displayname="Issues Overdue" name="sensei_issuesoverdue" type="number" customfield="true" />
+      <field displayname="Issues Status" name="sensei_issuesstatus" type="string" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Portfolio" name="sensei_portfolio" type="entityreference" lookupType="sensei_portfolio" customfield="true" />
+      <field displayname="Program" name="sensei_program" type="entityreference" lookupType="sensei_program" customfield="true" />
+      <field displayname="Project" name="sensei_project" type="entityreference" lookupType="sensei_project" customfield="true" />
+      <field displayname="Project KPI" name="sensei_projectkpi" type="optionsetvalue" customfield="true" />
+      <field displayname="Project Status" name="sensei_projectstatus" type="string" customfield="true" />
+      <field displayname="Remaining Work" name="sensei_remainingwork" type="decimal" customfield="true" />
+      <field displayname="Risks Active" name="sensei_risksactive" type="number" customfield="true" />
+      <field displayname="Risks Due Date Missing" name="sensei_risksduedatemissing" type="number" customfield="true" />
+      <field displayname="Risks KPI" name="sensei_riskskpi" type="optionsetvalue" customfield="true" />
+      <field displayname="Risks Overdue" name="sensei_risksoverdue" type="number" customfield="true" />
+      <field displayname="Risks Status" name="sensei_risksstatus" type="string" customfield="true" />
+      <field displayname="Schedule KPI" name="sensei_schedulekpi" type="optionsetvalue" customfield="true" />
+      <field displayname="Schedule Status" name="sensei_schedulestatus" type="string" customfield="true" />
+      <field displayname="Schedule Variance" name="sensei_schedulevariance" type="number" customfield="true" />
+      <field displayname="Scheduled Finish" name="sensei_scheduledfinish" type="datetime" customfield="true" />
+      <field displayname="Start Date" name="sensei_startdate" type="datetime" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Date" name="sensei_statusdate" type="datetime" customfield="true" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Status Update" name="sensei_statusupdateid" type="guid" primaryKey="true" />
+      <field displayname="Target Finish" name="sensei_targetfinish" type="datetime" customfield="true" />
+      <field displayname="Total Work" name="sensei_totalwork" type="decimal" customfield="true" />
+      <field displayname="Variance" name="sensei_variance" type="money" customfield="true" />
+      <field displayname="Variance (Base)" name="sensei_variance_base" type="money" customfield="true" />
+      <field displayname="Work KPI" name="sensei_workkpi" type="optionsetvalue" customfield="true" />
+      <field displayname="Work Status" name="sensei_workstatus" type="string" customfield="true" />
+      <field displayname="Work Variance" name="sensei_workvariance" type="decimal" customfield="true" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+    </fields>
+  </entity>
+  <entity name="sensei_deliverable" displayname="Deliverable" etc="10150" primaryidfield="sensei_deliverableid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Assigned To" name="sensei_assignedto" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Category" name="sensei_category" type="optionsetvalue" customfield="true" />
+      <field displayname="Deliverable" name="sensei_deliverableid" type="guid" primaryKey="true" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Due Date" name="sensei_duedate" type="datetime" customfield="true" />
+      <field displayname="Finish Date" name="sensei_finishdate" type="datetime" customfield="true" />
+      <field displayname="ID" name="sensei_id" type="string" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Outcome" name="sensei_outcome" type="string" customfield="true" />
+      <field displayname="Portfolio" name="sensei_portfolio" type="entityreference" lookupType="sensei_portfolio" customfield="true" />
+      <field displayname="Program" name="sensei_program" type="entityreference" lookupType="sensei_program" customfield="true" />
+      <field displayname="Progress Update" name="sensei_progressupdate" type="string" customfield="true" />
+      <field displayname="Project" name="sensei_project" type="entityreference" lookupType="sensei_project" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status" name="sensei_status" type="optionsetvalue" customfield="true" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Target Date" name="sensei_targetdate" type="datetime" customfield="true" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+    </fields>
+  </entity>
+  <entity name="sensei_keydate" displayname="Key Date" etc="10158" primaryidfield="sensei_keydateid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Date" name="sensei_date" type="datetime" customfield="true" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="ID" name="sensei_id" type="string" customfield="true" />
+      <field displayname="Key Date" name="sensei_keydateid" type="guid" primaryKey="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Portfolio" name="sensei_portfolio" type="entityreference" lookupType="sensei_portfolio" customfield="true" />
+      <field displayname="Program" name="sensei_program" type="entityreference" lookupType="sensei_program" customfield="true" />
+      <field displayname="Project" name="sensei_project" type="entityreference" lookupType="sensei_project" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+    </fields>
+  </entity>
+  <entity name="sensei_task" displayname="Project Task" etc="10176" primaryidfield="sensei_taskid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Bucket" name="sensei_bucket" type="entityreference" lookupType="sensei_bucket" customfield="true" />
+      <field displayname="Category" name="sensei_category" type="optionsetvalue" customfield="true" />
+      <field displayname="Due Date" name="sensei_duedate" type="datetime" customfield="true" />
+      <field displayname="Duration" name="sensei_duration" type="decimal" customfield="true" />
+      <field displayname="Effort (Hours)" name="sensei_effort" type="decimal" customfield="true" />
+      <field displayname="Effort Completed (Hours)" name="sensei_effortcompleted" type="decimal" customfield="true" />
+      <field displayname="Effort Remaining (Hours)" name="sensei_effortremaining" type="decimal" customfield="true" />
+      <field displayname="Finish" name="sensei_taskfinish" type="datetime" customfield="true" />
+      <field displayname="Index" name="sensei_index" type="number" customfield="true" />
+      <field displayname="Level" name="sensei_level" type="number" customfield="true" />
+      <field displayname="Milestone" name="sensei_milestone" type="bool" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Notes" name="sensei_notes" type="string" customfield="true" />
+      <field displayname="Order" name="sensei_order" type="number" customfield="true" />
+      <field displayname="Parent Task" name="sensei_parenttask" type="entityreference" lookupType="sensei_task" customfield="true" />
+      <field displayname="Percent Complete" name="sensei_percentcomplete" type="number" customfield="true" />
+      <field displayname="Percent Complete (decimal)" name="sensei_percentcompletedecimal" type="decimal" customfield="true" />
+      <field displayname="Project" name="sensei_project" type="entityreference" lookupType="sensei_project" customfield="true" />
+      <field displayname="Schedule Type" name="sensei_scheduletype" type="optionsetvalue" customfield="true" />
+      <field displayname="Sensei Task" name="sensei_taskid" type="guid" primaryKey="true" />
+      <field displayname="Size" name="sensei_size" type="string" customfield="true" />
+      <field displayname="Sprint" name="sensei_sprint" type="entityreference" lookupType="sensei_sprint" customfield="true" />
+      <field displayname="Start" name="sensei_taskstart" type="datetime" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Summary" name="sensei_summary" type="bool" customfield="true" />
+      <field displayname="Task No." name="sensei_tasknumber" type="string" customfield="true" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+    </fields>
+  </entity>
+  <entity name="sensei_bucket" displayname="Bucket" etc="10290" primaryidfield="sensei_bucketid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Bucket" name="sensei_bucketid" type="guid" primaryKey="true" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Is Done" name="sensei_isdone" type="bool" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Order" name="sensei_order" type="decimal" customfield="true" />
+      <field displayname="Project" name="sensei_project" type="entityreference" lookupType="sensei_project" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="WIP Limit" name="sensei_wiplimit" type="number" customfield="true" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+    </fields>
+  </entity>
+  <entity name="sensei_project" displayname="Project" etc="10163" primaryidfield="sensei_projectid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="% Complete" name="sensei_percentcomplete" type="number" customfield="true" />
+      <field displayname="Actual Cost Locked" name="sensei_actualcostlocked" type="bool" customfield="true" />
+      <field displayname="Approval from Project Closure Review" name="sensei_projectclosurereview_approved_yn" type="bool" customfield="true" />
+      <field displayname="Approval from Steering Committee Review" name="sensei_steeringcommitteereview_approved_yn" type="bool" customfield="true" />
+      <field displayname="Baseline Schedule Review" name="sensei_baselineschedulereview" type="entityreference" lookupType="sensei_approval" customfield="true" />
+      <field displayname="Budget Locked " name="sensei_budgetlocked" type="bool" customfield="true" />
+      <field displayname="Business Benefits" name="sensei_businessbenefits" type="string" customfield="true" />
+      <field displayname="Cost Type" name="sensei_costtype" type="optionsetvalue" customfield="true" />
+      <field displayname="Critical Response Targets" name="sensei_criticalresponsetargets" type="string" customfield="true" />
+      <field displayname="Current Stage" name="sensei_currentstage" type="string" customfield="true" />
+      <field displayname="Department" name="sensei_department" type="optionsetvalue" customfield="true" />
+      <field displayname="Departmental Approval?" name="sensei_stage1_question2" type="bool" customfield="true" />
+      <field displayname="Departmental Review" name="sensei_departmentalreview" type="entityreference" lookupType="sensei_approval" customfield="true" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Effort (Total)" name="sensei_efforttotal" type="decimal" customfield="true" />
+      <field displayname="Effort Completed" name="sensei_effortcompleted" type="decimal" customfield="true" />
+      <field displayname="Effort Remaining" name="sensei_effortremaining" type="decimal" customfield="true" />
+      <field displayname="Escalation Contact" name="sensei_escalationcontact" type="string" customfield="true" />
+      <field displayname="Escalation Manager" name="sensei_escalationmanager" type="string" customfield="true" />
+      <field displayname="Expected Benefits" name="sensei_expectedbenefits" type="string" customfield="true" />
+      <field displayname="External Project ID" name="sensei_externalprojectid" type="string" customfield="true" />
+      <field displayname="Field Lock" name="sensei_fieldlock" type="string" customfield="true" />
+      <field displayname="Financial Benefits" name="sensei_financialbenefits" type="money" customfield="true" />
+      <field displayname="Financial Benefits (Base)" name="sensei_financialbenefits_base" type="money" customfield="true" />
+      <field displayname="Forecast Cost Locked" name="sensei_forecastcostlocked" type="bool" customfield="true" />
+      <field displayname="High Response Targets" name="sensei_highresponsetargets" type="string" customfield="true" />
+      <field displayname="Investment Category" name="sensei_investmentcategory" type="optionsetvalue" customfield="true" />
+      <field displayname="Issues Resolved" name="sensei_stage2_question1" type="bool" customfield="true" />
+      <field displayname="Last Modified from Refresh" name="sensei_lastmodifiedfromrefresh" type="datetime" customfield="true" />
+      <field displayname="Last Sync Date" name="sensei_lastsyncdate" type="datetime" customfield="true" />
+      <field displayname="Lessons Learned" name="sensei_stage5_question1" type="bool" customfield="true" />
+      <field displayname="Location" name="sensei_location" type="string" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Number of Releases" name="sensei_numberofreleases" type="number" customfield="true" />
+      <field displayname="Operational Priority" name="sensei_operationalpriority" type="optionsetvalue" customfield="true" />
+      <field displayname="Operations Type" name="sensei_operationstype" type="optionsetvalue" customfield="true" />
+      <field displayname="Organisational Change Impact" name="sensei_organisationalchangeimpact" type="optionsetvalue" customfield="true" />
+      <field displayname="P4TW Project" name="sensei_p4twprojectid" type="entityreference" lookupType="sensei_msdyn_project" customfield="true" />
+      <field displayname="Portfolio" name="sensei_portfolio" type="entityreference" lookupType="sensei_portfolio" customfield="true" />
+      <field displayname="Problem Statement" name="sensei_problemstatement" type="string" customfield="true" />
+      <field displayname="Process Id" name="processid" type="guid" />
+      <field displayname="Product Goals" name="sensei_productgoals" type="string" customfield="true" />
+      <field displayname="Program" name="sensei_program" type="entityreference" lookupType="sensei_program" customfield="true" />
+      <field displayname="Project Closure Review" name="sensei_projectclosurereview" type="entityreference" lookupType="sensei_approval" customfield="true" />
+      <field displayname="Project Deliverables completed?" name="sensei_stage4_question1" type="bool" customfield="true" />
+      <field displayname="Project Finish" name="sensei_projectfinish" type="datetime" customfield="true" />
+      <field displayname="Project Manager" name="sensei_projectmanager" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Project Online Project" name="sensei_projectonline_projectid" type="entityreference" lookupType="sensei_projectonline_project" customfield="true" />
+      <field displayname="Project Start" name="sensei_projectstart" type="datetime" customfield="true" />
+      <field displayname="Project Type" name="sensei_projecttype" type="entityreference" lookupType="sensei_enterpriseprojecttype" customfield="true" />
+      <field displayname="Project Vision" name="sensei_projectvision" type="string" customfield="true" />
+      <field displayname="Project Work" name="sensei_stage3_question2" type="bool" customfield="true" />
+      <field displayname="Proposal Costs" name="sensei_proposedcosts" type="money" customfield="true" />
+      <field displayname="Proposed Costs (Base)" name="sensei_proposedcosts_base" type="money" customfield="true" />
+      <field displayname="Proposed Finish" name="sensei_proposedfinish" type="datetime" customfield="true" />
+      <field displayname="Proposed 'Go Live' Date" name="sensei_proposedgolivedate" type="datetime" customfield="true" />
+      <field displayname="Proposed Start" name="sensei_proposedstart" type="datetime" customfield="true" />
+      <field displayname="Release Strategy" name="sensei_releasestrategy" type="string" customfield="true" />
+      <field displayname="Risks Closed" name="sensei_stage3_question1" type="bool" customfield="true" />
+      <field displayname="ROI" name="sensei_returnoninvestment" type="decimal" customfield="true" />
+      <field displayname="Routine Response Targets" name="sensei_routineresponsetargets" type="string" customfield="true" />
+      <field displayname="Scope and schedule" name="sensei_stage1_question1" type="bool" customfield="true" />
+      <field displayname="Sensei Project" name="sensei_projectid" type="guid" primaryKey="true" />
+      <field displayname="Sponsor" name="sensei_sponsor" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Steering Committee Review" name="sensei_steeringcommitteereview" type="entityreference" lookupType="sensei_approval" customfield="true" />
+      <field displayname="Target Finish" name="sensei_targetfinish" type="datetime" customfield="true" />
+      <field displayname="Uptime Targets" name="sensei_uptimetargets" type="string" customfield="true" />
+      <field displayname="Urgent Response Targets" name="sensei_urgentresponsetargets" type="string" customfield="true" />
+      <field displayname="Approval from Baseline Schedule Review" name="sensei_baselineschedulereview_approved_yn" type="bool" customfield="true" />
+      <field displayname="Approval from Departmental Review" name="sensei_departmentalreview_approved_yn" type="bool" customfield="true" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+    </fields>
+  </entity>
+  <entity name="sensei_program" displayname="Program" etc="10162" primaryidfield="sensei_programid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="% Complete" name="sensei_percentcomplete" type="number" customfield="true" />
+      <field displayname="Benefits and Disbenefits" name="sensei_benefitsanddisbenefits" type="string" customfield="true" />
+      <field displayname="Cost Type" name="sensei_costtype" type="optionsetvalue" customfield="true" />
+      <field displayname="Department" name="sensei_department" type="optionsetvalue" customfield="true" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Expected Benefits" name="sensei_expectedbenefits" type="string" customfield="true" />
+      <field displayname="Finish Date" name="sensei_finishdate" type="datetime" customfield="true" />
+      <field displayname="Investment Category" name="sensei_investmentcategory" type="optionsetvalue" customfield="true" />
+      <field displayname="Justification" name="sensei_justification" type="string" customfield="true" />
+      <field displayname="Location" name="sensei_location" type="string" customfield="true" />
+      <field displayname="Major Risks and Opportunities" name="sensei_majorrrisksandopportunities" type="string" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Options" name="sensei_options" type="string" customfield="true" />
+      <field displayname="Organisational Change Impact" name="sensei_organisationalchangeimpact" type="optionsetvalue" customfield="true" />
+      <field displayname="Overview" name="sensei_overview" type="string" customfield="true" />
+      <field displayname="Portfolio" name="sensei_portfolio" type="entityreference" lookupType="sensei_portfolio" customfield="true" />
+      <field displayname="Problem Statement" name="sensei_problemstatement" type="string" customfield="true" />
+      <field displayname="Program" name="sensei_programid" type="guid" primaryKey="true" />
+      <field displayname="Sponsor" name="sensei_sponsor" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Start Date" name="sensei_startdate" type="datetime" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+    </fields>
+  </entity>
+  <entity name="sensei_bookableresource" displayname="Bookable Resource" etc="10289" primaryidfield="sensei_bookableresourceid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Bookable Resource" name="sensei_bookableresourceid" type="guid" primaryKey="true" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Resource Type" name="sensei_resourcetype" type="optionsetvalue" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="User" name="sensei_user" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Cost (per hour)" name="sensei_cost" type="money" customfield="true" />
+      <field displayname="Cost (per hour) (Base)" name="sensei_cost_base" type="money" customfield="true" />
+      <field displayname="End Date" name="sensei_enddate" type="datetime" customfield="true" />
+      <field displayname="Enterprise Calendar" name="sensei_enterprisecalendar" type="entityreference" lookupType="sensei_enterprisecalendar" customfield="true" />
+      <field displayname="External Resource ID" name="sensei_externalresourceid" type="string" customfield="true" />
+      <field displayname="External System" name="sensei_externalsystem" type="entityreference" lookupType="sensei_externalsystem" customfield="true" />
+      <field displayname="Field Lock" name="sensei_fieldlock" type="string" customfield="true" />
+      <field displayname="Last Capacity Calculation Completion" name="sensei_lastcapacitycalculationcompletion" type="datetime" customfield="true" />
+      <field displayname="Line Manager" name="sensei_linemanager" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Location" name="sensei_location" type="string" customfield="true" />
+      <field displayname="Origin of Change" name="sensei_originofchange" type="string" customfield="true" />
+      <field displayname="Primary Role" name="sensei_primaryrole" type="entityreference" lookupType="sensei_bookableresource" customfield="true" />
+      <field displayname="Related Resource" name="sensei_relatedresource" type="entityreference" lookupType="sensei_bookableresource" customfield="true" />
+      <field displayname="Resource Department" name="sensei_resourcedepartment" type="optionsetvalue" customfield="true" />
+      <field displayname="Role" name="sensei_role" type="optionsetvalue" customfield="true" />
+      <field displayname="Secondary Role 1" name="sensei_secondaryrole1" type="entityreference" lookupType="sensei_bookableresource" customfield="true" />
+      <field displayname="Secondary Role 2" name="sensei_secondaryrole2" type="entityreference" lookupType="sensei_bookableresource" customfield="true" />
+      <field displayname="Sell Rate (per hour)" name="sensei_sellrate" type="money" customfield="true" />
+      <field displayname="Sell Rate (per hour) (Base)" name="sensei_sellrate_base" type="money" customfield="true" />
+      <field displayname="Start Date" name="sensei_startdate" type="datetime" customfield="true" />
+      <field displayname="Target Utilization" name="sensei_targetutilization" type="number" customfield="true" />
+      <field displayname="Time Zone" name="sensei_timezone" type="number" customfield="true" />
+      <field displayname="Timesheet Manager" name="sensei_timesheetmanager" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Timesheet Required" name="sensei_timesheetrequired" type="bool" customfield="true" />
+      <field displayname="Trigger Capacity Calculation" name="sensei_triggercapacitycalculation" type="number" customfield="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_resourceassignment" displayname="Resource Assignment" etc="10295" primaryidfield="sensei_resourceassignmentid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Resource" name="sensei_resource" type="entityreference" lookupType="sensei_bookableresource" customfield="true" />
+      <field displayname="Resource Assignment Id" name="sensei_resourceassignmentid" type="guid" primaryKey="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Task" name="sensei_task" type="entityreference" lookupType="sensei_task" customfield="true" />
+      <field displayname="Units" name="sensei_unit" type="decimal" customfield="true" />
+      <field displayname="External Assignment ID" name="sensei_externalassignmentid" type="string" customfield="true" />
+      <field displayname="External Project ID" name="sensei_externalprojectid" type="string" customfield="true" />
+      <field displayname="External Resource ID" name="sensei_externalresourceid" type="string" customfield="true" />
+      <field displayname="External Task ID" name="sensei_externaltaskid" type="string" customfield="true" />
+      <field displayname="Origin of Change" name="sensei_originofchange" type="string" customfield="true" />
+      <field displayname="Field Lock" name="sensei_fieldlock" type="string" customfield="true" />
+      <field displayname="Is External" name="sensei_isexternal" type="bool" customfield="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_sprint" displayname="Sprint" etc="10297" primaryidfield="sensei_sprintid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Finish" name="sensei_finish" type="datetime" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Project" name="sensei_project" type="entityreference" lookupType="sensei_project" customfield="true" />
+      <field displayname="Sprint" name="sensei_sprintid" type="guid" primaryKey="true" />
+      <field displayname="Start" name="sensei_start" type="datetime" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+    </fields>
+  </entity>
+  <entity name="sensei_taskdependency" displayname="Task Dependency" etc="10298" primaryidfield="sensei_taskdependencyid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Offset" name="sensei_offset" type="number" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Task" name="sensei_task" type="entityreference" lookupType="sensei_task" customfield="true" />
+      <field displayname="Task Dependency" name="sensei_taskdependency" type="entityreference" lookupType="sensei_task" customfield="true" />
+      <field displayname="Task Dependency Id" name="sensei_taskdependencyid" type="guid" primaryKey="true" />
+      <field displayname="Type" name="sensei_type" type="optionsetvalue" customfield="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_financialtransaction" displayname="Financial Transaction" etc="10154" primaryidfield="sensei_financialtransactionid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Date" name="sensei_date" type="datetime" customfield="true" />
+      <field displayname="Financial Item" name="sensei_financialitem" type="entityreference" lookupType="sensei_financialitem" customfield="true" />
+      <field displayname="Financial Transaction" name="sensei_financialtransactionid" type="guid" primaryKey="true" />
+      <field displayname="Locked" name="sensei_locked" type="bool" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Note" name="sensei_note" type="string" customfield="true" />
+      <field displayname="Project" name="sensei_project" type="entityreference" lookupType="sensei_project" customfield="true" />
+      <field displayname="Status" name="statecode" type="state" />
+      <field displayname="Status Reason" name="statuscode" type="status" />
+      <field displayname="Type" name="sensei_type" type="optionsetvalue" customfield="true" />
+      <field displayname="Value" name="sensei_value" type="money" customfield="true" />
+      <field displayname="Value (Base)" name="sensei_value_base" type="money" customfield="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_stakeholder" displayname="Stakeholder" etc="10171" primaryidfield="sensei_stakeholderid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Communications frequency" name="sensei_communicationsfrequency" type="string" customfield="true" />
+      <field displayname="Communications requirements" name="sensei_communicationsrequirements" type="string" customfield="true" />
+      <field displayname="Created By" name="createdby" type="entityreference" lookupType="systemuser" />
+      <field displayname="Created On" name="createdon" type="datetime" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Portfolio" name="sensei_portfolio" type="entityreference" lookupType="sensei_portfolio" customfield="true" />
+      <field displayname="Program" name="sensei_program" type="entityreference" lookupType="sensei_program" customfield="true" />
+      <field displayname="Role on project" name="sensei_roleonproject" type="string" customfield="true" />
+      <field displayname="Stakeholder" name="sensei_stakeholderid" type="guid" primaryKey="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_calendarexception" displayname="Calendar Exception" etc="10364" primaryidfield="sensei_calendarexceptionid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="To" name="sensei_to" type="datetime" customfield="true" />
+      <field displayname="Enterprise Calendar" name="sensei_enterprisecalendar" type="entityreference" lookupType="sensei_enterprisecalendar" customfield="true" />
+      <field displayname="From" name="sensei_from" type="datetime" customfield="true" />
+      <field displayname="Calendar Exception" name="sensei_calendarexceptionid" type="guid" primaryKey="true" />
+      <field displayname="Bookable Resource" name="sensei_bookableresource" type="entityreference" lookupType="sensei_bookableresource" customfield="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_comment" displayname="Comment" etc="10491" primaryidfield="sensei_commentid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Comment" name="sensei_commentid" type="guid" primaryKey="true" />
+      <field displayname="Comment Text" name="sensei_commenttext" type="string" customfield="true" />
+      <field displayname="Thread ID" name="sensei_threadid" type="string" customfield="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_nonprojecttime" displayname="Non Project Time" etc="10516" primaryidfield="sensei_nonprojecttimeid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Always Display" name="sensei_alwaysdisplay" type="bool" customfield="true" />
+      <field displayname="Department" name="sensei_department" type="optionsetvaluecollection" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Non Project Time" name="sensei_nonprojecttimeid" type="guid" primaryKey="true" />
+      <field displayname="Status" name="sensei_nonprojecttimestatus" type="bool" customfield="true" />
+      <field displayname="Work Type" name="sensei_worktype" type="optionsetvalue" customfield="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_resourcecostrate" displayname="Resource Cost Rate" etc="10343" primaryidfield="sensei_resourcecostrateid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Bookable Resource" name="sensei_bookableresource" type="entityreference" lookupType="sensei_bookableresource" customfield="true" />
+      <field displayname="Effective Date" name="sensei_effectivedate" type="datetime" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Project" name="sensei_project" type="entityreference" lookupType="sensei_project" customfield="true" />
+      <field displayname="Proposal" name="sensei_proposal" type="entityreference" lookupType="sensei_proposal" customfield="true" />
+      <field displayname="Rate (Base)" name="sensei_rate_base" type="money" customfield="true" />
+      <field displayname="Rate (Hourly)" name="sensei_rate" type="money" customfield="true" />
+      <field displayname="Resource Cost Rate" name="sensei_resourcecostrateid" type="guid" primaryKey="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_resourcerequest" displayname="Resource Request" etc="10377" primaryidfield="sensei_resourcerequestid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Bookable Resource" name="sensei_bookableresource" type="entityreference" lookupType="sensei_bookableresource" customfield="true" />
+      <field displayname="Drafted By" name="sensei_draftedby" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Drafted Date" name="sensei_drafteddate" type="datetime" customfield="true" />
+      <field displayname="Has Changes" name="sensei_haschanges" type="bool" customfield="true" />
+      <field displayname="Has Submitted Changes" name="sensei_hassubmittedchanges" type="bool" customfield="true" />
+      <field displayname="Modified By Approver" name="sensei_modifiedbyapprover" type="bool" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Primary Role" name="sensei_primaryrole" type="entityreference" lookupType="sensei_bookableresource" customfield="true" />
+      <field displayname="Project" name="sensei_project" type="entityreference" lookupType="sensei_project" customfield="true" />
+      <field displayname="Proposal" name="sensei_proposal" type="entityreference" lookupType="sensei_proposal" customfield="true" />
+      <field displayname="Resource Request" name="sensei_resourcerequestid" type="guid" primaryKey="true" />
+      <field displayname="Reviewed By" name="sensei_reviewedby" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Reviewed Date" name="sensei_revieweddate" type="datetime" customfield="true" />
+      <field displayname="Split Parent" name="sensei_splitparent" type="entityreference" lookupType="sensei_resourcerequest" customfield="true" />
+      <field displayname="Status" name="sensei_status" type="optionsetvalue" customfield="true" />
+      <field displayname="Submitted By" name="sensei_submittedby" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Submitted Date" name="sensei_submitteddate" type="datetime" customfield="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_resourcerequestcomment" displayname="Resource Request Comment" etc="10344" primaryidfield="sensei_resourcerequestcommentid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Comment" name="sensei_comment" type="string" customfield="true" />
+      <field displayname="Datestamp" name="sensei_datestamp" type="datetime" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Resource Request" name="sensei_resourcerequest" type="entityreference" lookupType="sensei_resourcerequest" customfield="true" />
+      <field displayname="Resource Request Comment" name="sensei_resourcerequestcommentid" type="guid" primaryKey="true" />
+      <field displayname="User" name="sensei_user" type="entityreference" lookupType="systemuser" customfield="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_resourcerequestdata" displayname="Resource Request Data" etc="10378" primaryidfield="sensei_resourcerequestdataid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Approval Status" name="sensei_approvalstatus" type="optionsetvalue" customfield="true" />
+      <field displayname="Approved Units (Hours)" name="sensei_approvedunitshours" type="decimal" customfield="true" />
+      <field displayname="Date" name="sensei_date" type="datetime" customfield="true" />
+      <field displayname="Draft Units (Hours)" name="sensei_draftunits" type="decimal" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Proposed Units (Hours)" name="sensei_proposedunits" type="decimal" customfield="true" />
+      <field displayname="Resource Request" name="sensei_resourcerequest" type="entityreference" lookupType="sensei_resourcerequest" customfield="true" />
+      <field displayname="Resource Request Data" name="sensei_resourcerequestdataid" type="guid" primaryKey="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_resourcesellrate" displayname="Resource Sell Rate" etc="10346" primaryidfield="sensei_resourcesellrateid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Bookable Resource" name="sensei_bookableresource" type="entityreference" lookupType="sensei_bookableresource" customfield="true" />
+      <field displayname="Effective Date" name="sensei_effectivedate" type="datetime" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Project" name="sensei_project" type="entityreference" lookupType="sensei_project" customfield="true" />
+      <field displayname="Proposal" name="sensei_proposal" type="entityreference" lookupType="sensei_proposal" customfield="true" />
+      <field displayname="Rate (Base)" name="sensei_rate_base" type="money" customfield="true" />
+      <field displayname="Rate (Hourly)" name="sensei_rate" type="money" customfield="true" />
+      <field displayname="Resource Sell Rate" name="sensei_resourcesellrateid" type="guid" primaryKey="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_timesheet" displayname="Timesheet" etc="10533" primaryidfield="sensei_timesheetid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Bookable Resource" name="sensei_bookableresource" type="entityreference" lookupType="sensei_bookableresource" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Rows Updated Token" name="sensei_rowsupdatedtoken" type="string" customfield="true" />
+      <field displayname="Timesheet" name="sensei_timesheetid" type="guid" primaryKey="true" />
+      <field displayname="Timesheet Approved Date" name="sensei_approveddate" type="datetime" customfield="true" />
+      <field displayname="Timesheet Approver User" name="sensei_approveruser" type="entityreference" lookupType="systemuser" customfield="true" />
+      <field displayname="Timesheet Period" name="sensei_timesheetperiod" type="entityreference" lookupType="sensei_timesheetperiod" customfield="true" />
+      <field displayname="Timesheet Status" name="sensei_timesheetstatus" type="optionsetvalue" customfield="true" />
+      <field displayname="Total Actual" name="sensei_totalactual" type="decimal" customfield="true" />
+      <field displayname="Total Non Project Hours" name="sensei_totalnonprojectactual" type="decimal" customfield="true" />
+      <field displayname="Total Project Hours" name="sensei_totalprojecthours" type="decimal" customfield="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_timesheetdata" displayname="Timesheet Data" etc="10498" primaryidfield="sensei_timesheetdataid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Comment" name="sensei_comment" type="string" customfield="true" />
+      <field displayname="Date" name="sensei_date" type="datetime" customfield="true" />
+      <field displayname="Hours" name="sensei_hours" type="decimal" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Timesheet Data" name="sensei_timesheetdataid" type="guid" primaryKey="true" />
+      <field displayname="Timesheet Row" name="sensei_timesheetrow" type="entityreference" lookupType="sensei_timesheetrow" customfield="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_timesheetperiod" displayname="Timesheet Period" etc="10525" primaryidfield="sensei_timesheetperiodid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Finish Date" name="sensei_finish" type="datetime" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Start Date" name="sensei_start" type="datetime" customfield="true" />
+      <field displayname="Timesheet Period" name="sensei_timesheetperiodid" type="guid" primaryKey="true" />
+      <field displayname="Timesheet Period Status" name="sensei_status" type="bool" customfield="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_timesheetrow" displayname="Timesheet Row" etc="10507" primaryidfield="sensei_timesheetrowid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Non Project Time" name="sensei_nonprojecttime" type="entityreference" lookupType="sensei_nonprojecttime" customfield="true" />
+      <field displayname="Project" name="sensei_project" type="entityreference" lookupType="sensei_project" customfield="true" />
+      <field displayname="Project Name" name="sensei_project_name" type="string" customfield="true" />
+      <field displayname="Task" name="sensei_task" type="entityreference" lookupType="sensei_task" customfield="true" />
+      <field displayname="Task Name" name="sensei_task_name" type="string" customfield="true" />
+      <field displayname="Timesheet" name="sensei_timesheet" type="entityreference" lookupType="sensei_timesheet" customfield="true" />
+      <field displayname="Timesheet Row" name="sensei_timesheetrowid" type="guid" primaryKey="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_evaluationcriteriacategory" displayname="Evaluation Criteria Category" etc="10706" primaryidfield="sensei_evaluationcriteriacategoryid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Evaluation Criteria Category" name="sensei_evaluationcriteriacategoryid" type="guid" primaryKey="true" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Order" name="sensei_sortorder" type="decimal" customfield="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_evaluationcriteria" displayname="Evaluation Criteria" etc="10705" primaryidfield="sensei_evaluationcriteriaid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Evaluation Criteria" name="sensei_evaluationcriteriaid" type="guid" primaryKey="true" />
+      <field displayname="Impact" name="sensei_impact" type="optionsetvalue" customfield="true" />
+      <field displayname="JSON" name="sensei_json" type="string" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Order" name="sensei_sortorder" type="decimal" customfield="true" />
+      <field displayname="Category" name="sensei_category" type="entityreference" lookupType="sensei_evaluationcriteriacategory" customfield="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_evaluationpoint" displayname="Evaluation Point" etc="10707" primaryidfield="sensei_evaluationpointid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Evaluation Point" name="sensei_evaluationpointid" type="guid" primaryKey="true" />
+      <field displayname="Evaluation Criteria" name="sensei_evaluationcriteria" type="entityreference" lookupType="sensei_evaluationcriteria" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Order" name="sensei_sortorder" type="decimal" customfield="true" />
+      <field displayname="Points" name="sensei_points" type="number" customfield="true" />
+      <field displayname="Statement" name="sensei_statement" type="string" customfield="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_prioritisationmodel" displayname="Prioritisation Model" etc="10731" primaryidfield="sensei_prioritisationmodelid" primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="JSON" name="sensei_json" type="string" customfield="true" />
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Import Sequence Number" name="importsequencenumber" type="number" />
+      <field displayname="Prioritisation Formula" name="sensei_prioritisationformula" type="optionsetvalue" customfield="true" />
+      <field displayname="Prioritisation Model" name="sensei_prioritisationmodelid" type="guid" primaryKey="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_prioritisationmodelevaluationcriteria" displayname="Prioritisation Model &lt;&gt; Evaluation Criteria" etc="10732" primaryidfield="sensei_prioritisationmodelevaluationcriteriaid" primarynamefield="sensei_internalname" disableplugins="false">
+    <fields>
+      <field displayname="Prioritisation Model Evaluation Criteria" name="sensei_prioritisationmodelevaluationcriteriaid" type="guid" primaryKey="true" />
+      <field displayname="Prioritisation Model" name="sensei_prioritisationmodel" type="entityreference" lookupType="sensei_prioritisationmodel" customfield="true" />
+      <field displayname="Internal Name" name="sensei_internalname" type="string" customfield="true" />
+      <field displayname="Evaluation Criteria" name="sensei_evaluationcriteria" type="entityreference" lookupType="sensei_evaluationcriteria" customfield="true" />
+      <field displayname="Weight" name="sensei_weight" type="number" customfield="true" />
+    </fields>
+  </entity>
+  <entity name="sensei_plan" displayname="Prioritisation" etc="10772" primaryidfield="sensei_planid"
+    primarynamefield="sensei_name" disableplugins="false">
+    <fields>
+      <field displayname="Description" name="sensei_description" type="string" customfield="true" />
+      <field displayname="Name" name="sensei_name" type="string" customfield="true" />
+      <field displayname="Prioritisation Model" name="sensei_prioritisationmodel"
+        type="entityreference" lookupType="sensei_prioritisationmodel" customfield="true" />
+      <field displayname="Plan" name="sensei_planid" type="guid" primaryKey="true" />
+    </fields>
+  </entity>
+</entities>
