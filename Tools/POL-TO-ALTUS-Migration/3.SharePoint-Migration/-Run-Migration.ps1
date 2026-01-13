@@ -76,7 +76,7 @@ $ClientId = "30b4ad0b-d939-4cd4-bb6d-fa2d39fb4694"  # Entra ID Client ID (defaul
 # Set up file paths relative to this script's location
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $MappingJsonPath = Join-Path $ScriptDir "export.config.json"
-$CmtSchemaPath = Join-Path $ScriptDir "data_schema_test.xml"
+$CmtSchemaPath = Join-Path $ScriptDir "data_schema.xml"
 $BaseOutputFolder = Join-Path $ScriptDir "Output"
 
 # ==============================================================================

@@ -283,6 +283,8 @@ function Invoke-BooleanFieldHandler {
         [string]$TargetAttribute,
         $ColumnConfig
     )
+    
+    if ($null -eq $Value -or $Value -eq "") { return $null }
 
     # Convert boolean or string representation to boolean
     $boolValue = $false
