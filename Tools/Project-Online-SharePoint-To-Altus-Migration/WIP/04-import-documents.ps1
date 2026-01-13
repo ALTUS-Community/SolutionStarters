@@ -22,7 +22,7 @@
   Examples: "Project A", "*2024*", "Project*", @("ProjectA", "ProjectB")
 
 .PARAMETER ClientId
-  Optional Entra ID Client ID for authentication. Defaults to Sensei app client ID.
+  Optional Entra ID Client ID for authentication. Defaults to Altus app client ID.
 
 .PARAMETER MatchingMode
   How to match source projects to target webs:
@@ -261,11 +261,29 @@ try {
                     if ($CreateMissingLibraries) {
                         Write-Host "    Creating library: $libraryName" -ForegroundColor Cyan
                         $library = New-PnPList -Title $libraryName -Template DocumentLibrary
+                        # Ensure versioning is enabled for proper version uploads
+                        try {
+                            Set-PnPList -Identity $libraryName -EnableVersioning:$true -EnableMinorVersions:$true | Out-Null
+                            Write-Log "    Enabled versioning on '$libraryName'"
+                        }
+                        catch {
+                            Write-LogWarning "    Could not enable versioning on '$libraryName': $($_.Exception.Message)"
+                        }
                         Write-Log "    Created document library: $libraryName"
                     }
                     else {
                         Write-LogWarning "    Library '$libraryName' not found in target web (use -CreateMissingLibraries to auto-create)"
                         continue
+                    }
+                }
+                else {
+                    # Ensure versioning is enabled on existing library
+                    try {
+                        Set-PnPList -Identity $libraryName -EnableVersioning:$true -EnableMinorVersions:$true | Out-Null
+                        Write-Log "    Verified versioning on '$libraryName'"
+                    }
+                    catch {
+                        Write-LogWarning "    Could not verify/enable versioning on '$libraryName': $($_.Exception.Message)"
                     }
                 }
             }
@@ -276,7 +294,7 @@ try {
         
             # Import documents recursively
             try {
-                Import-DocumentsRecursive -SourcePath $libraryPath -TargetLibrary $library -ProjectName $projectName -LibraryName $libraryName
+                Import-DocumentsRecursive -SourcePath $libraryPath -TargetLibrary $library -ProjectName $projectName -LibraryName $libraryName -TargetFolderServerRelativeUrl $library.RootFolder.ServerRelativeUrl
             }
             catch {
                 Write-LogError "    Error importing documents from library: $($_.Exception.Message)" -Exception $_.Exception.ToString()
@@ -293,10 +311,15 @@ try {
             [string]$SourcePath,
             [object]$TargetLibrary,
             [string]$ProjectName,
-            [string]$LibraryName
+            [string]$LibraryName,
+            [string]$TargetFolderServerRelativeUrl
         )
     
-        # Get all files in current folder
+        if (-not $TargetFolderServerRelativeUrl) {
+            $TargetFolderServerRelativeUrl = $TargetLibrary.RootFolder.ServerRelativeUrl
+        }
+
+        # Get all files in current folder (direct files with no per-document folder)
         $files = Get-ChildItem -Path $SourcePath -File
     
         foreach ($file in $files) {
@@ -311,8 +334,8 @@ try {
             try {
                 Write-Host "    Uploading: $fileName" -NoNewline -ForegroundColor Cyan
             
-                # Upload file to root of library
-                Add-PnPFile -Path $filePath -Folder $TargetLibrary.RootFolder -Overwrite
+                # Upload file to current target folder
+                Add-PnPFile -Path $filePath -Folder $TargetFolderServerRelativeUrl -Overwrite
             
                 $script:statsDocuments++
                 Write-Host " `u{2713}" -ForegroundColor Green
@@ -331,26 +354,118 @@ try {
         foreach ($subfolder in $subfolders) {
             $subfolderName = $subfolder.Name
         
-            Write-Log "    Descending into folder: $subfolderName"
-        
-            # Create folder in target library
-            $targetFolder = $null
-            try {
-                $folders = Get-PnPFolderInPath -FolderSiteRelativeUrl "$($TargetLibrary.RootFolder.ServerRelativeUrl)/$subfolderName"
-                if (-not $folders) {
-                    $targetFolder = Add-PnPFolder -Name $subfolderName -Folder $TargetLibrary.RootFolder
+            # Detect per-document export folders (contain metadata.json)
+            $docMetadataPath = Join-Path $subfolder.FullName "metadata.json"
+            if (Test-Path $docMetadataPath) {
+                # This is a document folder; import versions directly into current target folder
+                try {
+                    Import-DocumentFolder -DocFolderPath $subfolder.FullName -TargetFolderServerRelativeUrl $TargetFolderServerRelativeUrl -LibraryName $LibraryName -ProjectName $ProjectName
                 }
-                else {
-                    $targetFolder = $folders[0]
+                catch {
+                    Write-LogWarning "    Error importing document folder '$subfolderName': $($_.Exception.Message)"
+                }
+                continue
+            }
+
+            Write-Log "    Descending into folder: $subfolderName"
+
+            # Create or get subfolder in target library
+            $newTargetFolderUrl = "$TargetFolderServerRelativeUrl/$subfolderName"
+            try {
+                $existing = Get-PnPFolderInPath -FolderSiteRelativeUrl $newTargetFolderUrl
+                if (-not $existing) {
+                    Add-PnPFolder -Name $subfolderName -FolderSiteRelativeUrl $TargetFolderServerRelativeUrl | Out-Null
                 }
             }
             catch {
                 Write-LogWarning "    Could not create/find folder '$subfolderName': $($_.Exception.Message)"
                 continue
             }
-        
-            # Recurse into subfolder
-            Import-DocumentsRecursive -SourcePath $subfolder.FullName -TargetLibrary $TargetLibrary -ProjectName $ProjectName -LibraryName $LibraryName
+
+            # Recurse into subfolder preserving structure
+            Import-DocumentsRecursive -SourcePath $subfolder.FullName -TargetLibrary $TargetLibrary -ProjectName $ProjectName -LibraryName $LibraryName -TargetFolderServerRelativeUrl $newTargetFolderUrl
+        }
+    }
+
+    # Import a single document folder, including version history
+    function Import-DocumentFolder {
+        param(
+            [string]$DocFolderPath,
+            [string]$TargetFolderServerRelativeUrl,
+            [string]$LibraryName,
+            [string]$ProjectName
+        )
+
+        $metadataPath = Join-Path $DocFolderPath "metadata.json"
+        if (-not (Test-Path $metadataPath)) { return }
+
+        $metadata = Get-Content -Path $metadataPath -Raw | ConvertFrom-Json
+        $originalFileName = $metadata.FileName
+        $currentFilePath = Join-Path $DocFolderPath $originalFileName
+
+        # Build version content list: include non-current versions saved as *_v<Label> plus current
+        $baseName = [System.IO.Path]::GetFileNameWithoutExtension($originalFileName)
+        $ext = [System.IO.Path]::GetExtension($originalFileName)
+
+        $versionItems = @()
+        foreach ($v in $metadata.Versions) {
+            # Map to exported file path for non-current versions
+            if (-not $v.IsCurrent) {
+                $verFile = Join-Path $DocFolderPath ("{0}_v{1}{2}" -f $baseName, $v.VersionLabel, $ext)
+                if (Test-Path $verFile) {
+                    $versionItems += [PSCustomObject]@{ Path = $verFile; Label = $v.VersionLabel; Created = $v.Created; Comment = $v.CheckInComment; IsCurrent = $false }
+                }
+            }
+            else {
+                # Keep reference to current version metadata for label/comment
+                $currentMeta = $v
+            }
+        }
+
+        # Add current version content as final step
+        $versionItems += [PSCustomObject]@{ Path = $currentFilePath; Label = ($currentMeta.VersionLabel); Created = ($currentMeta.Created); Comment = ($currentMeta.CheckInComment); IsCurrent = $true }
+
+        # Sort by Created ascending to recreate history
+        $orderedVersions = $versionItems | Sort-Object -Property Created
+
+        $fileServerRelativeUrl = "$TargetFolderServerRelativeUrl/$originalFileName"
+
+        $isFirst = $true
+        foreach ($ver in $orderedVersions) {
+            try {
+                if ($isFirst) {
+                    Write-Host "    Creating file: $originalFileName (v$($ver.Label))" -NoNewline -ForegroundColor Cyan
+                    Add-PnPFile -Path $ver.Path -Folder $TargetFolderServerRelativeUrl -FileName $originalFileName -Overwrite:$false | Out-Null
+                    $isFirst = $false
+                    $script:statsDocuments++
+                    Write-Host " `u{2713}" -ForegroundColor Green
+                    $script:logContent += "    Created: $originalFileName (v$($ver.Label))"
+                }
+                else {
+                    Write-Host "    Uploading version: v$($ver.Label) for $originalFileName" -NoNewline -ForegroundColor Cyan
+                    # Overwrite content to create a new version
+                    Add-PnPFile -Path $ver.Path -Folder $TargetFolderServerRelativeUrl -FileName $originalFileName -Overwrite | Out-Null
+                    $script:statsVersions++
+
+                    # Attempt to set check-in comment (best-effort)
+                    try {
+                        if ($ver.Comment) {
+                            # Determine major/minor based on label (simple heuristic)
+                            $checkinType = if ($ver.Label -match "\.0$") { "Major" } else { "Minor" }
+                            CheckIn-PnPFile -Url $fileServerRelativeUrl -Comment $ver.Comment -CheckinType $checkinType -ErrorAction SilentlyContinue | Out-Null
+                        }
+                    }
+                    catch { }
+
+                    Write-Host " `u{2713}" -ForegroundColor Green
+                    $script:logContent += "    Uploaded version: v$($ver.Label) for $originalFileName"
+                }
+            }
+            catch {
+                Write-Host " X" -ForegroundColor Red
+                $script:logContent += "[WARNING]     Failed version upload for '$originalFileName' (v$($ver.Label)): $($_.Exception.Message)"
+                $script:logContent += "    Exception: $($_.Exception.ToString())"
+            }
         }
     }
 

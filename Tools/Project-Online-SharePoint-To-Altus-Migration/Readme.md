@@ -180,9 +180,52 @@ Maps SharePoint fields to Dynamics 365 attributes. Controls data transformation 
   If a field value is 0.5, it matches threshold 0.2 (highest threshold ≤ value) → 955000001.
 
 - **Field Types Supported:**
-  - `Text`, `Number`, `Money`, `DateTime` – Direct conversion
-  - `OptionSet`, `Status`, `State` – Use choiceMap or thresholds
-  - `Lookup` – Converts to D365 lookup with entity reference
+  - `Text`
+  - `Number`, `Money` — supports optional `multiplier`/`divider` per column (e.g., Probability 0.75 with `multiplier:100` exports as 75)
+  - `DateTime`
+  - `OptionSet`, `Status`, `State` — use `choiceMap` or `thresholds`
+  - `OptionSetCollection` — multi-select choice mapping; use `choiceMap` and optional `includeSentinel:true` to emit values as `[ -1,<ids>,-1 ]`
+  - `Boolean` — exports literal `"true"`/`"false"`; optionally map with `trueValue`/`falseValue` when needed
+  - `Lookup` — converts to D365 lookup with entity reference
+
+**Examples of new mappings:**
+
+- Scale a percentage to whole number output:
+  ```json
+  {
+    "spFieldInternalName": "Probability",
+    "entityAttribute": "custom_percenttestwn",
+    "type": "Number",
+    "multiplier": 100
+  }
+  ```
+
+- Boolean exported as true/false (supports SP boolean input):
+  ```json
+  {
+    "spFieldInternalName": "Bool_x0020_Test",
+    "entityAttribute": "custom_booltest",
+    "type": "Boolean"
+  }
+  ```
+
+- Multi-select optionset with sentinel wrapping for CMT import:
+  ```json
+  {
+    "spFieldInternalName": "Multi_x0020_Choice_x0020_Test",
+    "entityAttribute": "custom_multichoicetest",
+    "type": "OptionSetCollection",
+    "includeSentinel": true,
+    "choiceMap": {
+      "Negligible": 955000000,
+      "Minor": 955000001,
+      "Moderate": 955000002,
+      "Major": 955000003,
+      "Severe": 955000004
+    }
+  }
+  ```
+  Output format in Data.xml: `[ -1,955000000,955000002,955000003,-1 ]`
 
 ### `data_schema.xml` – CMT Schema
 

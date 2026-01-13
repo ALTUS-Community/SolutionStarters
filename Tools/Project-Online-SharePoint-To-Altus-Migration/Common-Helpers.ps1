@@ -277,6 +277,90 @@ function Invoke-LookupFieldHandler {
     return $null
 }
 
+function Invoke-BooleanFieldHandler {
+    param(
+        $Value,
+        [string]$TargetAttribute,
+        $ColumnConfig
+    )
+
+    if ($null -eq $Value -or $Value -eq "") { return $null }
+
+    # Convert boolean or string representation to boolean
+    $boolValue = $false
+    if ($Value -is [bool]) {
+        $boolValue = $Value
+    }
+    else {
+        if ([bool]::TryParse($Value.ToString(), [ref]$boolValue)) {
+            # Successfully parsed
+        }
+        else {
+            Write-LogWarning "Cannot parse boolean value '$Value' for field '$TargetAttribute'."
+            return $null
+        }
+    }
+
+    # Return as lowercase string "true" or "false" for XML serialization
+    if ($boolValue) {
+        return "true"
+    }
+    else {
+        return "false"
+    }
+}
+
+function Invoke-OptionSetCollectionFieldHandler {
+    param(
+        $Value,
+        [string]$TargetAttribute,
+        $ColumnConfig
+    )
+
+    if ($null -eq $Value -or $Value -eq "") { return $null }
+
+    # Handle array or pipe-delimited string
+    $values = $null
+    if ($Value -is [array]) {
+        $values = $Value
+    }
+    else {
+        # Split on pipe or semicolon (common delimiters for multi-value fields)
+        $values = @($Value -split '[;|]' | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+    }
+
+    if ($values.Count -eq 0) { return $null }
+
+    $mappedValues = @()
+    foreach ($v in $values) {
+        if ($ColumnConfig.choiceMap -is [hashtable]) {
+            if ($ColumnConfig.choiceMap.ContainsKey($v)) {
+                $mappedValues += $ColumnConfig.choiceMap[$v]
+            }
+            else {
+                Write-LogWarning "ChoiceMap for field '$TargetAttribute' missing value '$v'. Available: $($ColumnConfig.choiceMap.Keys -join ', ')"
+            }
+        }
+        else {
+            $mapProps = $ColumnConfig.choiceMap.PSObject.Properties.Name
+            if ($mapProps -contains $v) {
+                $mappedValues += $ColumnConfig.choiceMap.$v
+            }
+            else {
+                Write-LogWarning "ChoiceMap for field '$TargetAttribute' missing value '$v'. Available: $($mapProps -join ', ')"
+            }
+        }
+    }
+
+    if ($mappedValues.Count -gt 0) {
+        $outValues = $mappedValues
+        if ($ColumnConfig.includeSentinel) { $outValues = @(-1) + $outValues + @(-1) }
+        return "[" + ($outValues -join ",") + "]"
+    }
+
+    return $null
+}
+
 function Invoke-OptionSetFieldHandler {
     param(
         $Value,
@@ -388,9 +472,27 @@ function Invoke-DateTimeFieldHandler {
 }
 
 function Invoke-NumericFieldHandler {
-    param($Value)
-    if ($Value) { return [string]$Value }
-    return $null
+    param(
+        $Value,
+        $ColumnConfig
+    )
+    if ($null -eq $Value -or $Value -eq "") { return $null }
+    
+    $numValue = [double]$Value
+    
+    # Apply multiplier if specified
+    if ($ColumnConfig -and $ColumnConfig.multiplier) {
+        $numValue = $numValue * [double]$ColumnConfig.multiplier
+    }
+    
+    # Apply divider if specified
+    if ($ColumnConfig -and $ColumnConfig.divider) {
+        if ([double]$ColumnConfig.divider -ne 0) {
+            $numValue = $numValue / [double]$ColumnConfig.divider
+        }
+    }
+    
+    return [string]$numValue
 }
 
 function Invoke-TextFieldHandler {
@@ -432,8 +534,14 @@ function Convert-SpItemToEntity {
                 $convertedValue = Invoke-LookupFieldHandler -Value $val -TargetAttribute $target `
                     -ColumnConfig $c -Ctx $Ctx -ProjectGuid $ProjectGuid -ProjectName $ProjectName
             }
+            "Boolean" {
+                $convertedValue = Invoke-BooleanFieldHandler -Value $val -TargetAttribute $target -ColumnConfig $c
+            }
             "OptionSet" {
                 $convertedValue = Invoke-OptionSetFieldHandler -Value $val -TargetAttribute $target -ColumnConfig $c
+            }
+            "OptionSetCollection" {
+                $convertedValue = Invoke-OptionSetCollectionFieldHandler -Value $val -TargetAttribute $target -ColumnConfig $c
             }
             "Status" {
                 $convertedValue = Invoke-StatusOrStateFieldHandler -Value $val -TargetAttribute $target -ColumnConfig $c
@@ -445,7 +553,7 @@ function Convert-SpItemToEntity {
                 $convertedValue = Invoke-DateTimeFieldHandler -Value $val
             }
             { $_ -eq "Money" -or $_ -eq "Number" } {
-                $convertedValue = Invoke-NumericFieldHandler -Value $val
+                $convertedValue = Invoke-NumericFieldHandler -Value $val -ColumnConfig $c
             }
             default {
                 $convertedValue = Invoke-TextFieldHandler -Value $val

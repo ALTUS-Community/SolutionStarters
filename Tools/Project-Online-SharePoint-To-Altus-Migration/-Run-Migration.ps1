@@ -36,12 +36,12 @@ $SiteCollections = @(
   #   Url           = "https://senseicloud.sharepoint.com/sites/vNext/"
   #   FolderName    = "vNext"         # Folder name for output
   #   ProjectFilter = @()              # Export all projects
-  # }
+  # },
   # @{
   #   Url           = "https://senseicloud.sharepoint.com/sites/PWASensei"
   #   FolderName    = "PWASensei"      # Folder name for output
   #   ProjectFilter = @()              # Export all projects
-  # }
+  # },
   # @{
   #   Url           = "https://senseicloud.sharepoint.com/sites/MigrationTest1"
   #   FolderName    = "Migration1"    # Folder name for output
@@ -52,7 +52,7 @@ $SiteCollections = @(
 # ------------------------------------------------------------------------------
 # Dynamics 365 Settings (for Import Operations)
 # ------------------------------------------------------------------------------
-$D365Url = "" # Your D365 environment URL
+$D365Url = "https://altusuat-qa5.crm6.dynamics.com/" # Your D365 environment URL
 $ImportParallelRequests = 4                          # Number of parallel import threads (1-10)
 $ImportForce = $true                                 # $true = update existing records, $false = insert only
 
@@ -76,7 +76,7 @@ $ClientId = "30b4ad0b-d939-4cd4-bb6d-fa2d39fb4694"  # Entra ID Client ID (defaul
 # Set up file paths relative to this script's location
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $MappingJsonPath = Join-Path $ScriptDir "export.config.json"
-$CmtSchemaPath = Join-Path $ScriptDir "data_schema.xml"
+$CmtSchemaPath = Join-Path $ScriptDir "data_schema_test.xml"
 $BaseOutputFolder = Join-Path $ScriptDir "Output"
 
 # ==============================================================================

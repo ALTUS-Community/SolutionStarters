@@ -47,20 +47,20 @@
 #>
 
 param(
-    [Parameter(Mandatory = $false)]
+    [Parameter(Mandatory = $true)]
     [string]$D365Url,
     
     [Parameter(Mandatory = $false)]
     [string]$SchemaPath = (Join-Path $PSScriptRoot "data_schema.xml"),
     
-    [Parameter(Mandatory = $false)]
-    [string]$DataFolder = (Join-Path $PSScriptRoot "Output"),
+    [Parameter(Mandatory = $true)]
+    [string] $DataFolder,
     
     [Parameter(Mandatory = $false)]
     [string]$MigrationExePath = (Join-Path $PSScriptRoot "Tools\DataMigration\Sensei.DevOps.D365.DataMigration.exe"),
     
     [Parameter(Mandatory = $false)]
-    [bool]$Force = $false,
+    [bool]$Force = $true,
     
     [Parameter(Mandatory = $false)]
     [int]$ParallelRequests = 4,
@@ -71,24 +71,16 @@ param(
     [Parameter(Mandatory = $false)]
     [string[]]$ProjectFilter = @(),
 
-    [Parameter(Mandatory = $false)]
-    [string]$POLExportPath = (Join-Path $PSScriptRoot "POLExports"),
-
-    [Parameter(Mandatory = $false)]
-    [switch]$Consolidate,
-
-    [Parameter(Mandatory = $false)]
-    [string]$ConsolidatedOutput = (Join-Path $PSScriptRoot "Output\Data_merged.xml")
+    [Parameter(Mandatory = $true)]
+    [string] $POLExportPath
 )
 
 if (-not $PSScriptRoot) {
     $PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 }
 
-$ConsolidatedOutput = Join-Path $PSScriptRoot (Split-Path -Path $ConsolidatedOutput -Leaf)
-if (-not $PSBoundParameters.ContainsKey('Consolidate')) {
-    $Consolidate = $true
-}
+## Consolidation: always enabled
+$ConsolidatedOutput = Join-Path $PSScriptRoot "Output\Data_merged.xml"
 
 # Import common helpers
 $commonHelpersPath = Join-Path $PSScriptRoot "Common-Helpers.ps1"
@@ -268,18 +260,23 @@ if ($ProjectFilter -and $ProjectFilter.Count -gt 0) {
 Write-Host "Found $($dataFiles.Count) Data.xml file(s) to import" -ForegroundColor Green
 Write-Host ""
 
-# Consolidate to a single Data.xml if requested
-if ($Consolidate) {
-    Write-Host "Consolidating $($dataFiles.Count) Data.xml file(s) into: $ConsolidatedOutput" -ForegroundColor Yellow
-    $merged = Merge-DataFiles -Files $dataFiles -OutputPath $ConsolidatedOutput
-    if (-not $merged) {
-        Write-Warning "Consolidation produced no output; aborting import."
-        $global:LASTEXITCODE = 1
-        return
-    }
-    $dataFiles = @($merged)
-    Write-Host "Consolidation complete. Running single import for merged file." -ForegroundColor Green
+# Always consolidate to a single Data.xml
+Write-Host "Consolidating $($dataFiles.Count) Data.xml file(s) into: $ConsolidatedOutput" -ForegroundColor Yellow
+$merged = Merge-DataFiles -Files $dataFiles -OutputPath $ConsolidatedOutput
+if (-not $merged) {
+    Write-Warning "Consolidation produced no output; aborting import."
+    $global:LASTEXITCODE = 1
+    return
 }
+$dataFiles = @($merged)
+Write-Host "Consolidation complete. Running single import for merged file." -ForegroundColor Green
+
+# Reminder: target project webs must exist before importing lists
+Write-Host ""
+Write-Host "  IMPORTANT: Ensure the projects already exist." -ForegroundColor Yellow
+Write-Host "      Projects must be created/imported before running the list import." -ForegroundColor Yellow
+Write-Host "      If the project web is missing, run the project import step first." -ForegroundColor Yellow
+Write-Host ""
 
 # Track results
 $results = @()

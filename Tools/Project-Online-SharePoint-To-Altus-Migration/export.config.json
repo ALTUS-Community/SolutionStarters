@@ -119,10 +119,54 @@
         },
 
         {
+          "spFieldInternalName": "Owner",
+          "entityAttribute": "sensei_riskowner",
+          "type": "Lookup",
+          "lookupEntity": "systemuser"
+        },
+
+        {
           "spFieldInternalName": "AssignedTo",
           "entityAttribute": "sensei_assignedto",
           "type": "Lookup",
           "lookupEntity": "systemuser"
+        },
+        {
+          "spFieldInternalName": "Probability",
+          "entityAttribute": "custom_percenttestwn",
+          "type": "Number",
+          "multiplier": 100
+        },
+        {
+          "spFieldInternalName": "Probability_x0020_Whole",
+          "entityAttribute": "custom_percenttestdec",
+          "type": "Number",
+          "divider": 100
+        },
+        {
+          "spFieldInternalName": "Bool_x0020_Test",
+          "entityAttribute": "custom_booltest",
+          "type": "Boolean",
+          "falseValue": 0,
+          "trueValue": 1
+        },
+        {
+          "spFieldInternalName": "Multi_x0020_Choice_x0020_Test",
+          "entityAttribute": "custom_multichoicetest",
+          "type": "OptionSetCollection",
+          "includeSentinel": true,
+          "choiceMap": {
+            "Negligible": 955000000,
+            "Minor": 955000001,
+            "Moderate": 955000002,
+            "Major": 955000003,
+            "Severe": 955000004
+          }
+        },
+        {
+          "spFieldInternalName": "Rich_x0020_Text_x0020_Test",
+          "entityAttribute": "custom_richtexttest",
+          "type": "Text"
         }
       ]
     },

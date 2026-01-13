@@ -50,8 +50,8 @@ param(
     [Parameter(Mandatory = $false)]
     [string] $CmtSchemaPath = (Join-Path (Split-Path -Parent $MyInvocation.MyCommand.Path) "data_schema.xml"),
 
-    [Parameter(Mandatory = $false)]
-    [string] $OutputFolder = (Join-Path (Split-Path -Parent $MyInvocation.MyCommand.Path) "Output"),
+    [Parameter(Mandatory = $true)]
+    [string] $OutputFolder,
 
     [Parameter(Mandatory = $false)]
     [string] $BacklinkFieldName,
@@ -62,11 +62,8 @@ param(
     [Parameter(Mandatory = $false)]
     [string] $ClientId = "30b4ad0b-d939-4cd4-bb6d-fa2d39fb4694",
 
-    [Parameter(Mandatory = $false)]
-    [switch] $SkipProjectIdCheck,
-
-    [Parameter(Mandatory = $false)]
-    [string] $POLExportPath = (Join-Path (Split-Path -Parent $MyInvocation.MyCommand.Path) "POLExports")
+    [Parameter(Mandatory = $true)]
+    [string] $POLExportPath
 )
 
 # Import helper functions
@@ -97,9 +94,6 @@ if ($ProjectFilter -and $ProjectFilter.Count -gt 0) {
     Write-Host "ProjectFilter:            $($ProjectFilter -join ', ')" -ForegroundColor Gray
 }
 Write-Host "ClientId:                 $ClientId" -ForegroundColor Gray
-if ($SkipProjectIdCheck) {
-    Write-Host "SkipProjectIdCheck:       True" -ForegroundColor Gray
-}
 if ($POLExportPath) {
     Write-Host "POLExportPath:            $POLExportPath" -ForegroundColor Gray
 }
@@ -219,6 +213,7 @@ try {
             $projectId = $projectMap[$webUrlSegment].UID
         }
 
+        Write-Host ""
         Write-Host "Processing web: $projectName ($($web.Url))" -ForegroundColor Cyan
 
         # ==============================================================================
@@ -341,6 +336,7 @@ try {
     # SUMMARY
     # ==============================================================================
 
+    Write-Host ""
     Write-Host "`nExport complete!" -ForegroundColor Green
     Write-Host "Projects processed: $script:totalProjectsProcessed" -ForegroundColor Cyan
     Write-Host "Total items exported: $script:totalItemsExported" -ForegroundColor Cyan
