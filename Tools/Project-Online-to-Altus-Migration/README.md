@@ -169,3 +169,86 @@ if ($dateValue) { $Project['cr_project_date_custom'] = ($dateValue -as [datetime
 
 > **Note:** Lookup and Choice fields require different handling (`@odata.bind` for lookups, integer option-set values for choices) and are not covered by the simple examples above.
 
+## Task Custom Field Mapping
+
+Task-level custom field values from Project Online are imported via the **Altus for Project add-in** during the MPP publish process, not by this PowerShell script. This allows you to map individual task custom fields to Altus task columns.
+
+### How It Works
+
+1. PowerShell script creates the project and project tasks in Altus
+2. User opens the MPP file in Microsoft Project with the Altus for Project add-in installed
+3. User publishes the MPP to Altus via the add-in
+4. During publish, the add-in reads configured custom field mappings from **projectDesktopConfig** and populates task columns in Altus
+
+### Prerequisites
+
+1. Custom columns must already exist in Altus on the `sensei_task` table
+2. Custom fields must be configured in the MPP file (project-local or enterprise-level)
+3. You must have access to configure **projectDesktopConfig** in your Altus environment (requires Altus Admin or configuration privileges)
+
+### Identifying Custom Field Names
+
+Refer to the [Microsoft Project Desktop custom fields reference](https://support.microsoft.com/en-au/office/custom-fields-in-project-desktop-604eaea9-9154-491a-9c00-764e5d46603e) to identify which field slot your custom field uses.
+
+**Currently supported: Project-local custom fields only**
+
+| Field Type | Slot Name | Example |
+|------------|-----------|---------|
+| Text | `Text1` through `Text30` | `Text7` |
+| Number | `Number1` through `Number20` | `Number3` |
+| Date | `Date1` through `Date10` | `Date5` |
+| Flag | `Flag1` through `Flag20` | `Flag2` |
+
+> **Note:** Enterprise-level task custom fields (defined at the Project Online/PWA tenant level) are not currently supported by the Altus for Project add-in. 
+
+### Configuring Task Custom Field Mappings
+
+Navigate to **Altus** → **Settings** → **Microsoft Project Configuration** in your Altus environment.
+
+Under **Custom Field Mappings**, click **New Field Mapping**:
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| **Entity** | `sensei_task` | Maps to task-level fields |
+| **Microsoft Project Field** | `Text7` (or your field slot) | Use the underlying slot name, not the display name |
+| **Altus Field** | Select from dropdown | Must be a field on the sensei_task table |
+
+**Example mappings:**
+
+| Project Online Field | Slot | Altus Column |
+|---------------------|------|--------------|
+| Strategic Risk Assessment (enterprise) | Text7 | sensei_risk_assessment |
+| Project Priority (enterprise) | Number2 | sensei_priority_score |
+| Deadline Milestone (enterprise) | Date3 | sensei_milestone_date |
+
+### Supported Field Types
+
+The add-in supports mapping the following Microsoft Project field types to Altus columns:
+
+| MS Project Type | Altus Types Supported |
+|-----------------|----------------------|
+| Text (Text1–Text30) | String, Memo, OptionSet, MultiSelect OptionSet |
+| Number (Number1–Number20) | Integer, Decimal, Double, Money, OptionSet |
+| Date (Date1–Date10) | Date/Time |
+| Duration | Integer, Decimal, Double |
+| Cost | Money, Decimal, Integer |
+| Flag (Flag1–Flag20) | Boolean, OptionSet (Yes/No only) |
+
+For detailed type-mapping rules and validation, see [Microsoft Project Configuration in Altus Docs](https://docs.altus.pro/products/AltusForProject/Configuration.html#custom-field-mappings).
+
+### Important Notes
+
+- **OptionSet mappings** use field **labels**, not values. Ensure field labels in MS Project exactly match OptionSet labels in Altus
+- **MultiSelect OptionSets** require comma-separated values in MS Project (comma is the delimiter)
+- Once a custom field is mapped, users must maintain the field definition exactly as configured — any changes to the field type or labels can break the mapping
+- **Enterprise task custom fields are not currently supported** — only project-local custom fields can be mapped at this time
+
+### Validating Your Mappings
+
+When users publish the MPP file, the add-in will validate that:
+1. The field exists in MS Project
+2. The mapped Altus field exists
+3. The field types are compatible
+
+If validation fails, the add-in will display errors and the publish will not proceed. Review the error details and adjust the mapping in projectDesktopConfig, then try publishing again.
+
