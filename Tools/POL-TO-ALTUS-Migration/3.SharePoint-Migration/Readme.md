@@ -72,6 +72,36 @@ https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=30b4ad0
 
 Copy the link, open in a browser, and sign in with tenant admin credentials.
 
+## Setup Requirements
+
+Before running any migration scripts, you must configure two essential files:
+
+### 1. Configure the Schema File (`data_schema.xml`)
+
+The schema file defines the target Dynamics 365 entities and fields. **Maintain this file using the MS Configuration Migration Tool (CMT):**
+
+1. Open the **Configuration Migration Tool** on your local machine
+2. Load the existing `data_schema.xml` file
+3. Modify entities and fields as needed to match your D365 customizations
+4. Save the updated schema back to `data_schema.xml`
+5. Verify that all entities and fields used in your field mappings are present
+
+**Alternatively**, you can export a fresh schema directly from your D365 environment and replace the existing file.
+
+**Why?** Using the CMT ensures your schema is valid and matches your D365 customizations, preventing validation errors during import.
+
+### 2. Configure the Field Mapping File (`export.config.json`)
+
+The mapping file controls how SharePoint fields are transformed to D365 attributes:
+
+1. Open `export.config.json`
+2. For each SharePoint list being migrated, add an entry to the `lists` array
+3. Map each SharePoint field to its corresponding D365 attribute
+4. Define value transformations (choiceMap, thresholds, multipliers, etc.)
+5. Verify field names match the schema exactly (case-sensitive)
+
+See the **Configuration Files** section below for detailed examples and syntax.
+
 ## Quick Start - Two Options
 
 ### Option 1: Use the Migration Orchestrator (Recommended)
@@ -234,7 +264,7 @@ Maps SharePoint fields to Dynamics 365 attributes. Controls data transformation 
   - `Boolean` — exports literal `"true"`/`"false"`; optionally map with `trueValue`/`falseValue` when needed
   - `Lookup` — converts to D365 lookup with entity reference
 
-**Examples of new mappings:**
+**Common mapping examples:**
 
 - Scale a percentage to whole number output:
   ```json
@@ -246,7 +276,17 @@ Maps SharePoint fields to Dynamics 365 attributes. Controls data transformation 
   }
   ```
 
-- Boolean exported as true/false (supports SP boolean input):
+- Divide a numeric value:
+  ```json
+  {
+    "spFieldInternalName": "Cost",
+    "entityAttribute": "custom_cost",
+    "type": "Number",
+    "divider": 1000
+  }
+  ```
+
+- Boolean field mapping:
   ```json
   {
     "spFieldInternalName": "Bool_x0020_Test",
@@ -255,7 +295,7 @@ Maps SharePoint fields to Dynamics 365 attributes. Controls data transformation 
   }
   ```
 
-- Multi-select optionset with sentinel wrapping for CMT import:
+- Multi-select choice field with sentinel wrapping:
   ```json
   {
     "spFieldInternalName": "Multi_x0020_Choice_x0020_Test",
