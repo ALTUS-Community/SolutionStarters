@@ -1,6 +1,26 @@
 # SharePoint to Dynamics 365 Migration Tool
 
-This tool enables efficient migration of SharePoint project data to Microsoft Dynamics 365 using the MS CMT (Configuration Migration Tool) format.
+This tool exports and imports SharePoint list data to Microsoft Dynamics 365 using the MS CMT (Configuration Migration Tool) format. It works in conjunction with the Project Online and Project migration tools.
+
+## Prerequisites
+
+**Required:** Projects must already be present in your Altus (Dynamics 365) environment from a previous migration step. SharePoint list items will be linked to these projects during import.
+
+**Note:** The POLExport data from previous migration steps (step 1) is used to identify and map projects in SharePoint.
+
+## Migration Workflow & Prerequisites
+
+**This tool performs two steps:**
+
+1. **Export** – Export list data from SharePoint
+   - Extract list items, metadata, and project references from configured SharePoint site collections
+   - Convert to CMT XML format
+   - Can use POLExport path from previous step 1 (optional)
+
+2. **Import** – Import list data to Dynamics 365
+   - Requires projects to already exist in Altus (from step 1 migration)
+   - Links list items to their corresponding projects in D365
+   - Creates/updates records based on configuration
 
 ## Configuration
 
@@ -52,19 +72,35 @@ https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=30b4ad0
 
 Copy the link, open in a browser, and sign in with tenant admin credentials.
 
-## Quick Start - Run the Migration Orchestrator
+## Quick Start - Two Options
+
+### Option 1: Use the Migration Orchestrator (Recommended)
 
 ```powershell
 .\-Run-Migration.ps1
 ```
 
-This is your primary entry point. The script:
+This is the primary entry point. The script:
 
 - Prompts you to choose: **Export only**, **Import only**, or **Full migration** (export + import)
 - Displays configured site collections and D365 environment before starting
 - Processes multiple SharePoint site collections sequentially
 - Creates organized output folders for each site
 - Provides detailed summary with success/failure tracking
+
+### Option 2: Run Scripts Individually
+
+Export and import are available as standalone scripts for advanced scenarios:
+
+```powershell
+# Step 1: Export SharePoint lists
+.\1-export-lists.ps1 -SiteCollectionUrl "..." -OutputFolder ".\Output"
+
+# Step 2: Import to Dynamics 365 (requires projects in Altus)
+.\2-import-lists.ps1 -D365Url "..." -DataFolder ".\Output"
+```
+
+Both the orchestrator and individual scripts require the same configuration settings defined below.
 
 ## Prerequisites & Permissions
 
@@ -88,33 +124,43 @@ Both SharePoint and Dynamics 365 use interactive authentication. You will be pro
 
 ## Core Scripts
 
-### `01-export-lists.ps1` – SharePoint Export
+### `1-export-lists.ps1` – SharePoint Export
 
-Extracts project data from SharePoint lists and converts to CMT XML format.
+Extracts list data from SharePoint and converts to CMT XML format.
 
 **Called by:** `-Run-Migration.ps1` (automatically)
 
 **Standalone usage:**
 ```powershell
-.\01-export-lists.ps1 `
+.\1-export-lists.ps1 `
   -SiteCollectionUrl "https://senseicloud.sharepoint.com/sites/vNext/" `
   -MappingJsonPath ".\export.config.json" `
   -CmtSchemaPath ".\data_schema.xml" `
-  -OutputFolder ".\Output\vNext"
+  -OutputFolder ".\Output\vNext" `
+  -PolExportPath "C:\path\to\polexport\from\step\1"
 ```
+
+**Parameters:**
+
+- **-PolExportPath** (optional)
+  - Path to the POLExport data from the previous Project Online extraction step (step 1)
+  - Used to identify and map project references in SharePoint lists
+  - If not provided, defaults to standard SharePoint list export without POL context
 
 **Output:**
 - `Output/<SiteName>/<ProjectName>/Data.xml` – CMT-compliant XML for each project
 
-### `02-import-lists.ps1` – Dynamics 365 Import
+### `2-import-lists.ps1` – Dynamics 365 Import
 
-Loads CMT XML files into D365 using the Sensei migration tool.
+Loads CMT XML files into D365 and links list items to projects already present in Altus.
+
+**Prerequisite:** Projects must already exist in your Altus environment (from step 1 project migration)
 
 **Called by:** `-Run-Migration.ps1` (automatically)
 
 **Standalone usage:**
 ```powershell
-.\02-import-lists.ps1 `
+.\2-import-lists.ps1 `
   -D365Url "https://senseijumpstart.crm.dynamics.com" `
   -SchemaPath ".\data_schema.xml" `
   -DataFolder ".\Output\vNext"
@@ -254,6 +300,25 @@ Defines the target Dynamics 365 entities and their valid fields. Used to validat
 ---
 
 ## Advanced Usage
+
+### Understanding the SharePoint Migration Dependencies
+
+This tool is **step 3** in the overall migration process:
+
+- **Step 1** (Previous): Project Online extraction (`0.Project-Online-Extraction/`)
+  - Exports POL data; output is available as `PolExportPath`
+
+- **Step 2** (Previous): Project migration (`1.Project-and-Resource-Migration/`)
+  - Imports projects into Altus
+  - **Must complete BEFORE running this SharePoint migration**
+
+- **Step 3** (This tool): SharePoint list migration
+  - Export: Use the POLExport path from step 1 (optional, for context)
+  - Import: **Requires projects to exist in Altus** from step 2
+  - List items are linked to Altus projects during import
+
+- **Step 4** (Later): Schedule migration (`2.Schedule-Migration/`)
+  - Runs after projects and lists are in place
 
 ### Custom Export Filters
 
