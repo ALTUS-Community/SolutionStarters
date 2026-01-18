@@ -127,7 +127,8 @@ OOTB fields are direct properties on the project/resource object. Uncomment and 
 **Projects** — edit `Add-ProjectDataverseFieldMappings` in `ImportProjects.ps1`:
 ```powershell
 $Project['cr_project_text_ootb'] = $ProjectName
-$Project['cr_project_date_ootb'] = ($ReportingProject.ProjectStartDate -as [datetime])
+$Project['cr_project_datetime_ootb'] = ($ReportingProject.ProjectStartDate -as [datetime])
+$Project['cr_project_dateonly_ootb'] = ($ReportingProject.ProjectStartDate -as [datetime]).ToString("yyyy-MM-dd")
 $Project['cr_project_whole_ootb'] = ($ReportingProject.ProjectIdentifier -as [int])
 $Project['cr_project_decimal_ootb'] = ($ReportingProject.ProjectCalendarDuration -as [decimal])
 ```
@@ -135,7 +136,8 @@ $Project['cr_project_decimal_ootb'] = ($ReportingProject.ProjectCalendarDuration
 **Resources** — edit `Add-NamedResourceDataverseFieldMappings` or `Add-GenericResourceDataverseFieldMappings` in `ImportResources.ps1`:
 ```powershell
 $ResourceBody['cr_resource_text_ootb'] = $ProjectResource.ResourceName
-$ResourceBody['cr_resource_date_ootb'] = ($ProjectResource.ResourceCreatedDate -as [datetime])
+$ResourceBody['cr_resource_datetime_ootb'] = ($ProjectResource.ResourceCreatedDate -as [datetime])
+$ResourceBody['cr_resource_dateonly_ootb'] = ($ProjectResource.ResourceCreatedDate -as [datetime]).ToString("yyyy-MM-dd")
 $ResourceBody['cr_resource_whole_ootb'] = ($ProjectResource.ResourceType -as [int])
 $ResourceBody['cr_resource_decimal_ootb'] = ($ProjectResource.ResourceStandardRate -as [decimal])
 ```
@@ -165,7 +167,14 @@ if ($dateValue) { $Project['cr_project_date_custom'] = ($dateValue -as [datetime
 | Text             | `[string]`          | `$project['cr_text'] = [string]$value`               |
 | Whole Number     | `-as [int]`         | `$project['cr_int'] = ($value -as [int])`            |
 | Decimal/Currency | `-as [decimal]`     | `$project['cr_dec'] = ($value -as [decimal])`        |
-| Date             | `-as [datetime]`    | `$project['cr_date'] = ($value -as [datetime])`      |
+| Date and Time    | `-as [datetime]`    | `$project['cr_datetime'] = ($value -as [datetime])`  |
+| Date Only        | `.ToString("yyyy-MM-dd")` | `$project['cr_date'] = ($value -as [datetime]).ToString("yyyy-MM-dd")` |
+
+> **Important:** Dataverse has two date column types with different formats:
+> - **Date and Time** (`Edm.DateTimeOffset`) — accepts full datetime values via `-as [datetime]`
+> - **Date Only** (`Edm.Date`) — requires a string in `yyyy-MM-dd` format
+>
+> Using `-as [datetime]` on a Date Only field will cause an error like: *"Cannot convert the literal '...' to the expected type 'Edm.Date'"*
 
 > **Note:** Lookup and Choice fields require different handling (`@odata.bind` for lookups, integer option-set values for choices) and are not covered by the simple examples above.
 

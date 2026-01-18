@@ -48,7 +48,8 @@ function Add-ProjectDataverseFieldMappings {
 
     # --- OOTB fields (from $ReportingProject or $ProjectName) ---
     # $Project['cr_project_text_ootb'] = $ProjectName
-    # $Project['cr_project_date_ootb'] = ($ReportingProject.ProjectStartDate -as [datetime])
+    # $Project['cr_project_datetime_ootb'] = ($ReportingProject.ProjectStartDate -as [datetime])
+    # $Project['cr_project_dateonly_ootb'] = ($ReportingProject.ProjectStartDate -as [datetime]).ToString("yyyy-MM-dd")
     # $Project['cr_project_whole_ootb'] = ($ReportingProject.ProjectIdentifier -as [int])
     # $Project['cr_project_decimal_ootb'] = ($ReportingProject.ProjectCalendarDuration -as [decimal])
 
@@ -57,7 +58,8 @@ function Add-ProjectDataverseFieldMappings {
     # if ($textValue) { $Project['cr_project_text_custom'] = [string]$textValue }
     #
     # $dateValue = Get-ReportingCustomFieldTextValue -ReportingProject $ReportingProject -CustomFieldName 'Your Date Field'
-    # if ($dateValue) { $Project['cr_project_date_custom'] = ($dateValue -as [datetime]) }
+    # if ($dateValue) { $Project['cr_project_datetime_custom'] = ($dateValue -as [datetime]) }
+    # if ($dateValue) { $Project['cr_project_dateonly_custom'] = ($dateValue -as [datetime]).ToString("yyyy-MM-dd") }
 }
 
 function New-ProjectDataverseBody {

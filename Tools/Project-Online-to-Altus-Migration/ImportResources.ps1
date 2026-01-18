@@ -5,6 +5,27 @@
 # USER CONFIGURATION (EDIT HERE)
 # ------------------------------
 
+function Get-ResourceCustomFieldTextValue {
+    param(
+        [Parameter(Mandatory = $false)]
+        $ProjectResource,
+
+        [Parameter(Mandatory = $true)]
+        [string]$CustomFieldName
+    )
+
+    if (-not $ProjectResource) { return $null }
+    if (-not ($ProjectResource.PSObject.Properties.Name -contains 'CustomFields')) { return $null }
+    if (-not $ProjectResource.CustomFields) { return $null }
+
+    $cf = $ProjectResource.CustomFields | Where-Object { $_.CustomFieldName -eq $CustomFieldName } | Select-Object -First 1
+    if (-not $cf) { return $null }
+    if (-not ($cf.PSObject.Properties.Name -contains 'CustomFieldValue')) { return $null }
+    if (-not $cf.CustomFieldValue) { return $null }
+
+    return $cf.CustomFieldValue.'#text'
+}
+
 function Add-NamedResourceDataverseFieldMappings {
     param(
         [Parameter(Mandatory = $true)]
@@ -19,13 +40,18 @@ function Add-NamedResourceDataverseFieldMappings {
 
     # --- OOTB fields (from $ProjectResource) ---
     # $ResourceBody['cr_resource_text_ootb'] = $ProjectResource.ResourceName
-    # $ResourceBody['cr_resource_date_ootb'] = ($ProjectResource.ResourceCreatedDate -as [datetime])
+    # $ResourceBody['cr_resource_datetime_ootb'] = ($ProjectResource.ResourceCreatedDate -as [datetime])
+    # $ResourceBody['cr_resource_dateonly_ootb'] = ($ProjectResource.ResourceCreatedDate -as [datetime]).ToString("yyyy-MM-dd")
     # $ResourceBody['cr_resource_whole_ootb'] = ($ProjectResource.ResourceType -as [int])
     # $ResourceBody['cr_resource_decimal_ootb'] = ($ProjectResource.ResourceStandardRate -as [decimal])
 
-    # --- Custom fields (replace RHS with your *_reporting_Resources.json property names) ---
-    # $ResourceBody['cr_resource_text_custom'] = [string]$ProjectResource.Custom_Notes
-    # $ResourceBody['cr_resource_date_custom'] = ($ProjectResource.Custom_OnboardingDate -as [datetime])
+    # --- Enterprise Custom Fields (from $ProjectResource.CustomFields[]) ---
+    # $rbsValue = Get-ResourceCustomFieldTextValue -ProjectResource $ProjectResource -CustomFieldName 'RBS'
+    # if ($rbsValue) { $ResourceBody['cr_resource_rbs'] = [string]$rbsValue }
+    #
+    # $dateValue = Get-ResourceCustomFieldTextValue -ProjectResource $ProjectResource -CustomFieldName 'Your Date Field'
+    # if ($dateValue) { $ResourceBody['cr_resource_datetime_custom'] = ($dateValue -as [datetime]) }
+    # if ($dateValue) { $ResourceBody['cr_resource_dateonly_custom'] = ($dateValue -as [datetime]).ToString("yyyy-MM-dd") }
 }
 
 function Add-GenericResourceDataverseFieldMappings {
@@ -42,13 +68,18 @@ function Add-GenericResourceDataverseFieldMappings {
 
     # --- OOTB fields (from $GenericResource) ---
     # $ResourceBody['cr_generic_resource_text_ootb'] = $GenericResource.ResourceName
-    # $ResourceBody['cr_generic_resource_date_ootb'] = ($GenericResource.ResourceCreatedDate -as [datetime])
+    # $ResourceBody['cr_generic_resource_datetime_ootb'] = ($GenericResource.ResourceCreatedDate -as [datetime])
+    # $ResourceBody['cr_generic_resource_dateonly_ootb'] = ($GenericResource.ResourceCreatedDate -as [datetime]).ToString("yyyy-MM-dd")
     # $ResourceBody['cr_generic_resource_whole_ootb'] = ($GenericResource.ResourceType -as [int])
     # $ResourceBody['cr_generic_resource_decimal_ootb'] = ($GenericResource.ResourceStandardRate -as [decimal])
 
-    # --- Custom fields (replace RHS with your *_reporting_Resources.json property names) ---
-    # $ResourceBody['cr_generic_resource_text_custom'] = [string]$GenericResource.Custom_Notes
-    # $ResourceBody['cr_generic_resource_date_custom'] = ($GenericResource.Custom_OnboardingDate -as [datetime])
+    # --- Enterprise Custom Fields (from $GenericResource.CustomFields[]) ---
+    # $rbsValue = Get-ResourceCustomFieldTextValue -ProjectResource $GenericResource -CustomFieldName 'RBS'
+    # if ($rbsValue) { $ResourceBody['cr_generic_resource_rbs'] = [string]$rbsValue }
+    #
+    # $dateValue = Get-ResourceCustomFieldTextValue -ProjectResource $GenericResource -CustomFieldName 'Your Date Field'
+    # if ($dateValue) { $ResourceBody['cr_generic_resource_datetime_custom'] = ($dateValue -as [datetime]) }
+    # if ($dateValue) { $ResourceBody['cr_generic_resource_dateonly_custom'] = ($dateValue -as [datetime]).ToString("yyyy-MM-dd") }
 }
 
 function New-NamedBookableResourceDataverseBody {
