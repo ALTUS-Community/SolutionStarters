@@ -285,6 +285,10 @@ function Export-DocumentsRecursive {
     
     try {
         # Get all items in current folder
+        # NOTE: SharePoint returns items in pages. The current implementation retrieves one page at a time.
+        # If folders contain more items than SharePoint's maximum page size (typically 5000+), 
+        # only items on the first page will be retrieved. Modify to use Get-PnPFolderItem with
+        # explicit pagination handling if needed for very large document libraries.
         $folder = Get-PnPFolder -Url $FolderUrl -Includes Files
         $items = $folder.Files
         

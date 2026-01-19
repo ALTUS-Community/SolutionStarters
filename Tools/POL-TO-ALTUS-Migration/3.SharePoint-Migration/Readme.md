@@ -30,6 +30,27 @@ This tool exports and imports SharePoint list data and documents to Microsoft Dy
    - Optional: Extended metadata and version history
    - Simple mode (default): Fast download of files and folders
 
+---
+
+> ⚠️ **IMPORTANT: This Tool is Document Download Only**
+>
+> The **Export Documents** feature extracts files for local storage or sync workflows. It is **NOT a complete SharePoint site migration** and does **NOT include**:
+> - Site structure, navigation, or pages
+> - Permissions or sharing settings
+> - Content types, metadata, or field definitions
+> - Workflows or automations
+> - Retention policies or compliance settings
+> - Site columns or list templates
+> 
+> **For Complete SharePoint Migration**, use enterprise tools:
+> - **ShareGate** ⭐ Recommended - Full SharePoint site migration with all features
+> - Microsoft SharePoint Migration Tool (SPMT)
+> - Credeon, Sharegate, or other third-party migration platforms
+>
+> **This tool is designed to:** Accelerate document download so you can drag files into a SharePoint synced folder for manual upload to your target site.
+
+---
+
 ## Configuration
 
 All settings are defined in **`-Run-Migration.ps1`** within the `CONFIGURATION` section (lines 15–60).
@@ -711,6 +732,11 @@ Output/Documents/
 
 **Cause:** Running in simple mode (default behavior).
 **Solution:** This is expected. Simple mode only downloads files. Use `-DetailedMetadata` if you need metadata.json files.
+
+### Large folders/lists with many items missing some data
+
+**Cause:** SharePoint returns items in pages. If a folder or list contains more items than SharePoint's default page size (typically 5000+), only the first page will be retrieved by the current implementation.
+**Solution:** This is a known limitation affecting both list exports and document exports. For very large document libraries or lists, the scripts will need to be modified to implement explicit pagination handling. Contact your development team if you regularly encounter folders or lists exceeding the page limit.
 
 ### How do I upload the exported documents to SharePoint?
 
