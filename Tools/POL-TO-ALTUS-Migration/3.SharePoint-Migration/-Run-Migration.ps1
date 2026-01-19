@@ -24,7 +24,7 @@
 $SiteCollections = @(
   # @{
   #   Url           = "https://senseijumpstart.sharepoint.com/sites/pwa"
-  #   FolderName    = "PWA_Main"      # Folder name for output
+  #   FolderName    = "PWA_TEST"      # Folder name for output
   #   ProjectFilter = @()     # Export all projects, or use patterns like @("*Paul*", "Project*")
   # }
   @{
@@ -110,14 +110,15 @@ Write-Host ""
 Write-Host "Select operation mode:" -ForegroundColor Yellow
 Write-Host "  [1] Export Lists - Extract data from SharePoint to XML files" -ForegroundColor White
 Write-Host "  [2] Import Lists - Load existing XML files into Dynamics 365" -ForegroundColor White
+Write-Host "  [3] Export Documents - Extract document attachments from SharePoint lists" -ForegroundColor White
 Write-Host "  [Q] Quit" -ForegroundColor Gray
 Write-Host ""
 
 do {
-  $choice = Read-Host "Enter your choice (1, 2, or Q)"
-  $validChoice = $choice -match '^[12Qq]$'
+  $choice = Read-Host "Enter your choice (1, 2, 3, or Q)"
+  $validChoice = $choice -match '^[123Qq]$'
   if (-not $validChoice) {
-    Write-Host "Invalid choice. Please enter 1, 2, or Q" -ForegroundColor Red
+    Write-Host "Invalid choice. Please enter 1, 2, 3, or Q" -ForegroundColor Red
   }
 } while (-not $validChoice)
 
@@ -129,6 +130,7 @@ if ($choice -match '^[Qq]$') {
 $operationMode = switch ($choice) {
   "1" { "ExportData" }
   "2" { "ImportData" }
+  "3" { "ExportDocuments" }
 }
 
 Write-Host "`nSelected mode: $operationMode" -ForegroundColor Green
@@ -150,8 +152,8 @@ if ([string]::IsNullOrWhiteSpace($D365Url) -and $operationMode -eq "ImportData")
   Write-Host ""
 }
 
-# Check if site collections are configured, prompt if empty and exporting
-if ($SiteCollections.Count -eq 0 -and $operationMode -eq "ExportData") {
+# Check if site collections are configured, prompt if empty and exporting or exporting documents
+if ($SiteCollections.Count -eq 0 -and ($operationMode -eq "ExportData" -or $operationMode -eq "ExportDocuments")) {
   Write-Host "No site collections configured." -ForegroundColor Yellow
   Write-Host ""
   $siteUrl = Read-Host "Enter the source SharePoint site collection URL (e.g., https://tenant.sharepoint.com/sites/pwa)"
@@ -215,6 +217,13 @@ foreach ($site in $SiteCollections) {
     New-Item -Path $siteOutputFolder -ItemType Directory -Force | Out-Null
     Write-Host "  Created output folder: $siteOutputFolder" -ForegroundColor Gray
   }
+  
+  # Create document-specific output folder if exporting documents
+  $documentOutputFolder = Join-Path $BaseOutputFolder "Documents" $folderName
+  if ($operationMode -eq "ExportDocuments" -and -not (Test-Path $documentOutputFolder)) {
+    New-Item -Path $documentOutputFolder -ItemType Directory -Force | Out-Null
+    Write-Host "  Created document output folder: $documentOutputFolder" -ForegroundColor Gray
+  }
     
   # Track overall success for this site
   $siteSuccess = $true
@@ -224,29 +233,51 @@ foreach ($site in $SiteCollections) {
   # EXPORT DATA PHASE
   # ==============================================================================
   
-  if ($operationMode -eq "ExportData") {
-    # Build parameters for export script
-    $exportParams = @{
-      SiteCollectionUrl = $siteUrl
-      MappingJsonPath   = $MappingJsonPath
-      CmtSchemaPath     = $CmtSchemaPath
-      OutputFolder      = $siteOutputFolder
-      ClientId          = $ClientId
-      POLExportPath     = $polExportPath
-      BacklinkFieldName = $BacklinkFieldName
-    }
+  if ($operationMode -eq "ExportData" -or $operationMode -eq "ExportDocuments") {
     
     if ($projectFilter -and $projectFilter.Count -gt 0) {
-      $exportParams.ProjectFilter = $projectFilter
       Write-Host "  Project Filter: $($projectFilter -join ', ')" -ForegroundColor Gray
     }
     
-    # Run the export
+    # Run the appropriate export script
     try {
-      Write-Host "  Starting export..." -ForegroundColor Cyan
-      $exportStartTime = Get-Date
+      if ($operationMode -eq "ExportData") {
+        # Build parameters for list export script
+        $exportParams = @{
+          SiteCollectionUrl = $siteUrl
+          MappingJsonPath   = $MappingJsonPath
+          CmtSchemaPath     = $CmtSchemaPath
+          OutputFolder      = $siteOutputFolder
+          ClientId          = $ClientId
+          POLExportPath     = $polExportPath
+          BacklinkFieldName = $BacklinkFieldName
+        }
         
-      & (Join-Path $ScriptDir "1-export-lists.ps1") @exportParams
+        if ($projectFilter -and $projectFilter.Count -gt 0) {
+          $exportParams.ProjectFilter = $projectFilter
+        }
+        
+        Write-Host "  Starting list export..." -ForegroundColor Cyan
+        $exportStartTime = Get-Date
+        & (Join-Path $ScriptDir "1-export-lists.ps1") @exportParams
+      }
+      elseif ($operationMode -eq "ExportDocuments") {
+        # Build parameters for document export script
+        $exportParams = @{
+          SiteCollectionUrl = $siteUrl
+          OutputFolder      = $documentOutputFolder
+          ClientId          = $ClientId
+          POLExportPath     = $polExportPath
+        }
+        
+        if ($projectFilter -and $projectFilter.Count -gt 0) {
+          $exportParams.ProjectFilter = $projectFilter
+        }
+        
+        Write-Host "  Starting document export..." -ForegroundColor Cyan
+        $exportStartTime = Get-Date
+        & (Join-Path $ScriptDir "3-export-documents.ps1") @exportParams
+      }
         
       $exportDuration = (Get-Date) - $exportStartTime
       
@@ -321,7 +352,7 @@ foreach ($site in $SiteCollections) {
     Operation    = $operationMode
     Status       = $status
     Duration     = $siteDuration.ToString("hh\:mm\:ss")
-    OutputFolder = $siteOutputFolder
+    OutputFolder = if ($operationMode -eq "ExportDocuments") { $documentOutputFolder } else { $siteOutputFolder }
   }
 
   Write-Host "  Total time: $($siteDuration.ToString('hh\:mm\:ss'))" -ForegroundColor $(if ($siteSuccess) { "Green" } else { "Red" })

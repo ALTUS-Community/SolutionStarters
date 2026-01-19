@@ -58,6 +58,73 @@ function Write-LogError {
     }
 }
 
+function Save-ExportLog {
+    <#
+    .SYNOPSIS
+    Saves the accumulated log content to a timestamped log file.
+    
+    .DESCRIPTION
+    Writes all accumulated log entries to a timestamped log file in the Logs folder.
+    Used by export and migration scripts to persist operation logs.
+    #>
+    if (-not $script:logContent -or $script:logContent.Count -eq 0) {
+        Write-Verbose "No log content to save"
+        return
+    }
+
+    # Determine log folder path relative to script location
+    $scriptDir = if ($PSScriptRoot) { $PSScriptRoot } else { Split-Path -Parent $PSCommandPath }
+    $logFolder = Join-Path $scriptDir "Logs"
+    
+    # Create logs folder if it doesn't exist
+    if (-not (Test-Path $logFolder)) {
+        New-Item -Path $logFolder -ItemType Directory -Force | Out-Null
+    }
+
+    # Create timestamped log file with generic name
+    $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
+    $logFileName = "DataMigration-$timestamp.txt"
+    $logPath = Join-Path $logFolder $logFileName
+
+    try {
+        $script:logContent | Out-File -FilePath $logPath -Encoding UTF8 -Force
+        Write-Host "Log saved to: $logPath" -ForegroundColor Gray
+    }
+    catch {
+        Write-Host "Failed to save log file: $($_.Exception.Message)" -ForegroundColor Red
+    }
+}
+
+function Show-DownloadSpinner {
+    <#
+    .SYNOPSIS
+    Displays a progress indicator while executing a download action.
+    
+    .PARAMETER Message
+    The message to display during the download operation.
+    
+    .PARAMETER Action
+    A scriptblock containing the download action to execute.
+    #>
+    param(
+        [string]$Message,
+        [scriptblock]$Action
+    )
+    
+    # Simple inline progress indicator
+    Write-Host "  $Message..." -NoNewline -ForegroundColor Gray
+    
+    try {
+        # Execute the download action
+        & $Action
+        Write-Host " ✓" -ForegroundColor Green
+    }
+    catch {
+        Write-Host " ✗" -ForegroundColor Red
+        throw
+    }
+}
+
 # ==============================================================================
 # PROJECT MAP / PREREQS / GUID
 # ==============================================================================
@@ -103,6 +170,87 @@ function Build-ProjectMap {
 
     Write-LogMessage "Loaded $($map.Count) projects from POL export"
     return $map
+}
+
+function Get-FilteredProjectWebs {
+    <#
+    .SYNOPSIS
+    Gets and filters project webs based on criteria.
+    
+    .DESCRIPTION
+    Retrieves all sub-webs (and optionally root web), filters out system webs,
+    and applies project filter patterns. Supports POL project name mapping.
+    
+    .PARAMETER ProjectFilter
+    Optional array of wildcard patterns to filter projects by.
+    
+    .PARAMETER IncludeRootWeb
+    Include the root web in the results.
+    
+    .PARAMETER ProjectMap
+    Optional hashtable mapping web titles to POL project info.
+    #>
+    param(
+        [string[]]$ProjectFilter = @(),
+        [bool]$IncludeRootWeb = $false,
+        [hashtable]$ProjectMap = @{}
+    )
+    
+    Write-LogMessage "Discovering project webs..." -ForegroundColor Cyan
+    
+    # Get all webs
+    $rootWeb = Get-PnPWeb -Includes "WebTemplate"
+    $projectWebs = @(Get-PnPSubWeb -Recurse -Includes "WebTemplate")
+    if ($IncludeRootWeb) {
+        $projectWebs = @($rootWeb) + $projectWebs
+    }
+    
+    $filteredWebs = @()
+
+    foreach ($web in $projectWebs) {
+        $webTitle = $web.Title
+    
+        # Skip app webs
+        if ($web.WebTemplate -like "APP*") {
+            Write-LogMessage "Skipping app web: $webTitle"
+            continue
+        }
+
+        # Skip hidden webs
+        if ($web.Hidden) {
+            Write-LogMessage "Skipping hidden web: $webTitle"
+            continue
+        }
+    
+        # Check project filter
+        if ($ProjectFilter -and $ProjectFilter.Count -gt 0) {
+            $matchesFilter = $false
+            # Try to match against POL name if available; otherwise use web title
+            $matchNameToTest = if ($ProjectMap.ContainsKey($webTitle)) {
+                $ProjectMap[$webTitle].Name
+            }
+            else {
+                $webTitle
+            }
+            
+            foreach ($filter in $ProjectFilter) {
+                if ($matchNameToTest -like $filter) {
+                    $matchesFilter = $true
+                    break
+                }
+            }
+            if (-not $matchesFilter) {
+                continue
+            }
+        }
+    
+        $filteredWebs += $web
+    }
+
+    $totalWebs = $filteredWebs.Count
+    Write-LogMessage "Found $totalWebs matching project webs.`n"
+    
+    return $filteredWebs
 }
 
 function Test-PnPModule {

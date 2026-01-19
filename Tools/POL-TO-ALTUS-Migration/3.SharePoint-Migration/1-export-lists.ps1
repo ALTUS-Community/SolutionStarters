@@ -156,53 +156,9 @@ Connect-PnPOnline -Url $SiteCollectionUrl -Interactive -ClientId $ClientId
 # ==============================================================================
 
 try {
-    $webs = Get-ProjectWebs
-    Write-LogMessage "Found $($webs.Count) sub webs." -ForegroundColor Green
-
-    # Apply project filter if specified
-    if ($ProjectFilter -and $ProjectFilter.Count -gt 0) {
-        $filteredWebs = @()
-        foreach ($web in $webs) {
-            $matched = $false
-            # Try to match against POL name if available; otherwise use web title
-            # Extract last segment of web URL for lookup
-            $webUrlSegment = [uri]::UnescapeDataString(($web.Url -split '/')[-1])
-            $matchNameToTest = if ($projectMap.ContainsKey($webUrlSegment)) {
-                $projectMap[$webUrlSegment].Name
-            }
-            else {
-                $web.Title
-            }
-            
-            foreach ($pattern in $ProjectFilter) {
-                if ($matchNameToTest -like $pattern) {
-                    $matched = $true
-                    break
-                }
-            }
-            if ($matched) {
-                $filteredWebs += $web
-            }
-        }
-        $webs = $filteredWebs
-        Write-LogMessage "Filtered to $($webs.Count) project(s) matching: $($ProjectFilter -join ', ')" -ForegroundColor Yellow
-    }
+    $webs = Get-FilteredProjectWebs -ProjectFilter $ProjectFilter -IncludeRootWeb $false -ProjectMap $projectMap
 
     foreach ($web in $webs) {
-        # ==============================================================================
-        # SKIP HIDDEN/APP WEBS
-        # ==============================================================================
-
-        if ($web.WebTemplate -like "APP*") {
-            Write-LogWarning "Skipping app web (template=$($web.WebTemplate)): $($web.Url)"
-            continue
-        }
-
-        if ($web.Hidden) {
-            Write-LogWarning "Skipping hidden web: $($web.Url)"
-            continue
-        }
-
         # Use POL project name if available; otherwise use web title
         # Extract last segment of web URL for lookup
         $webUrlSegment = [uri]::UnescapeDataString(($web.Url -split '/')[-1])
@@ -348,8 +304,7 @@ finally {
 
     $script:logContent += "Summary: Projects processed=$script:totalProjectsProcessed, Items exported=$script:totalItemsExported"
     $script:logContent += "Export finished at $(Get-Date -Format o)"
-    $script:logContent | Out-File -FilePath $script:logPath -Encoding UTF8
-    Write-Host "Log saved to: $script:logPath" -ForegroundColor Cyan
+    Save-ExportLog
     
     $global:LASTEXITCODE = if ($script:hadError) { 1 } else { 0 }
 }
