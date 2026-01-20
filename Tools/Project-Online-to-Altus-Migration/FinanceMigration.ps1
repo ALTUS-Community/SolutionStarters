@@ -17,7 +17,7 @@ param (
     [string]$LogFile = "migration_log_$(Get-Date -Format 'yyyyMMdd_HHmmss').txt"
 )
 
-function Log-Message {
+function Write-LogMessage {
     param (
         [string]$Message,
         [string]$Level = "INFO"
@@ -31,7 +31,7 @@ function Log-Message {
 function Get-AccessToken-Interactive {
     param ([string]$EnvironmentUrl)
     $scope = "$EnvironmentUrl/.default"
-    Log-Message "Initiating interactive login..."
+    Write-LogMessage "Initiating interactive login..."
     try {
         $tokenResult = Get-MsalToken `
             -ClientId "1950a258-227b-4e31-a9cf-717495945fc2" `
@@ -39,11 +39,11 @@ function Get-AccessToken-Interactive {
             -Scopes $scope `
             -Interactive `
             -ErrorAction Stop
-        Log-Message "Authentication successful."
+        Write-LogMessage "Authentication successful."
         return $tokenResult.AccessToken
     }
     catch {
-        Log-Message "Login failed: $($_.Exception.Message)" "ERROR"
+        Write-LogMessage "Login failed: $($_.Exception.Message)" "ERROR"
         throw
     }
 }
@@ -68,12 +68,12 @@ function Search-ProjectByName {
         $response = Invoke-RestMethod -Method Get -Uri $queryUrl -Headers $headers -ErrorAction Stop
         return $response.value
     } catch {
-        Log-Message "Project search failed: $($_.Exception.Message)" "ERROR"
+        Write-LogMessage "Project search failed: $($_.Exception.Message)" "ERROR"
         return @()
     }
 }
 
-function Check-ExistingFinancialRecords {
+function Get-ExistingFinancialRecords {
     param (
         [string]$BaseUrl,
         [string]$ProjectUid,
@@ -103,7 +103,7 @@ function Check-ExistingFinancialRecords {
     }
 }
 
-function Upsert-Record {
+function Invoke-RecordUpsert {
     param (
         [string]$EntitySetName,
         [hashtable]$Data,
@@ -117,10 +117,10 @@ function Upsert-Record {
     $action = if ($DryRun) { "DRY-RUN WOULD " } else { "" }
 
     # Simulate lookup
-    Log-Message "$action Checking for existing $EntitySetName with externalid '$ExternalId' on project $ProjectUid"
+    Write-LogMessage "$action Checking for existing $EntitySetName with externalid '$ExternalId' on project $ProjectUid"
 
     if ($DryRun) {
-        Log-Message "$action Would upsert $EntitySetName (name: $($Data.sensei_name), type: $($Data.sensei_type), amount: $($Data.sensei_amount ?? 'N/A'))"
+        Write-LogMessage "$action Would upsert $EntitySetName (name: $($Data.sensei_name), type: $($Data.sensei_type), amount: $(if ($Data.sensei_amount) { $Data.sensei_amount } else { 'N/A' }))"
         return "DRYRUN-$([guid]::NewGuid().ToString())"  # fake ID for dry-run chaining
     }
 
@@ -128,10 +128,10 @@ function Upsert-Record {
         Authorization  = "Bearer $Token"
         "Content-Type" = "application/json"
         Prefer         = "return=representation"
-        OData-MaxVersion = "4.0"
-        OData-Version    = "4.0"
+        "OData-MaxVersion" = "4.0"
+        "OData-Version"    = "4.0"
     }
-
+    
     $filter = "sensei_externalid eq '$ExternalId' and _sensei_project_value eq $ProjectUid"
     $queryUrl = "$BaseUrl/api/data/v9.2/$EntitySetName`?`$filter=$([uri]::EscapeDataString($filter))&`$select=sensei_${EntitySetName -replace 's$',''}id"
 
@@ -140,14 +140,14 @@ function Upsert-Record {
         $id = $existing.value[0]."sensei_$($EntitySetName -replace 's$','')id"
         $url = "$BaseUrl/api/data/v9.2/$EntitySetName($id)"
         Invoke-RestMethod -Method Patch -Uri $url -Headers $headers -Body ($Data | ConvertTo-Json -Depth 10 -Compress)
-        Log-Message "Updated $EntitySetName (id: $id)"
+        Write-LogMessage "Updated $EntitySetName (id: $id)"
         return $id
     }
 
     $url = "$BaseUrl/api/data/v9.2/$EntitySetName"
     $response = Invoke-RestMethod -Method Post -Uri $url -Headers $headers -Body ($Data | ConvertTo-Json -Depth 10 -Compress)
     $id = $response."sensei_$($EntitySetName -replace 's$','')id"
-    Log-Message "Created $EntitySetName (id: $id)"
+    Write-LogMessage "Created $EntitySetName (id: $id)"
     return $id
 }
 
@@ -169,52 +169,52 @@ function Process-Project {
     $exportProjectName = $publishedJson.NewDataSet.Project.ProjectName
     $projectStartUtc   = [DateTime]::Parse($publishedJson.NewDataSet.Project.ProjectStartDate).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
 
-    Log-Message "Processing project: $exportProjectName | Start UTC: $projectStartUtc"
+    Write-LogMessage "Processing project: $exportProjectName | Start UTC: $projectStartUtc"
 
     # Search for project in Dataverse
-    Log-Message "Searching Dataverse projects for '$exportProjectName'..."
+    Write-LogMessage "Searching Dataverse projects for '$exportProjectName'..."
     $matches = Search-ProjectByName -BaseUrl $DataverseUrl -ProjectName $exportProjectName -Token $Token
 
     $projectUid = $null
     if ($matches.Count -eq 0) {
-        Log-Message "No matching project found." "WARN"
+        Write-LogMessage "No matching project found." "WARN"
         $projectUid = Read-Host "Enter correct project GUID manually (or Enter to skip)"
         if (-not $projectUid) {
-            Log-Message "Skipping project $exportProjectName"
+            Write-LogMessage "Skipping project $exportProjectName"
             return
         }
     } elseif ($matches.Count -eq 1) {
         $projectUid = $matches[0].projectid
-        Log-Message "Found match: $($matches[0].name) (ID: $projectUid)"
+        Write-LogMessage "Found match: $($matches[0].name) (ID: $projectUid)"
         $confirm = Read-Host "Use this project? (y/n)"
         if ($confirm -notmatch '^[yY]$') {
-            Log-Message "Skipping project $exportProjectName"
+            Write-LogMessage "Skipping project $exportProjectName"
             return
         }
     } else {
-        Log-Message "Multiple matches found:"
+        Write-LogMessage "Multiple matches found:"
         $i = 1
         foreach ($m in $matches) {
-            Log-Message "  [$i] $($m.name) (ID: $($m.projectid))"
+            Write-LogMessage "  [$i] $($m.name) (ID: $($m.projectid))"
             $i++
         }
         $sel = Read-Host "Select number (or Enter to skip)"
         if (-not $sel -or $sel -notmatch '^\d+$') {
-            Log-Message "Skipping project $exportProjectName"
+            Write-LogMessage "Skipping project $exportProjectName"
             return
         }
         $projectUid = $matches[[int]$sel - 1].projectid
     }
 
-    Log-Message "Using project GUID: $projectUid"
+    Write-LogMessage "Using project GUID: $projectUid"
 
     # Check existing
-    $check = Check-ExistingFinancialRecords -BaseUrl $DataverseUrl -ProjectUid $projectUid -Token $Token
+    $check = Get-ExistingFinancialRecords -BaseUrl $DataverseUrl -ProjectUid $projectUid -Token $Token
     if ($check.HasRecords) {
-        Log-Message "Found $($check.ItemCount) items and $($check.TransCount) transactions."
+        Write-LogMessage "Found $($check.ItemCount) items and $($check.TransCount) transactions."
         $confirm = Read-Host "Proceed (will overwrite if -DryRun not used)? (y/n)"
         if ($confirm -notmatch '^[yY]$') {
-            Log-Message "Skipping project $exportProjectName"
+            Write-LogMessage "Skipping project $exportProjectName"
             return
         }
     }
@@ -242,7 +242,7 @@ function Process-Project {
         }
     }
 
-    Log-Message "Calculated: Budget=$budgetTotal, Cost=$costTotal, Actual=$actualTotal"
+    Write-LogMessage "Calculated: Budget=$budgetTotal, Cost=$costTotal, Actual=$actualTotal"
 
     # Prepare items
     $items = @(
@@ -262,7 +262,7 @@ function Process-Project {
             "sensei_project@odata.bind" = "/projects($projectUid)"
         }
 
-        $itemId = Upsert-Record -EntitySetName "sensei_financialitems" -Data $itemData -ExternalId $entry.ItemExtId -ProjectUid $projectUid -Token $Token -BaseUrl $DataverseUrl -DryRun:$DryRun
+        $itemId = Invoke-RecordUpsert -EntitySetName "sensei_financialitems" -Data $itemData -ExternalId $entry.ItemExtId -ProjectUid $projectUid -Token $Token -BaseUrl $DataverseUrl -DryRun:$DryRun
 
         $transName = "FT-{0:D4}" -f $increment++
         $transData = @{
@@ -275,18 +275,18 @@ function Process-Project {
             "sensei_financialitem@odata.bind" = "/sensei_financialitems($itemId)"
         }
 
-        $null = Upsert-Record -EntitySetName "sensei_financialtransactions" -Data $transData -ExternalId $entry.TransExtId -ProjectUid $projectUid -Token $Token -BaseUrl $DataverseUrl -DryRun:$DryRun
+        $null = Invoke-RecordUpsert -EntitySetName "sensei_financialtransactions" -Data $transData -ExternalId $entry.TransExtId -ProjectUid $projectUid -Token $Token -BaseUrl $DataverseUrl -DryRun:$DryRun
     }
 
-    Log-Message "Finished processing project $exportProjectName"
+    Write-LogMessage "Finished processing project $exportProjectName"
 }
 
 # ────────────────────────────────────────────────────────────────
 # Main logic
 # ────────────────────────────────────────────────────────────────
 
-Log-Message "Project Financials Migration - Interactive Mode" "INFO"
-if ($DryRun) { Log-Message "DRY-RUN MODE: No changes will be made to Dataverse" "WARN" }
+Write-LogMessage "Project Financials Migration - Interactive Mode" "INFO"
+if ($DryRun) { Write-LogMessage "DRY-RUN MODE: No changes will be made to Dataverse" "WARN" }
 
 # Login (once, even for multiple projects)
 $dataverseUrl = Read-Host "Enter Dataverse URL (https://yourorg.crm.dynamics.com)"
@@ -297,11 +297,11 @@ $projectSets = @()
 
 if ($Directory) {
     if (-not (Test-Path $Directory -PathType Container)) {
-        Log-Message "ERROR: Directory '$Directory' not found." "ERROR"
+        Write-LogMessage "ERROR: Directory '$Directory' not found." "ERROR"
         exit 1
     }
 
-    Log-Message "Scanning directory '$Directory' for project JSON files..."
+    Write-LogMessage "Scanning directory '$Directory' for project JSON files..."
 
     $allJson = Get-ChildItem -Path $Directory -Filter "*.json" -File
 
@@ -333,14 +333,14 @@ if ($Directory) {
                 Published = $group['Published']
                 Name      = $proj
             }
-            Log-Message "Found complete set for project: $proj"
+            Write-LogMessage "Found complete set for project: $proj"
         } else {
-            Log-Message "Incomplete set for '$proj' — skipping." "WARN"
+            Write-LogMessage "Incomplete set for '$proj' — skipping." "WARN"
         }
     }
 
     if ($projectSets.Count -eq 0) {
-        Log-Message "No complete project sets found in directory." "ERROR"
+        Write-LogMessage "No complete project sets found in directory." "ERROR"
         exit 1
     }
 } else {
@@ -352,11 +352,11 @@ if ($Directory) {
         $BaselinesFile = "Project_${fileSafeName}_reporting_Baselines.json"
         $PublishedFile = "Project_${fileSafeName}_published.json"
         $usingAutoFiles = $true
-        Log-Message "Auto-detecting files for project: '$ProjectName'"
+        Write-LogMessage "Auto-detecting files for project: '$ProjectName'"
     }
 
     if (-not ($TasksFile -and $BaselinesFile -and $PublishedFile)) {
-        Log-Message "ERROR: Must provide -ProjectName OR all three file parameters (or use -Directory)" "ERROR"
+        Write-LogMessage "ERROR: Must provide -ProjectName OR all three file parameters (or use -Directory)" "ERROR"
         exit 1
     }
 
@@ -367,7 +367,7 @@ if ($Directory) {
     if (-not (Test-Path $PublishedFile)) { $missing += $PublishedFile }
 
     if ($missing.Count -gt 0) {
-        Log-Message "ERROR: Missing file(s): $($missing -join ', ')" "ERROR"
+        Write-LogMessage "ERROR: Missing file(s): $($missing -join ', ')" "ERROR"
         exit 1
     }
 
@@ -379,12 +379,12 @@ if ($Directory) {
     }
 }
 
-Log-Message "Found $($projectSets.Count) project set(s) to process."
+Write-LogMessage "Found $($projectSets.Count) project set(s) to process."
 
 # Process each
 foreach ($set in $projectSets) {
     Process-Project -TasksFile $set.Tasks -BaselinesFile $set.Baselines -PublishedFile $set.Published -DataverseUrl $dataverseUrl -Token $token -DryRun:$DryRun
 }
 
-Log-Message "All processing complete." "INFO"
-if ($DryRun) { Log-Message "Dry-run complete — no changes were made." "INFO" }
+Write-LogMessage "All processing complete." "INFO"
+if ($DryRun) { Write-LogMessage "Dry-run complete — no changes were made." "INFO" }
