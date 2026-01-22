@@ -171,6 +171,11 @@ function Process-Project {
 
     Write-LogMessage "Processing project: $exportProjectName | Start UTC: $projectStartUtc"
 
+    $projectObj = $publishedJson.NewDataSet.Project
+    $currencyCode   = $projectObj.ProjectCurrencyCode
+
+    Log-Message "Currency detected: $currencyCode (symbol: $currencySymbol, $currencyDigits decimal places)"
+
     # Search for project in Dataverse
     Write-LogMessage "Searching Dataverse projects for '$exportProjectName'..."
     $matches = Search-ProjectByName -BaseUrl $DataverseUrl -ProjectName $exportProjectName -Token $Token
