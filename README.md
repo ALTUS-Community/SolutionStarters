@@ -21,9 +21,6 @@ A Power Automate Flow for executing the Timesheet to Finance actuals import serv
 [External Task Sync Health Check - Flow](Tools/External-Task-Sync-Health-Check-Flow/README.md)
 A Power Automate Flow to check data integrity of Altus Projects aligned to External Projects. Optionally can be run in Output mode or Execute mode to either display the misaligned data or action repairs to the misaligned data.
 
-[Project Online to Altus Migration Scripts](Tools/Project-Online-to-Altus-Migration/README.md)
-Project Online to Altus Migration starter scripts. Can be used to create Bookable Resources and Projects in Altus and to publish Project Online schedules to Altus using the Altus for Project add-in. Has been tested with version 2025.11.04.7 of Altus.
-
 ## Support for Solution Starters
 
 Please be aware that Altus Solution Starters are not supported as part of the core Altus product and are shared within the Altus Community as valuable resources for partners to quickly produce tailored customer solutions. While Solution Starters might have some unfinished elements or issues, we invite you to utilise the GitHub issues feature above to bring attention to any problems or areas that could benefit from improvement. Feel free to submit a Pull Request of your own if you have a solution in mind. Our aim is to foster collaboration in this space, empowering all partners to create outstanding Altus experiences. Your contributions and collaboration are essential to achieving this goal.
